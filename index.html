@@ -596,6 +596,95 @@ section { margin-bottom: 4rem; }
   outline: none;
 }
 
+/* ── COMPARISON TABLE ── */
+.cmp-table-outer {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.cmp-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.84rem;
+}
+.cmp-table thead th {
+  background: #0d0d1e;
+  color: var(--accent);
+  padding: 9px 14px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+.cmp-table tbody td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #1a1a30;
+  white-space: nowrap;
+}
+.cmp-table tbody tr:last-child td { border-bottom: none; }
+.cmp-table tbody tr:hover { background: var(--card2); }
+
+/* ── MARKET CONTEXT STRIP ── */
+.mkt-strip {
+  background: #08081a;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 1.75rem;
+  overflow-x: auto;
+  min-height: 42px;
+  flex-wrap: nowrap;
+}
+.mkt-lbl {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+.mkt-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 1.25rem 0 0;
+  margin-right: 1.25rem;
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.mkt-item:last-child { border-right: none; margin-right: 0; }
+.mkt-tk { font-weight: 700; font-size: 0.82rem; color: var(--text); }
+.mkt-price { font-size: 0.8rem; color: var(--muted); }
+.mkt-move { font-size: 0.75rem; font-weight: 600; }
+.mkt-spark-wrap { width: 60px; height: 20px; position: relative; }
+
+/* ── SENTIMENT OVERLAY PANEL ── */
+.overlay-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.overlay-lbl {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin-bottom: 0.55rem;
+}
+.overlay-wrap { height: 160px; position: relative; }
+
+/* ── DIFF BADGE ── */
+.diff-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  margin-left: 0.35rem;
+  opacity: 0.9;
+}
+
 /* ── DISCLAIMER ── */
 .disclaimer {
   margin-top: 3rem;
@@ -621,9 +710,9 @@ section { margin-bottom: 4rem; }
   <a href="#track-record">
     Track Record <span class="count-pill">0</span>
   </a>
-  <span class="nav-ts">Updated 2026-02-22 23:28</span>
+  <span class="nav-ts">Updated 2026-02-22 23:44</span>
 </nav>
-
+<div class="mkt-strip"><span class="mkt-lbl">Market</span><div class="mkt-item"><span class="mkt-tk">SPY</span><span class="mkt-price">$689.43</span><span class="mkt-move" style="color:#22c55e">+1.7%&thinsp;30d</span><div class="mkt-spark-wrap"><canvas class="mkt-spark" data-prices='[677.58, 685.4, 688.98, 689.23, 692.73, 695.49, 695.42, 694.04, 691.97, 695.41, 689.53, 686.19, 677.62, 690.62, 693.95, 692.12, 691.96, 681.27, 681.75, 682.85, 686.29, 684.48, 689.43]' data-dates='["2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"]' data-color="#22c55e"></canvas></div></div><div class="mkt-item"><span class="mkt-tk">QQQ</span><span class="mkt-price">$608.81</span><span class="mkt-move" style="color:#22c55e">+0.1%&thinsp;30d</span><div class="mkt-spark-wrap"><canvas class="mkt-spark" data-prices='[608.06, 616.28, 620.76, 622.72, 625.46, 631.13, 633.22, 629.43, 621.87, 626.14, 616.52, 605.75, 597.03, 609.65, 614.32, 611.47, 613.11, 600.64, 601.92, 601.3, 605.79, 603.47, 608.81]' data-dates='["2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"]' data-color="#22c55e"></canvas></div></div><div class="mkt-item"><span class="mkt-tk">VIX</span><span class="mkt-price">19.09</span><span class="mkt-move" style="color:#ef4444">-5.0%&thinsp;30d</span><div class="mkt-spark-wrap"><canvas class="mkt-spark" data-prices='[20.09, 16.9, 15.64, 16.09, 16.15, 16.35, 16.35, 16.88, 17.44, 16.34, 18.0, 18.64, 21.77, 20.37, 17.36, 17.79, 17.65, 20.82, 20.6, 20.29, 19.62, 20.23, 19.09]' data-dates='["2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20"]' data-color="#ef4444"></canvas></div></div></div>
 <main>
 
   <!-- ═══════════════════════════════════════════════
@@ -635,6 +724,20 @@ section { margin-bottom: 4rem; }
       <div class="summary-pills"><span style="color:#facc15">&#9679; 5 Hold</span></div>
       <hr class="section-rule">
     </div>
+    
+<div class="cmp-table-outer">
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>Ticker</th><th>Action</th><th>Score</th><th>Risk</th>
+        <th>Sentiment</th><th>Days Out</th><th>P/C</th>
+        <th>Insider</th><th>30d Runup</th><th>Size</th>
+      </tr>
+    </thead>
+    <tbody><tr><td style="font-weight:800;font-size:0.92rem">CRM</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">+6</td><td style="color:#facc15">Medium</td><td style="color:#22c55e">Bullish</td><td style="color:#ef4444">3d</td><td style="color:var(--muted)">0.55</td><td style="color:#ef4444">Bearish</td><td style="color:#ef4444">-19.3%</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">GOOG</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-3</td><td style="color:#22c55e">Low</td><td style="color:#22c55e">Bullish</td><td style="color:#a5b4fc">60d</td><td style="color:var(--muted)">0.54</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">LLY</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-4</td><td style="color:#22c55e">Low</td><td style="color:#22c55e">Bullish</td><td style="color:#a5b4fc">67d</td><td style="color:var(--muted)">0.97</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">RNMBY</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-9</td><td style="color:#22c55e">Low</td><td style="color:#22c55e">Bullish</td><td style="color:#facc15">17d</td><td style="color:var(--muted)">N/A</td><td style="color:#9ca3af">Unknown</td><td style="color:#22c55e">+3.9%</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">NVO</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-18</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">73d</td><td style="color:var(--muted)">1.23</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr></tbody>
+  </table>
+</div>
+    
     <div class="filter-bar">
   <div class="filter-btns">
     <button class="filter-btn active" data-filter="all">All</button>
@@ -666,8 +769,7 @@ section { margin-bottom: 4rem; }
             style="color:#facc15;border-color:#facc1544;background:#422006">
         Hold
       </span>
-      <button class="chart-toggle"
-              onclick="var c=this.closest('.ticker-card');c.classList.toggle('charts-expanded');this.textContent=c.classList.contains('charts-expanded')?'Charts ▴':'Charts ▾'">Charts ▾</button>
+      <button class="chart-toggle">Charts ▾</button>
     </div>
   </div>
 
@@ -775,8 +877,7 @@ section { margin-bottom: 4rem; }
             style="color:#facc15;border-color:#facc1544;background:#422006">
         Hold
       </span>
-      <button class="chart-toggle"
-              onclick="var c=this.closest('.ticker-card');c.classList.toggle('charts-expanded');this.textContent=c.classList.contains('charts-expanded')?'Charts ▴':'Charts ▾'">Charts ▾</button>
+      <button class="chart-toggle">Charts ▾</button>
     </div>
   </div>
 
@@ -884,8 +985,7 @@ section { margin-bottom: 4rem; }
             style="color:#facc15;border-color:#facc1544;background:#422006">
         Hold
       </span>
-      <button class="chart-toggle"
-              onclick="var c=this.closest('.ticker-card');c.classList.toggle('charts-expanded');this.textContent=c.classList.contains('charts-expanded')?'Charts ▴':'Charts ▾'">Charts ▾</button>
+      <button class="chart-toggle">Charts ▾</button>
     </div>
   </div>
 
@@ -998,8 +1098,7 @@ section { margin-bottom: 4rem; }
             style="color:#facc15;border-color:#facc1544;background:#422006">
         Hold
       </span>
-      <button class="chart-toggle"
-              onclick="var c=this.closest('.ticker-card');c.classList.toggle('charts-expanded');this.textContent=c.classList.contains('charts-expanded')?'Charts ▴':'Charts ▾'">Charts ▾</button>
+      <button class="chart-toggle">Charts ▾</button>
     </div>
   </div>
 
@@ -1107,8 +1206,7 @@ section { margin-bottom: 4rem; }
             style="color:#facc15;border-color:#facc1544;background:#422006">
         Hold
       </span>
-      <button class="chart-toggle"
-              onclick="var c=this.closest('.ticker-card');c.classList.toggle('charts-expanded');this.textContent=c.classList.contains('charts-expanded')?'Charts ▴':'Charts ▾'">Charts ▾</button>
+      <button class="chart-toggle">Charts ▾</button>
     </div>
   </div>
 
@@ -1228,146 +1326,6 @@ section { margin-bottom: 4rem; }
     <tbody>
 <tr>
   <td class="rank-num">1</td>
-  <td class="tk-name">SPGI</td>
-  <td>2026-04-28</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      65d
-    </span>
-  </td>
-  <td class="move-neg">-13.2%</td>
-  <td>0.29</td>
-  <td class="scan-score" style="color:#facc15">47.9</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">2</td>
-  <td class="tk-name">ISRG</td>
-  <td>2026-04-21</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      58d
-    </span>
-  </td>
-  <td class="move-neg">-13.2%</td>
-  <td>0.49</td>
-  <td class="scan-score" style="color:#facc15">47.9</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">3</td>
-  <td class="tk-name">HON</td>
-  <td>2026-04-28</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      65d
-    </span>
-  </td>
-  <td class="move-neg">-13.2%</td>
-  <td>0.51</td>
-  <td class="scan-score" style="color:#facc15">47.9</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">4</td>
-  <td class="tk-name">RTX</td>
-  <td>2026-04-21</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      58d
-    </span>
-  </td>
-  <td class="move-neg">-13.2%</td>
-  <td>0.53</td>
-  <td class="scan-score" style="color:#facc15">47.9</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">5</td>
-  <td class="tk-name">GOOG</td>
-  <td>2026-04-23</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      60d
-    </span>
-  </td>
-  <td class="move-neg">-11.2%</td>
-  <td>0.54</td>
-  <td class="scan-score" style="color:#facc15">46.7</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">6</td>
-  <td class="tk-name">GOOGL</td>
-  <td>2026-04-23</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      60d
-    </span>
-  </td>
-  <td class="move-neg">-11.2%</td>
-  <td>0.55</td>
-  <td class="scan-score" style="color:#facc15">46.7</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">7</td>
-  <td class="tk-name">MSFT</td>
-  <td>2026-04-29</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      66d
-    </span>
-  </td>
-  <td class="move-neg">-11.2%</td>
-  <td>0.40</td>
-  <td class="scan-score" style="color:#facc15">46.7</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">8</td>
-  <td class="tk-name">KO</td>
-  <td>2026-04-28</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      65d
-    </span>
-  </td>
-  <td class="move-pos">+11.1%</td>
-  <td>0.17</td>
-  <td class="scan-score" style="color:#facc15">46.6</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">9</td>
-  <td class="tk-name">CVX</td>
-  <td>2026-05-01</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      68d
-    </span>
-  </td>
-  <td class="move-pos">+10.1%</td>
-  <td>0.41</td>
-  <td class="scan-score" style="color:#facc15">46.1</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">10</td>
-  <td class="tk-name">WM</td>
-  <td>2026-04-27</td>
-  <td>
-    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      64d
-    </span>
-  </td>
-  <td class="move-pos">+7.5%</td>
-  <td>0.47</td>
-  <td class="scan-score" style="color:#facc15">44.5</td>
-  <td><span style="color:var(--muted)">—</span></td>
-</tr>
-<tr>
-  <td class="rank-num">11</td>
   <td class="tk-name">NFLX</td>
   <td>2026-04-16</td>
   <td>
@@ -1375,13 +1333,13 @@ section { margin-bottom: 4rem; }
       53d
     </span>
   </td>
-  <td class="move-pos">+7.2%</td>
+  <td class="move-neg">-11.2%</td>
   <td>0.28</td>
-  <td class="scan-score" style="color:#facc15">44.3</td>
+  <td class="scan-score" style="color:#facc15">46.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">12</td>
+  <td class="rank-num">2</td>
   <td class="tk-name">TXN</td>
   <td>2026-04-28</td>
   <td>
@@ -1389,13 +1347,13 @@ section { margin-bottom: 4rem; }
       65d
     </span>
   </td>
-  <td class="move-pos">+7.2%</td>
+  <td class="move-neg">-11.2%</td>
   <td>0.55</td>
-  <td class="scan-score" style="color:#facc15">44.3</td>
+  <td class="scan-score" style="color:#facc15">46.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">13</td>
+  <td class="rank-num">3</td>
   <td class="tk-name">LIN</td>
   <td>2026-04-30</td>
   <td>
@@ -1403,83 +1361,125 @@ section { margin-bottom: 4rem; }
       67d
     </span>
   </td>
-  <td class="move-pos">+7.2%</td>
+  <td class="move-neg">-11.2%</td>
   <td>0.37</td>
-  <td class="scan-score" style="color:#facc15">44.3</td>
+  <td class="scan-score" style="color:#facc15">46.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">14</td>
-  <td class="tk-name">ABT</td>
-  <td>2026-04-15</td>
+  <td class="rank-num">4</td>
+  <td class="tk-name">HON</td>
+  <td>2026-04-28</td>
   <td>
     <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      52d
+      65d
     </span>
   </td>
-  <td class="move-pos">+7.2%</td>
-  <td>0.21</td>
-  <td class="scan-score" style="color:#facc15">44.3</td>
+  <td class="move-neg">-7.8%</td>
+  <td>0.51</td>
+  <td class="scan-score" style="color:#facc15">44.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">15</td>
-  <td class="tk-name">MCD</td>
-  <td>2026-04-30</td>
+  <td class="rank-num">5</td>
+  <td class="tk-name">SPGI</td>
+  <td>2026-04-28</td>
   <td>
     <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      67d
+      65d
     </span>
   </td>
-  <td class="move-pos">+6.4%</td>
-  <td>0.58</td>
-  <td class="scan-score" style="color:#facc15">43.9</td>
+  <td class="move-neg">-7.8%</td>
+  <td>0.29</td>
+  <td class="scan-score" style="color:#facc15">44.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">16</td>
-  <td class="tk-name">SYK</td>
-  <td>2026-04-30</td>
+  <td class="rank-num">6</td>
+  <td class="tk-name">ISRG</td>
+  <td>2026-04-21</td>
   <td>
     <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      67d
+      58d
     </span>
   </td>
-  <td class="move-pos">+5.8%</td>
-  <td>0.30</td>
-  <td class="scan-score" style="color:#facc15">43.5</td>
+  <td class="move-neg">-7.8%</td>
+  <td>0.49</td>
+  <td class="scan-score" style="color:#facc15">44.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">17</td>
-  <td class="tk-name">REGN</td>
+  <td class="rank-num">7</td>
+  <td class="tk-name">SHW</td>
+  <td>2026-04-28</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      65d
+    </span>
+  </td>
+  <td class="move-pos">+7.0%</td>
+  <td>0.18</td>
+  <td class="scan-score" style="color:#facc15">44.2</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">8</td>
+  <td class="tk-name">DUK</td>
+  <td>2026-05-05</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      72d
+    </span>
+  </td>
+  <td class="move-pos">+7.0%</td>
+  <td>0.31</td>
+  <td class="scan-score" style="color:#facc15">44.2</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">9</td>
+  <td class="tk-name">MSFT</td>
   <td>2026-04-29</td>
   <td>
     <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
       66d
     </span>
   </td>
-  <td class="move-pos">+17.3%</td>
-  <td>1.65</td>
-  <td class="scan-score" style="color:#facc15">42.4</td>
+  <td class="move-neg">-6.4%</td>
+  <td>0.40</td>
+  <td class="scan-score" style="color:#facc15">43.8</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">18</td>
-  <td class="tk-name">MSI</td>
-  <td>2026-04-30</td>
+  <td class="rank-num">10</td>
+  <td class="tk-name">GOOG</td>
+  <td>2026-04-23</td>
   <td>
     <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
-      67d
+      60d
     </span>
   </td>
-  <td class="move-pos">+2.9%</td>
-  <td>0.45</td>
-  <td class="scan-score" style="color:#facc15">41.8</td>
+  <td class="move-neg">-6.4%</td>
+  <td>0.54</td>
+  <td class="scan-score" style="color:#facc15">43.8</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">19</td>
+  <td class="rank-num">11</td>
+  <td class="tk-name">GOOGL</td>
+  <td>2026-04-23</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      60d
+    </span>
+  </td>
+  <td class="move-neg">-6.4%</td>
+  <td>0.55</td>
+  <td class="scan-score" style="color:#facc15">43.8</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">12</td>
   <td class="tk-name">APH</td>
   <td>2026-04-29</td>
   <td>
@@ -1493,7 +1493,35 @@ section { margin-bottom: 4rem; }
   <td><span style="color:var(--muted)">—</span></td>
 </tr>
 <tr>
-  <td class="rank-num">20</td>
+  <td class="rank-num">13</td>
+  <td class="tk-name">WM</td>
+  <td>2026-04-27</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      64d
+    </span>
+  </td>
+  <td class="move-pos">+2.9%</td>
+  <td>0.47</td>
+  <td class="scan-score" style="color:#facc15">41.8</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">14</td>
+  <td class="tk-name">MSI</td>
+  <td>2026-04-30</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      67d
+    </span>
+  </td>
+  <td class="move-pos">+2.9%</td>
+  <td>0.45</td>
+  <td class="scan-score" style="color:#facc15">41.8</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">15</td>
   <td class="tk-name">NOC</td>
   <td>2026-04-21</td>
   <td>
@@ -1504,6 +1532,76 @@ section { margin-bottom: 4rem; }
   <td class="move-pos">+2.9%</td>
   <td>0.35</td>
   <td class="scan-score" style="color:#facc15">41.8</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">16</td>
+  <td class="tk-name">CVX</td>
+  <td>2026-05-01</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      68d
+    </span>
+  </td>
+  <td class="move-pos">+2.1%</td>
+  <td>0.41</td>
+  <td class="scan-score" style="color:#facc15">41.3</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">17</td>
+  <td class="tk-name">ABBV</td>
+  <td>2026-05-01</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      68d
+    </span>
+  </td>
+  <td class="move-pos">+2.1%</td>
+  <td>0.41</td>
+  <td class="scan-score" style="color:#facc15">41.3</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">18</td>
+  <td class="tk-name">PG</td>
+  <td>2026-04-23</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      60d
+    </span>
+  </td>
+  <td class="move-pos">+2.1%</td>
+  <td>0.34</td>
+  <td class="scan-score" style="color:#facc15">41.3</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">19</td>
+  <td class="tk-name">BAC</td>
+  <td>2026-04-15</td>
+  <td>
+    <span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">
+      52d
+    </span>
+  </td>
+  <td class="move-pos">+1.1%</td>
+  <td>0.35</td>
+  <td class="scan-score" style="color:#facc15">40.7</td>
+  <td><span style="color:var(--muted)">—</span></td>
+</tr>
+<tr>
+  <td class="rank-num">20</td>
+  <td class="tk-name">ADBE</td>
+  <td>2026-03-12</td>
+  <td>
+    <span class="days-badge" style="color:#facc15;border-color:#facc1544;background:#facc1511">
+      18d
+    </span>
+  </td>
+  <td class="move-pos">+1.1%</td>
+  <td>0.56</td>
+  <td class="scan-score" style="color:#facc15">40.7</td>
   <td><span style="color:var(--muted)">—</span></td>
 </tr></tbody>
   </table>
@@ -1760,6 +1858,91 @@ section { margin-bottom: 4rem; }
             }
           }
         }
+      }
+    });
+  });
+
+  // ── Market context sparklines ──
+  document.querySelectorAll('.mkt-spark').forEach(function(canvas) {
+    const prices = JSON.parse(canvas.dataset.prices || '[]');
+    const dates  = JSON.parse(canvas.dataset.dates  || '[]');
+    const color  = canvas.dataset.color || '#9ca3af';
+    if (!prices.length) return;
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{ data: prices, borderColor: color, borderWidth: 1.5,
+          fill: false, pointRadius: 0, tension: 0.3 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: { x: { display: false }, y: { display: false } }
+      }
+    });
+  });
+
+  // ── Sentiment overlay (all watchlist tickers on one chart) ──
+  (function() {
+    const canvas = document.getElementById('sentiment-overlay');
+    if (!canvas) return;
+    const labels   = JSON.parse(canvas.dataset.labels   || '[]');
+    const datasets = JSON.parse(canvas.dataset.datasets || '[]');
+    if (!datasets.length) return;
+    new Chart(canvas, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: LABEL_COLOR, boxWidth: 12, font: { size: 11 }, padding: 16 }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                var v = ctx.parsed.y;
+                if (v === null || v === undefined) return null;
+                return ctx.dataset.label + ': ' + (v >= 0 ? '+' : '') + v.toFixed(1);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: GRID_COLOR },
+            ticks: { color: LABEL_COLOR, font: { size: 9 }, maxTicksLimit: 10 }
+          },
+          y: {
+            grid: { color: GRID_COLOR },
+            ticks: {
+              color: LABEL_COLOR,
+              callback: function(v) { return (v >= 0 ? '+' : '') + v; }
+            },
+            suggestedMin: -60, suggestedMax: 60
+          }
+        }
+      }
+    });
+  })();
+
+  // ── Chart toggle (resize after reveal so Chart.js redraws at correct dims) ──
+  document.querySelectorAll('.chart-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var card = btn.closest('.ticker-card');
+      card.classList.toggle('charts-expanded');
+      var expanded = card.classList.contains('charts-expanded');
+      btn.textContent = expanded ? 'Charts ▴' : 'Charts ▾';
+      if (expanded) {
+        card.querySelectorAll('canvas').forEach(function(cv) {
+          var ch = Chart.getChart(cv);
+          if (ch) ch.resize();
+        });
       }
     });
   });
