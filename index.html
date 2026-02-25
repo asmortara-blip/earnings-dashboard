@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pre-Earnings Dashboard — 2026-02-25</title>
+  <script>try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -832,6 +833,57 @@ section { margin-bottom: 4rem; }
   color: #374151;
   text-align: center;
 }
+
+/* ── LIGHT MODE ── */
+[data-theme="light"] {
+  --bg:       #f8f9fc;
+  --surface:  #ffffff;
+  --card:     #ffffff;
+  --card2:    #f1f3f9;
+  --border:   #dde1ea;
+  --accent:   #7c3aed;
+  --text:     #0f172a;
+  --muted:    #64748b;
+  --green:    #16a34a;
+  --red:      #dc2626;
+  --yellow:   #b45309;
+  --orange:   #c2410c;
+}
+[data-theme="light"] nav { background: #ffffff; }
+[data-theme="light"] .mkt-strip { background: #f1f3f9; }
+[data-theme="light"] .scan-table thead th,
+[data-theme="light"] .outcome-table thead th,
+[data-theme="light"] .cmp-table thead th { background: #f1f3f9; }
+[data-theme="light"] .scan-table tbody td,
+[data-theme="light"] .outcome-table tbody td,
+[data-theme="light"] .cmp-table tbody td,
+[data-theme="light"] .calib-table tbody td { border-bottom: 1px solid var(--border); }
+[data-theme="light"] .filter-btn.active { background: #7c3aed22; }
+[data-theme="light"] .disclaimer { color: #94a3b8; }
+[data-theme="light"] .cat-item { color: #7c3aed; }
+[data-theme="light"] .risk-item { color: #dc2626; }
+[data-theme="light"] .ticker-card:hover { box-shadow: 0 0 0 1px var(--card-accent), 0 4px 16px #0000001a; }
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--accent); }
 </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
@@ -848,7 +900,8 @@ section { margin-bottom: 4rem; }
   <a href="#track-record">
     Track Record <span class="count-pill">0</span>
   </a>
-  <span class="nav-ts">Updated 2026-02-25 09:54</span>
+  <button class="theme-toggle" id="theme-toggle" title="Toggle light / dark mode">&#9788;</button>
+  <span class="nav-ts">Updated 2026-02-25 11:16</span>
 </nav>
 <div class="mkt-strip"><span class="mkt-lbl">Market</span><div class="mkt-item"><span class="mkt-tk">SPY</span><span class="mkt-price">$687.35</span><span class="mkt-move" style="color:#22c55e">+0.3%&thinsp;30d</span><div class="mkt-spark-wrap"><canvas class="mkt-spark" data-prices='[685.4, 688.98, 689.23, 692.73, 695.49, 695.42, 694.04, 691.97, 695.41, 689.53, 686.19, 677.62, 690.62, 693.95, 692.12, 691.96, 681.27, 681.75, 682.85, 686.29, 684.48, 689.43, 682.39, 687.35]' data-dates='["2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24"]' data-color="#22c55e"></canvas></div></div><div class="mkt-item"><span class="mkt-tk">QQQ</span><span class="mkt-price">$607.87</span><span class="mkt-move" style="color:#ef4444">-1.4%&thinsp;30d</span><div class="mkt-spark-wrap"><canvas class="mkt-spark" data-prices='[616.28, 620.76, 622.72, 625.46, 631.13, 633.22, 629.43, 621.87, 626.14, 616.52, 605.75, 597.03, 609.65, 614.32, 611.47, 613.11, 600.64, 601.92, 601.3, 605.79, 603.47, 608.81, 601.41, 607.87]' data-dates='["2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24"]' data-color="#ef4444"></canvas></div></div><div class="mkt-item"><span class="mkt-tk">VIX</span><span class="mkt-price">19.55</span><span class="mkt-move" style="color:#22c55e">+15.7%&thinsp;30d</span><div class="mkt-spark-wrap"><canvas class="mkt-spark" data-prices='[16.9, 15.64, 16.09, 16.15, 16.35, 16.35, 16.88, 17.44, 16.34, 18.0, 18.64, 21.77, 20.37, 17.36, 17.79, 17.65, 20.82, 20.6, 20.29, 19.62, 20.23, 19.09, 21.01, 19.55]' data-dates='["2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24"]' data-color="#22c55e"></canvas></div></div></div>
 <main>
@@ -872,7 +925,7 @@ section { margin-bottom: 4rem; }
         <th>Insider</th><th>30d Runup</th><th>Size</th>
       </tr>
     </thead>
-    <tbody><tr><td style="font-weight:800;font-size:0.92rem">RNMBY</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">+1</td><td style="color:#22c55e">Low</td><td style="color:#22c55e">Bullish</td><td style="color:#f97316">14d</td><td style="color:var(--muted)">N/A</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">-0.1%</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">CRM</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-1</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#ef4444">0d</td><td style="color:var(--muted)">0.79</td><td style="color:#ef4444">Bearish</td><td style="color:#ef4444">-17.5%</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">GOOG</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-5</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">57d</td><td style="color:var(--muted)">0.66</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">LLY</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-8</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">64d</td><td style="color:var(--muted)">1.49</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">NVO</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-16</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">70d</td><td style="color:var(--muted)">0.67</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr></tbody>
+    <tbody><tr><td style="font-weight:800;font-size:0.92rem">RNMBY</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">+1</td><td style="color:#22c55e">Low</td><td style="color:#22c55e">Bullish</td><td style="color:#f97316">14d</td><td style="color:var(--muted)">N/A</td><td style="color:#9ca3af">Unknown</td><td style="color:#22c55e">+1.0%</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">CRM</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-2</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#ef4444">0d</td><td style="color:var(--muted)">1.03</td><td style="color:#ef4444">Bearish</td><td style="color:#ef4444">-17.4%</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">GOOG</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-4</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">57d</td><td style="color:var(--muted)">0.42</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">LLY</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-9</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">64d</td><td style="color:var(--muted)">1.71</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr><tr><td style="font-weight:800;font-size:0.92rem">NVO</td><td><span class="action-badge" style="font-size:0.72rem;padding:3px 9px;color:#facc15;border-color:#facc1544;background:#422006">Hold</span></td><td style="color:#facc15;font-weight:700">-15</td><td style="color:#22c55e">Low</td><td style="color:#9ca3af">Neutral</td><td style="color:#a5b4fc">70d</td><td style="color:var(--muted)">0.53</td><td style="color:#9ca3af">Unknown</td><td style="color:#ef4444">—</td><td style="color:var(--muted);font-size:0.78rem">—</td></tr></tbody>
   </table>
 </div>
     
@@ -892,7 +945,7 @@ section { margin-bottom: 4rem; }
     <div class="wl-grid">
 <div class="ticker-card"
      style="border-left:4px solid #facc1566;--card-accent:#facc1544"
-     data-action="Hold" data-score="-8"
+     data-action="Hold" data-score="-9"
      data-days="64"
      data-risk="Low">
   <div class="card-top">
@@ -916,10 +969,10 @@ section { margin-bottom: 4rem; }
     <div class="score-track">
       <div class="score-center"></div>
       <div class="score-fill"
-           style="left:46.0%;width:4.0%;background:#facc1588">
+           style="left:45.5%;width:4.5%;background:#facc1588">
       </div>
     </div>
-    <span class="score-num" style="color:#facc15">-8</span>
+    <span class="score-num" style="color:#facc15">-9</span>
   </div>
 
   <div class="tech-row"><span class="tech-lbl">Tech</span><span class="rsi-num">RSI 48.1</span>&nbsp;<span class="tech-badge" style="color:#9ca3af;border-color:#9ca3af44">Neutral</span></div>
@@ -933,9 +986,9 @@ section { margin-bottom: 4rem; }
     <div class="chart-lbl">Sentiment Mix</div>
     <div class="donut-wrap">
       <canvas class="donut-canvas"
-        data-bull="26.4"
-        data-bear="31.4"
-        data-neut="42.2"
+        data-bull="27.7"
+        data-bear="30.5"
+        data-neut="41.8"
         data-signal="Neutral"
         id="donut-LLY"></canvas>
       <div class="donut-center" style="color:#9ca3af">Neutral</div>
@@ -943,7 +996,7 @@ section { margin-bottom: 4rem; }
   </div>
   <div class="chart-cell">
     <div class="chart-lbl">10-Factor Radar</div>
-    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[-1.9, 50.0, -50.0, 50.0, -8.1, -15.0, 37.5, 50.0, 7.9, -24.4]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-LLY"></canvas></div>
+    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[-1.8, 50.0, -50.0, 50.0, -8.1, -15.0, 37.5, 50.0, 7.2, -35.4]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-LLY"></canvas></div>
   </div>
 </div>
   </div>
@@ -953,22 +1006,22 @@ section { margin-bottom: 4rem; }
       <div class="metric-lbl">Sentiment</div>
       <div class="metric-val" style="color:#9ca3af">Neutral</div>
       <div class="sent-bar">
-        <div class="sb-g" style="width:26%"></div>
-        <div class="sb-r" style="width:31%"></div>
+        <div class="sb-g" style="width:28%"></div>
+        <div class="sb-r" style="width:30%"></div>
         <div class="sb-n" style="flex:1"></div>
       </div>
-      <div class="metric-sub">26% bull · 31% bear · 140 headlines · FinBERT -0.15</div>
+      <div class="metric-sub">28% bull · 30% bear · 141 headlines · FinBERT -0.15</div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">Options Flow</div>
-      <div class="metric-val" style="color:#ef4444">P/C 1.49</div>
-      <div class="metric-sub">Bearish · exp 2026-02-27 · ±2.6% exp · IV 44% · Hist ±3.7% (8x) → <span style="color:#22c55e">underpriced</span></div>
+      <div class="metric-val" style="color:#ef4444">P/C 1.71</div>
+      <div class="metric-sub">Heavily Bearish · exp 2026-02-27 · ±2.5% exp · IV 40% · Hist ±2.4% (8x) → <span style="color:#9ca3af">fair</span></div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">CEO Quality</div>
       <div class="metric-val">David A. Ricks</div>
       <div class="metric-sub">
-        Beat 69% · non-STEM · score 15.80
+        Beat 69% · non-STEM · score 14.50
       </div>
     </div>
     <div class="metric-cell">
@@ -993,20 +1046,20 @@ section { margin-bottom: 4rem; }
   </div>
 
   <div class="eps-row"><span class="eps-lbl">Fwd EPS</span><span class="eps-val">$41.88</span><span class="eps-delta" style="color:#22c55e">▲ +0.078 (+0.2%)</span></div>
-  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">MDT&nbsp;▼-4</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ZTS&nbsp;▼-6</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ISRG&nbsp;▼-6</span></div>
+  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ZTS&nbsp;▲+1</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">DHR&nbsp;▼-7</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">CI&nbsp;▼-7</span></div>
   
 
   <div class="catalysts-section">
     <div class="cat-title">Key Catalysts &amp; Signals</div>
-    <div class="cat-item"><span class="arr">›</span>Period price change: -3.2%</div><div class="cat-item"><span class="arr">›</span>Backtest confidence: 75/100 (High)</div><div class="cat-item"><span class="arr">›</span>CEO David A. Ricks: 69% earnings beat rate, guidance accuracy 0.40, non-STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 1.49 (Bearish) — calls 1,877 / puts 2,795 (expiry 2026-02-27)</div>
+    <div class="cat-item"><span class="arr">›</span>Period price change: -3.2%</div><div class="cat-item"><span class="arr">›</span>Backtest confidence: 75/100 (High)</div><div class="cat-item"><span class="arr">›</span>CEO David A. Ricks: 69% earnings beat rate, guidance accuracy 0.40, non-STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 1.71 (Heavily Bearish) — calls 2,585 / puts 4,416 (expiry 2026-02-27)</div>
   </div>
 
-  
+  <div class="risk-section"><div class="risk-title">Risk Flags</div><div class="risk-item">RISK: Elevated put/call ratio (1.71) — options market positioned bearishly</div></div>
 </div>
 
 <div class="ticker-card"
      style="border-left:4px solid #facc1566;--card-accent:#facc1544"
-     data-action="Hold" data-score="-16"
+     data-action="Hold" data-score="-15"
      data-days="70"
      data-risk="Low">
   <div class="card-top">
@@ -1030,10 +1083,10 @@ section { margin-bottom: 4rem; }
     <div class="score-track">
       <div class="score-center"></div>
       <div class="score-fill"
-           style="left:42.0%;width:8.0%;background:#facc1588">
+           style="left:42.5%;width:7.5%;background:#facc1588">
       </div>
     </div>
-    <span class="score-num" style="color:#facc15">-16</span>
+    <span class="score-num" style="color:#facc15">-15</span>
   </div>
 
   <div class="tech-row"><span class="tech-lbl">Tech</span><span class="rsi-num">RSI 22.4</span>&nbsp;<span class="tech-badge" style="color:#22c55e;border-color:#22c55e44">Oversold</span></div>
@@ -1047,9 +1100,9 @@ section { margin-bottom: 4rem; }
     <div class="chart-lbl">Sentiment Mix</div>
     <div class="donut-wrap">
       <canvas class="donut-canvas"
-        data-bull="24.8"
-        data-bear="33.1"
-        data-neut="42.1"
+        data-bull="28.5"
+        data-bear="30.6"
+        data-neut="40.9"
         data-signal="Neutral"
         id="donut-NVO"></canvas>
       <div class="donut-center" style="color:#9ca3af">Neutral</div>
@@ -1057,7 +1110,7 @@ section { margin-bottom: 4rem; }
   </div>
   <div class="chart-cell">
     <div class="chart-lbl">10-Factor Radar</div>
-    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[-2.7, 50.0, -50.0, 50.0, -50.0, -15.0, 30.0, 50.0, -9.8, 16.4]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-NVO"></canvas></div>
+    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[-2.2, 50.0, -50.0, 50.0, -50.0, -15.0, 30.0, 50.0, -9.8, 23.4]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-NVO"></canvas></div>
   </div>
 </div>
   </div>
@@ -1067,16 +1120,16 @@ section { margin-bottom: 4rem; }
       <div class="metric-lbl">Sentiment</div>
       <div class="metric-val" style="color:#9ca3af">Neutral</div>
       <div class="sent-bar">
-        <div class="sb-g" style="width:25%"></div>
-        <div class="sb-r" style="width:33%"></div>
+        <div class="sb-g" style="width:28%"></div>
+        <div class="sb-r" style="width:31%"></div>
         <div class="sb-n" style="flex:1"></div>
       </div>
-      <div class="metric-sub">25% bull · 33% bear · 145 headlines · FinBERT -0.21</div>
+      <div class="metric-sub">28% bull · 31% bear · 144 headlines · FinBERT -0.19</div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">Options Flow</div>
-      <div class="metric-val" style="color:#22c55e">P/C 0.67</div>
-      <div class="metric-sub">Bullish · exp 2026-02-27 · ±3.1% exp · IV 44% · Hist ±3.7% (8x) → <span style="color:#9ca3af">fair</span></div>
+      <div class="metric-val" style="color:#22c55e">P/C 0.53</div>
+      <div class="metric-sub">Heavily Bullish · exp 2026-02-27 · ±3.3% exp · IV 47% · Hist ±3.5% (8x) → <span style="color:#9ca3af">fair</span></div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">CEO Quality</div>
@@ -1103,16 +1156,16 @@ section { margin-bottom: 4rem; }
       </div>
     </div>
     <div class="metric-cell"><div class="metric-lbl">Short Interest</div><div class="metric-val">0.9% float</div><div class="metric-sub">1.5d cover<br>Squeeze: <span style="color:#9ca3af">Low</span></div></div>
-    <div class="metric-cell"><div class="metric-lbl">Analyst</div><div class="metric-val" style="color:#4ade80">Buy</div><div class="metric-sub">$54 · <span style="color:#22c55e">+42%</span><br>0↑ 0↓ · 11 analysts</div></div>
+    <div class="metric-cell"><div class="metric-lbl">Analyst</div><div class="metric-val" style="color:#4ade80">Buy</div><div class="metric-sub">$54 · <span style="color:#22c55e">+41%</span><br>0↑ 0↓ · 11 analysts</div></div>
   </div>
 
   <div class="eps-row"><span class="eps-lbl">Fwd EPS</span><span class="eps-val">$3.44</span><span class="eps-delta" style="color:#ef4444">▼ -0.013 (-0.4%)</span></div>
-  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">MDT&nbsp;▼-4</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ZTS&nbsp;▼-6</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ISRG&nbsp;▼-6</span></div>
+  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ZTS&nbsp;▲+1</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">DHR&nbsp;▼-7</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">CI&nbsp;▼-7</span></div>
   
 
   <div class="catalysts-section">
     <div class="cat-title">Key Catalysts &amp; Signals</div>
-    <div class="cat-item"><span class="arr">›</span>Bearish sentiment composite (-0.05, VADER+FinBERT) with 25% bullish headlines</div><div class="cat-item"><span class="arr">›</span>Period price change: -34.9%</div><div class="cat-item"><span class="arr">›</span>Backtest confidence: 60/100 (Medium)</div><div class="cat-item"><span class="arr">›</span>CEO Maziar Mike Doustdar: 69% earnings beat rate, guidance accuracy 0.49, non-STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 0.67 (Bullish) — calls 8,465 / puts 5,685 (expiry 2026-02-27)</div>
+    <div class="cat-item"><span class="arr">›</span>Period price change: -34.9%</div><div class="cat-item"><span class="arr">›</span>Backtest confidence: 60/100 (Medium)</div><div class="cat-item"><span class="arr">›</span>CEO Maziar Mike Doustdar: 69% earnings beat rate, guidance accuracy 0.49, non-STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 0.53 (Heavily Bullish) — calls 10,888 / puts 5,782 (expiry 2026-02-27)</div>
   </div>
 
   
@@ -1120,7 +1173,7 @@ section { margin-bottom: 4rem; }
 
 <div class="ticker-card"
      style="border-left:4px solid #facc1566;--card-accent:#facc1544"
-     data-action="Hold" data-score="-1"
+     data-action="Hold" data-score="-2"
      data-days="0"
      data-risk="Low">
   <div class="card-top">
@@ -1144,10 +1197,10 @@ section { margin-bottom: 4rem; }
     <div class="score-track">
       <div class="score-center"></div>
       <div class="score-fill"
-           style="left:49.5%;width:0.5%;background:#facc1588">
+           style="left:49.0%;width:1.0%;background:#facc1588">
       </div>
     </div>
-    <span class="score-num" style="color:#facc15">-1</span>
+    <span class="score-num" style="color:#facc15">-2</span>
   </div>
 
   <div class="tech-row"><span class="tech-lbl">Tech</span><span class="rsi-num">RSI 34.4</span>&nbsp;<span class="tech-badge" style="color:#9ca3af;border-color:#9ca3af44">Neutral</span></div>
@@ -1161,9 +1214,9 @@ section { margin-bottom: 4rem; }
     <div class="chart-lbl">Sentiment Mix</div>
     <div class="donut-wrap">
       <canvas class="donut-canvas"
-        data-bull="23.1"
-        data-bear="30.8"
-        data-neut="46.1"
+        data-bull="24.3"
+        data-bear="31.9"
+        data-neut="43.8"
         data-signal="Neutral"
         id="donut-CRM"></canvas>
       <div class="donut-center" style="color:#9ca3af">Neutral</div>
@@ -1171,7 +1224,7 @@ section { margin-bottom: 4rem; }
   </div>
   <div class="chart-cell">
     <div class="chart-lbl">10-Factor Radar</div>
-    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[-1.1, 50.0, -50.0, 50.0, -40.8, 40.0, 27.5, 50.0, 8.2, 10.4]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-CRM"></canvas></div>
+    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[-1.2, 50.0, -50.0, 50.0, -40.8, 40.0, 27.5, 50.0, 8.2, -1.4]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-CRM"></canvas></div>
   </div>
 </div>
   </div>
@@ -1181,16 +1234,16 @@ section { margin-bottom: 4rem; }
       <div class="metric-lbl">Sentiment</div>
       <div class="metric-val" style="color:#9ca3af">Neutral</div>
       <div class="sent-bar">
-        <div class="sb-g" style="width:23%"></div>
-        <div class="sb-r" style="width:31%"></div>
+        <div class="sb-g" style="width:24%"></div>
+        <div class="sb-r" style="width:32%"></div>
         <div class="sb-n" style="flex:1"></div>
       </div>
-      <div class="metric-sub">23% bull · 31% bear · 143 headlines · FinBERT -0.09</div>
+      <div class="metric-sub">24% bull · 32% bear · 144 headlines · FinBERT -0.08</div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">Options Flow</div>
-      <div class="metric-val" style="color:#22c55e">P/C 0.79</div>
-      <div class="metric-sub">Bullish · exp 2026-02-27 · ±8.7% exp · IV 120% · Hist ±6.6% (8x) → <span style="color:#ef4444">overpriced</span></div>
+      <div class="metric-val" style="color:#ef4444">P/C 1.03</div>
+      <div class="metric-sub">Neutral · exp 2026-02-27 · ±8.3% exp · IV 115% · Hist ±2.7% (8x) → <span style="color:#ef4444">overpriced</span></div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">CEO Quality</div>
@@ -1211,7 +1264,7 @@ section { margin-bottom: 4rem; }
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">30d Run-Up</div>
-      <div class="metric-val" style="color:#ef4444">-17.5%</div>
+      <div class="metric-val" style="color:#ef4444">-17.4%</div>
       <div class="metric-sub">Risk: <span style="color:#22c55e">Low</span>
         
       </div>
@@ -1221,12 +1274,12 @@ section { margin-bottom: 4rem; }
   </div>
 
   <div class="eps-row"><span class="eps-lbl">Fwd EPS</span><span class="eps-val">$13.12</span><span style="color:var(--muted);font-size:0.68rem">no revision</span></div>
-  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">CSCO&nbsp;▼-3</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">PANW&nbsp;▼-4</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">TXN&nbsp;▼-7</span></div>
+  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ACN&nbsp;▼-1</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">MSFT&nbsp;▼-9</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">MU&nbsp;▼-9</span></div>
   
 
   <div class="catalysts-section">
     <div class="cat-title">Key Catalysts &amp; Signals</div>
-    <div class="cat-item"><span class="arr">›</span>Insider selling activity (ratio: 0.00)</div><div class="cat-item"><span class="arr">›</span>Period price change: -16.3%</div><div class="cat-item"><span class="arr">›</span>CEO Marc R. Benioff: 94% earnings beat rate, guidance accuracy 0.60, STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 0.79 (Bullish) — calls 5,956 / puts 4,717 (expiry 2026-02-27)</div>
+    <div class="cat-item"><span class="arr">›</span>Insider selling activity (ratio: 0.00)</div><div class="cat-item"><span class="arr">›</span>Period price change: -16.3%</div><div class="cat-item"><span class="arr">›</span>CEO Marc R. Benioff: 94% earnings beat rate, guidance accuracy 0.60, STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 1.03 (Neutral) — calls 10,500 / puts 10,787 (expiry 2026-02-27)</div>
   </div>
 
   <div class="risk-section"><div class="risk-title">Risk Flags</div><div class="risk-item">RISK: Earnings imminent (&lt;=3 days)</div></div>
@@ -1234,7 +1287,7 @@ section { margin-bottom: 4rem; }
 
 <div class="ticker-card"
      style="border-left:4px solid #facc1566;--card-accent:#facc1544"
-     data-action="Hold" data-score="-5"
+     data-action="Hold" data-score="-4"
      data-days="57"
      data-risk="Low">
   <div class="card-top">
@@ -1258,10 +1311,10 @@ section { margin-bottom: 4rem; }
     <div class="score-track">
       <div class="score-center"></div>
       <div class="score-fill"
-           style="left:47.5%;width:2.5%;background:#facc1588">
+           style="left:48.0%;width:2.0%;background:#facc1588">
       </div>
     </div>
-    <span class="score-num" style="color:#facc15">-5</span>
+    <span class="score-num" style="color:#facc15">-4</span>
   </div>
 
   <div class="tech-row"><span class="tech-lbl">Tech</span><span class="rsi-num">RSI 42.0</span>&nbsp;<span class="tech-badge" style="color:#9ca3af;border-color:#9ca3af44">Neutral</span></div>
@@ -1275,9 +1328,9 @@ section { margin-bottom: 4rem; }
     <div class="chart-lbl">Sentiment Mix</div>
     <div class="donut-wrap">
       <canvas class="donut-canvas"
-        data-bull="34.2"
-        data-bear="26.8"
-        data-neut="39.0"
+        data-bull="35.4"
+        data-bear="27.2"
+        data-neut="37.4"
         data-signal="Neutral"
         id="donut-GOOG"></canvas>
       <div class="donut-center" style="color:#9ca3af">Neutral</div>
@@ -1285,7 +1338,7 @@ section { margin-bottom: 4rem; }
   </div>
   <div class="chart-cell">
     <div class="chart-lbl">10-Factor Radar</div>
-    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[0.6, 50.0, -50.0, 50.0, -13.3, -15.0, 25.5, 50.0, 14.4, 17.0]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-GOOG"></canvas></div>
+    <div class="radar-wrap"><canvas class="radar-canvas" data-factors='[0.7, 50.0, -50.0, 50.0, -13.3, -15.0, 25.5, 50.0, 14.5, 29.1]' data-labels='["Sentiment", "Regime", "Insider", "Attention", "Price", "Timing", "Backtest", "Patterns", "CEO", "Options"]' id="radar-GOOG"></canvas></div>
   </div>
 </div>
   </div>
@@ -1295,22 +1348,22 @@ section { margin-bottom: 4rem; }
       <div class="metric-lbl">Sentiment</div>
       <div class="metric-val" style="color:#9ca3af">Neutral</div>
       <div class="sent-bar">
-        <div class="sb-g" style="width:34%"></div>
+        <div class="sb-g" style="width:35%"></div>
         <div class="sb-r" style="width:27%"></div>
         <div class="sb-n" style="flex:1"></div>
       </div>
-      <div class="metric-sub">34% bull · 27% bear · 149 headlines · FinBERT -0.01</div>
+      <div class="metric-sub">35% bull · 27% bear · 147 headlines · FinBERT -0.00</div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">Options Flow</div>
-      <div class="metric-val" style="color:#22c55e">P/C 0.66</div>
-      <div class="metric-sub">Bullish · exp 2026-02-27 · ±2.3% exp · IV 32% · Hist ±4.3% (8x) → <span style="color:#22c55e">underpriced</span></div>
+      <div class="metric-val" style="color:#22c55e">P/C 0.42</div>
+      <div class="metric-sub">Heavily Bullish · exp 2026-02-27 · ±2.2% exp · IV 31% · Hist ±4.3% (8x) → <span style="color:#22c55e">underpriced</span></div>
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">CEO Quality</div>
       <div class="metric-val">Sundar  Pichai</div>
       <div class="metric-sub">
-        Beat 75% · STEM · score 28.90
+        Beat 75% · STEM · score 29.00
       </div>
     </div>
     <div class="metric-cell">
@@ -1331,16 +1384,16 @@ section { margin-bottom: 4rem; }
       </div>
     </div>
     <div class="metric-cell"><div class="metric-lbl">Short Interest</div><div class="metric-val">N/A</div><div class="metric-sub">2.6d cover<br>Squeeze: <span style="color:#9ca3af">Low</span></div></div>
-    <div class="metric-cell"><div class="metric-lbl">Analyst</div><div class="metric-val" style="color:#22c55e">Strong Buy</div><div class="metric-sub">$359 · <span style="color:#22c55e">+16%</span><br>0↑ 0↓ · 17 analysts</div></div>
+    <div class="metric-cell"><div class="metric-lbl">Analyst</div><div class="metric-val" style="color:#22c55e">Strong Buy</div><div class="metric-sub">$359 · <span style="color:#22c55e">+15%</span><br>0↑ 0↓ · 17 analysts</div></div>
   </div>
 
   <div class="eps-row"><span class="eps-lbl">Fwd EPS</span><span class="eps-val">$13.41</span><span style="color:var(--muted);font-size:0.68rem">no revision</span></div>
-  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">NFLX&nbsp;▼-7</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">GOOGL&nbsp;▼-8</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">META&nbsp;▼-8</span></div>
+  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">META&nbsp;▼-9</span></div>
   
 
   <div class="catalysts-section">
     <div class="cat-title">Key Catalysts &amp; Signals</div>
-    <div class="cat-item"><span class="arr">›</span>Period price change: -5.3%</div><div class="cat-item"><span class="arr">›</span>CEO Sundar  Pichai: 75% earnings beat rate, guidance accuracy 0.40, STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 0.66 (Bullish) — calls 18,491 / puts 12,201 (expiry 2026-02-27)</div>
+    <div class="cat-item"><span class="arr">›</span>Period price change: -5.3%</div><div class="cat-item"><span class="arr">›</span>CEO Sundar  Pichai: 75% earnings beat rate, guidance accuracy 0.40, STEM education</div><div class="cat-item"><span class="arr">›</span>Options P/C ratio: 0.42 (Heavily Bullish) — calls 44,789 / puts 18,763 (expiry 2026-02-27)</div>
   </div>
 
   
@@ -1439,17 +1492,17 @@ section { margin-bottom: 4rem; }
     </div>
     <div class="metric-cell">
       <div class="metric-lbl">30d Run-Up</div>
-      <div class="metric-val" style="color:#ef4444">-0.1%</div>
+      <div class="metric-val" style="color:#22c55e">+1.0%</div>
       <div class="metric-sub">Risk: <span style="color:#22c55e">Low</span>
         
       </div>
     </div>
     <div class="metric-cell"><div class="metric-lbl">Short Interest</div><div class="metric-val">N/A</div><div class="metric-sub">Squeeze: <span style="color:#9ca3af">Low</span></div></div>
-    <div class="metric-cell"><div class="metric-lbl">Analyst</div><div class="metric-val" style="color:#9ca3af">None</div><div class="metric-sub">$533 · <span style="color:#22c55e">+35%</span><br>0↑ 0↓ · 1 analysts</div></div>
+    <div class="metric-cell"><div class="metric-lbl">Analyst</div><div class="metric-val" style="color:#9ca3af">None</div><div class="metric-sub">$534 · <span style="color:#22c55e">+34%</span><br>0↑ 0↓ · 1 analysts</div></div>
   </div>
 
   <div class="eps-row"><span class="eps-lbl">Fwd EPS</span><span class="eps-val">$8.79</span><span class="eps-delta" style="color:#ef4444">▼ -0.030 (-0.3%)</span></div>
-  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">HON&nbsp;▼-6</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">NOC&nbsp;▼-11</span></div>
+  <div class="peers-row"><span class="peers-lbl">Sector Peers</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">ITW&nbsp;▼-1</span><span class="peer-chip" style="color:#facc15;border-color:#facc1544">NOC&nbsp;▼-9</span></div>
   
 <div class="regime-row">
   <span class="regime-lbl">Regime</span>
@@ -1485,7 +1538,7 @@ section { margin-bottom: 4rem; }
         <th>30d Move</th><th>P/C Ratio</th><th>Signal Score</th><th>Action</th>
       </tr>
     </thead>
-    <tbody><tr class="sector-header"><td colspan="8">Basic Materials<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">48.4</span></span></td></tr><tr><td class="rank-num">1</td><td class="tk-name">SHW</td><td>2026-04-28</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">62d</span></td><td class="move-pos">+14.0%</td><td>0.31</td><td class="scan-score" style="color:#facc15">48.4</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Financial Services<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">46.1</span></span></td></tr><tr><td class="rank-num">2</td><td class="tk-name">AXP</td><td>2026-04-24</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">58d</span></td><td class="move-pos">+10.3%</td><td>0.20</td><td class="scan-score" style="color:#facc15">46.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Healthcare<span class="sector-count">3 setups &middot; avg score <span style="color:#facc15">44.8</span></span></td></tr><tr><td class="rank-num">3</td><td class="tk-name">MDT</td><td>2026-05-20</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">84d</span></td><td class="move-pos">+10.3%</td><td>0.47</td><td class="scan-score" style="color:#facc15">46.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">4</td><td class="tk-name">ZTS</td><td>2026-05-05</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">69d</span></td><td class="move-neg">-7.5%</td><td>0.25</td><td class="scan-score" style="color:#facc15">44.5</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">5</td><td class="tk-name">ISRG</td><td>2026-04-21</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">55d</span></td><td class="move-neg">-6.0%</td><td>0.26</td><td class="scan-score" style="color:#facc15">43.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Technology<span class="sector-count">5 setups &middot; avg score <span style="color:#facc15">43.4</span></span></td></tr><tr><td class="rank-num">6</td><td class="tk-name">CSCO</td><td>2026-05-13</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">77d</span></td><td class="move-neg">-12.1%</td><td>0.50</td><td class="scan-score" style="color:#facc15">47.3</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">7</td><td class="tk-name">PANW</td><td>2026-05-20</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">84d</span></td><td class="move-pos">+10.3%</td><td>0.26</td><td class="scan-score" style="color:#facc15">46.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">8</td><td class="tk-name">TXN</td><td>2026-04-28</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">62d</span></td><td class="move-neg">-5.4%</td><td>0.33</td><td class="scan-score" style="color:#facc15">43.2</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">9</td><td class="tk-name">MSFT</td><td>2026-04-29</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">63d</span></td><td class="move-neg">-3.5%</td><td>0.46</td><td class="scan-score" style="color:#facc15">42.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">10</td><td class="tk-name">ADI</td><td>2026-05-21</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">85d</span></td><td class="move-pos">+10.3%</td><td>11.38</td><td class="scan-score" style="color:#facc15">38.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Communication Services<span class="sector-count">3 setups &middot; avg score <span style="color:#facc15">42.5</span></span></td></tr><tr><td class="rank-num">11</td><td class="tk-name">NFLX</td><td>2026-04-16</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">50d</span></td><td class="move-neg">-5.4%</td><td>0.32</td><td class="scan-score" style="color:#facc15">43.2</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">12</td><td class="tk-name">GOOGL</td><td>2026-04-23</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">57d</span></td><td class="move-neg">-3.5%</td><td>0.34</td><td class="scan-score" style="color:#facc15">42.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">13</td><td class="tk-name">META</td><td>2026-04-29</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">63d</span></td><td class="move-neg">-3.5%</td><td>0.41</td><td class="scan-score" style="color:#facc15">42.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Consumer Cyclical<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">42.1</span></span></td></tr><tr><td class="rank-num">14</td><td class="tk-name">AMZN</td><td>2026-04-30</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">64d</span></td><td class="move-neg">-3.5%</td><td>0.33</td><td class="scan-score" style="color:#facc15">42.1</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Industrials<span class="sector-count">2 setups &middot; avg score <span style="color:#facc15">41.1</span></span></td></tr><tr><td class="rank-num">15</td><td class="tk-name">HON</td><td>2026-04-28</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">62d</span></td><td class="move-neg">-6.0%</td><td>0.51</td><td class="scan-score" style="color:#facc15">43.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">16</td><td class="tk-name">NOC</td><td>2026-04-21</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">55d</span></td><td class="move-neg">-10.9%</td><td>2.75</td><td class="scan-score" style="color:#facc15">38.5</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Energy<span class="sector-count">2 setups &middot; avg score <span style="color:#facc15">40.8</span></span></td></tr><tr><td class="rank-num">17</td><td class="tk-name">CVX</td><td>2026-05-01</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">65d</span></td><td class="move-pos">+2.5%</td><td>0.47</td><td class="scan-score" style="color:#facc15">41.5</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">18</td><td class="tk-name">XOM</td><td>2026-05-01</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">65d</span></td><td class="move-pos">+0.0%</td><td>0.18</td><td class="scan-score" style="color:#facc15">40.0</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Real Estate<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">40.4</span></span></td></tr><tr><td class="rank-num">19</td><td class="tk-name">PLD</td><td>2026-04-15</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">49d</span></td><td class="move-pos">+14.0%</td><td>10.56</td><td class="scan-score" style="color:#facc15">40.4</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Consumer Defensive<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">40.0</span></span></td></tr><tr><td class="rank-num">20</td><td class="tk-name">PG</td><td>2026-04-23</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">57d</span></td><td class="move-pos">+0.0%</td><td>0.57</td><td class="scan-score" style="color:#facc15">40.0</td><td><span style="color:var(--muted)">—</span></td></tr></tbody>
+    <tbody><tr class="sector-header"><td colspan="8">Financial Services<span class="sector-count">3 setups &middot; avg score <span style="color:#facc15">47.5</span></span></td></tr><tr><td class="rank-num">1</td><td class="tk-name">CB</td><td>2026-04-28</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">62d</span></td><td class="move-neg">-17.6%</td><td>0.27</td><td class="scan-score" style="color:#facc15">50.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">2</td><td class="tk-name">C</td><td>2026-04-14</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">48d</span></td><td class="move-neg">-17.6%</td><td>0.36</td><td class="scan-score" style="color:#facc15">50.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">3</td><td class="tk-name">JPM</td><td>2026-04-14</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">48d</span></td><td class="move-neg">-2.4%</td><td>0.21</td><td class="scan-score" style="color:#facc15">41.4</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Consumer Defensive<span class="sector-count">2 setups &middot; avg score <span style="color:#facc15">46.9</span></span></td></tr><tr><td class="rank-num">4</td><td class="tk-name">MDLZ</td><td>2026-04-28</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">62d</span></td><td class="move-neg">-17.6%</td><td>0.19</td><td class="scan-score" style="color:#facc15">50.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">5</td><td class="tk-name">PM</td><td>2026-04-22</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">56d</span></td><td class="move-neg">-18.8%</td><td>2.79</td><td class="scan-score" style="color:#facc15">43.3</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Industrials<span class="sector-count">2 setups &middot; avg score <span style="color:#facc15">45.5</span></span></td></tr><tr><td class="rank-num">6</td><td class="tk-name">ITW</td><td>2026-04-29</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">63d</span></td><td class="move-pos">+15.8%</td><td>0.45</td><td class="scan-score" style="color:#facc15">49.5</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">7</td><td class="tk-name">NOC</td><td>2026-04-21</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">55d</span></td><td class="move-pos">+15.8%</td><td>2.60</td><td class="scan-score" style="color:#facc15">41.5</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Healthcare<span class="sector-count">4 setups &middot; avg score <span style="color:#facc15">44.2</span></span></td></tr><tr><td class="rank-num">8</td><td class="tk-name">ZTS</td><td>2026-05-05</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">69d</span></td><td class="move-neg">-17.6%</td><td>0.21</td><td class="scan-score" style="color:#facc15">50.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">9</td><td class="tk-name">DHR</td><td>2026-04-21</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">55d</span></td><td class="move-neg">-18.8%</td><td>17.02</td><td class="scan-score" style="color:#facc15">43.3</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">10</td><td class="tk-name">CI</td><td>2026-05-07</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">71d</span></td><td class="move-neg">-17.6%</td><td>2.36</td><td class="scan-score" style="color:#facc15">42.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">11</td><td class="tk-name">BSX</td><td>2026-04-22</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">56d</span></td><td class="move-neg">-17.6%</td><td>0.66</td><td class="scan-score" style="color:#facc15">40.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Energy<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">43.8</span></span></td></tr><tr><td class="rank-num">12</td><td class="tk-name">XOM</td><td>2026-05-01</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">65d</span></td><td class="move-neg">-6.3%</td><td>0.33</td><td class="scan-score" style="color:#facc15">43.8</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Technology<span class="sector-count">4 setups &middot; avg score <span style="color:#facc15">42.6</span></span></td></tr><tr><td class="rank-num">13</td><td class="tk-name">ACN</td><td>2026-03-19</td><td><span class="days-badge" style="color:#facc15;border-color:#facc1544;background:#facc1511">22d</span></td><td class="move-neg">-27.9%</td><td>3.05</td><td class="scan-score" style="color:#facc15">48.7</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">14</td><td class="tk-name">MSFT</td><td>2026-04-29</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">63d</span></td><td class="move-neg">-2.1%</td><td>0.54</td><td class="scan-score" style="color:#facc15">41.3</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">15</td><td class="tk-name">MU</td><td>2026-03-18</td><td><span class="days-badge" style="color:#facc15;border-color:#facc1544;background:#facc1511">21d</span></td><td class="move-neg">-17.6%</td><td>0.65</td><td class="scan-score" style="color:#facc15">40.6</td><td><span style="color:var(--muted)">—</span></td></tr><tr><td class="rank-num">16</td><td class="tk-name">PANW</td><td>2026-05-20</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">84d</span></td><td class="move-pos">+0.0%</td><td>0.28</td><td class="scan-score" style="color:#facc15">40.0</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Basic Materials<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">41.5</span></span></td></tr><tr><td class="rank-num">17</td><td class="tk-name">FCX</td><td>2026-04-23</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">57d</span></td><td class="move-pos">+15.8%</td><td>2.92</td><td class="scan-score" style="color:#facc15">41.5</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Consumer Cyclical<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">41.3</span></span></td></tr><tr><td class="rank-num">18</td><td class="tk-name">AMZN</td><td>2026-04-30</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">64d</span></td><td class="move-neg">-2.1%</td><td>0.30</td><td class="scan-score" style="color:#facc15">41.3</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Communication Services<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">41.3</span></span></td></tr><tr><td class="rank-num">19</td><td class="tk-name">META</td><td>2026-04-29</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">63d</span></td><td class="move-neg">-2.1%</td><td>0.47</td><td class="scan-score" style="color:#facc15">41.3</td><td><span style="color:var(--muted)">—</span></td></tr><tr class="sector-header"><td colspan="8">Utilities<span class="sector-count">1 setup &middot; avg score <span style="color:#facc15">40.6</span></span></td></tr><tr><td class="rank-num">20</td><td class="tk-name">SO</td><td>2026-04-30</td><td><span class="days-badge" style="color:#a5b4fc;border-color:#a5b4fc44;background:#a5b4fc11">64d</span></td><td class="move-neg">-17.6%</td><td>0.62</td><td class="scan-score" style="color:#facc15">40.6</td><td><span style="color:var(--muted)">—</span></td></tr></tbody>
   </table>
 </div>
   </section>
@@ -1509,9 +1562,10 @@ section { margin-bottom: 4rem; }
 
 <script>
 (function() {
-  const GRID_COLOR  = '#252545';
-  const LABEL_COLOR = '#6b7280';
-  const ACCENT      = '#a78bfa';
+  function _cssVar(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  const GRID_COLOR  = _cssVar('--border')  || '#252545';
+  const LABEL_COLOR = _cssVar('--muted')   || '#6b7280';
+  const ACCENT      = _cssVar('--accent')  || '#a78bfa';
 
   // ── Sparklines ──
   document.querySelectorAll('.sparkline-canvas').forEach(function(canvas) {
@@ -1959,6 +2013,30 @@ section { margin-bottom: 4rem; }
       });
     }, { threshold: 0.25 });
     sections.forEach(function(s) { observer.observe(s); });
+  })();
+
+  // ── Theme toggle ──
+  (function() {
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    function applyTheme(theme) {
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        btn.innerHTML = '&#9790;';
+        btn.title = 'Switch to dark mode';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        btn.innerHTML = '&#9788;';
+        btn.title = 'Switch to light mode';
+      }
+    }
+    var stored = localStorage.getItem('theme') || 'dark';
+    applyTheme(stored);
+    btn.addEventListener('click', function() {
+      var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      try { localStorage.setItem('theme', next); } catch(e) {}
+      applyTheme(next);
+    });
   })();
 
 })();
