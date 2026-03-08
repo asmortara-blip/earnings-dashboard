@@ -1,0 +1,2364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DNSD RS Monitor — Performance Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 24px; }
+    h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; }
+    h2 { font-size: 15px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px; }
+    .section { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    .chart-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 900px) { .chart-row, .two-col { grid-template-columns: 1fr; } }
+    .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .badge-shadow { background:#1e3a5f; color:#60a5fa; }
+    .badge-paper  { background:#14532d; color:#4ade80; }
+    .badge-live   { background:#450a0a; color:#f87171; }
+    tr:hover { background: rgba(255,255,255,0.03); }
+    .section-label { font-size:11px;color:#475569;font-weight:400;text-transform:none;margin-left:8px }
+  </style>
+</head>
+<body>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <div>
+      <h1>DNSD RS Strategy — Phase 2 Dashboard</h1>
+      <div style="color:#475569;font-size:13px;margin-top:4px">
+        Updated: 2026-03-08 18:39 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
+        57 signals &nbsp;|&nbsp; 56 live trades &nbsp;|&nbsp;
+        backtest: rs_backtest_scan4.csv
+      </div>
+    </div>
+    <div>
+      <span class="badge badge-shadow">shadow</span>
+      <span class="badge badge-paper" style="margin-left:6px">paper</span>
+    </div>
+  </div>
+
+  <!-- Process health -->
+  <div class="section" style="padding:16px;margin-bottom:20px">
+    <h2 style="margin-bottom:12px">Pipeline Status
+      <span class="section-label">
+        today: 0 signals &nbsp;·&nbsp;
+        0 trades completed &nbsp;·&nbsp;
+        0 position(s) open/pending
+      </span>
+    </h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px"><div style="background:#14532d;border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px"><span style="color:#4ade80;font-size:16px">●</span><div><div style="font-weight:700;font-size:13px;color:#f1f5f9">rs_monitor.py</div><div style="font-size:11px;color:#64748b">--shadow mode</div></div></div><div style="background:#14532d;border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px"><span style="color:#4ade80;font-size:16px">●</span><div><div style="font-weight:700;font-size:13px;color:#f1f5f9">rs_autotrigger.py</div><div style="font-size:11px;color:#64748b">ApeWisdom + RVOL polling</div></div></div><div style="background:#14532d;border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px"><span style="color:#4ade80;font-size:16px">●</span><div><div style="font-weight:700;font-size:13px;color:#f1f5f9">rs_paper_sim.py</div><div style="font-size:11px;color:#64748b">simulating paper trades</div></div></div></div>
+    <div style="font-size:11px;color:#334155;text-align:center;margin-top:4px">
+      Monitor → (shadow signals) → Paper-Sim → (paper trades) → Dashboard
+    </div>
+  </div>
+
+  <!-- Open positions -->
+  <div class="section" style="margin-bottom:20px">
+    <h2>Open Paper Positions <span class="section-label">0 active &nbsp;·&nbsp; managed by rs_paper_sim.py</span></h2>
+    <p style="color:#475569;font-size:13px;text-align:center;padding:24px">No open paper-sim positions. Signals will appear here once the market opens and autotrigger detects qualifying spikes.</p>
+  </div>
+
+  <!-- Live performance stat cards -->
+  <h2>Live Performance <span class="section-label">paper trades from rs_monitor.db</span></h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px">
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">56</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Live Trades</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 20</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">67.9%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Win Rate</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 55%</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">1.69x</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">W/L Ratio</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 1.5x</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">+124.1%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Cumul. P&L</div>
+      
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">7.21</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Sharpe</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 0.8</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">-14.46%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Max Drawdown</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ -15%</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">0.0%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Stop Rate</div>
+      
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">57</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Signals Logged</div>
+      
+    </div></div>
+
+  <!-- Phase 3 gate -->
+  <div class='section'>
+    <div style="border:2px solid #22c55e;border-radius:8px;padding:20px;margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:12px">
+        PHASE 3 GATE — PASS — Ready for Phase 3 (live trading)
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="color:#64748b;font-size:11px;text-transform:uppercase">
+          <th style="padding:4px 12px;text-align:left">Metric</th>
+          <th style="padding:4px 12px;text-align:left">Current</th>
+          <th style="padding:4px 12px;text-align:left">Target</th>
+          <th style="padding:4px 12px;text-align:left">Status</th>
+        </tr></thead>
+        <tbody style="color:#e2e8f0">
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 12px;color:#94a3b8">Total trades</td>
+          <td style="padding:8px 12px;font-weight:700">56</td>
+          <td style="padding:8px 12px;color:#475569">≥ 20</td>
+          <td style="padding:8px 12px;color:#22c55e;font-weight:700">
+            ✓
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 12px;color:#94a3b8">Win rate</td>
+          <td style="padding:8px 12px;font-weight:700">67.9%</td>
+          <td style="padding:8px 12px;color:#475569">≥ 55%</td>
+          <td style="padding:8px 12px;color:#22c55e;font-weight:700">
+            ✓
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 12px;color:#94a3b8">W/L ratio</td>
+          <td style="padding:8px 12px;font-weight:700">1.69x</td>
+          <td style="padding:8px 12px;color:#475569">≥ 1.5x</td>
+          <td style="padding:8px 12px;color:#22c55e;font-weight:700">
+            ✓
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 12px;color:#94a3b8">Max drawdown</td>
+          <td style="padding:8px 12px;font-weight:700">-14.46%</td>
+          <td style="padding:8px 12px;color:#475569">≥ -15%</td>
+          <td style="padding:8px 12px;color:#22c55e;font-weight:700">
+            ✓
+          </td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 12px;color:#94a3b8">Sharpe (ann.)</td>
+          <td style="padding:8px 12px;font-weight:700">7.21</td>
+          <td style="padding:8px 12px;color:#475569">≥ 0.8</td>
+          <td style="padding:8px 12px;color:#22c55e;font-weight:700">
+            ✓
+          </td>
+        </tr></tbody>
+      </table>
+    </div></div>
+
+  <!-- Live charts -->
+  <div class="chart-row">
+    <div class="section">
+      <h2>Live Cumulative P&L</h2>
+      <canvas id="pnlChart" height="120"></canvas>
+    </div>
+    <div class="section">
+      <h2>P&amp;L by Ticker</h2>
+      <canvas id="tickerChart" height="120"></canvas>
+    </div>
+    <div class="section">
+      <h2>RS Score Distribution</h2>
+      <canvas id="scoreChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <!-- Backtest baseline -->
+  <div class="section">
+    <h2>Backtest Baseline <span class="section-label">rs_backtest_scan4.csv — 30 trades</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px">
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">30</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Trades</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 20</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">60.0%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Win Rate</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 55%</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">2.64x</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">W/L Ratio</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 1.5x</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">+75.2%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Total P&L</div>
+      
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">7.31</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Sharpe</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ 0.8</div>
+    </div>
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px;text-align:center">
+      <div style="color:#22c55e;font-size:20px">✓</div>
+      <div style="font-size:28px;font-weight:700;color:#f1f5f9">-7.58%</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:4px">Max DD</div>
+      <div style="font-size:11px;color:#475569;margin-top:4px">target ≥ -15%</div>
+    </div></div>
+    <div class="section" style="margin-bottom:0;padding:12px">
+      <h2>Backtest Cumulative P&L <span class="section-label">v9 scan results</span></h2>
+      <canvas id="btPnlChart" height="80"></canvas>
+    </div>
+    <div style="margin-top:16px">
+      
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase">
+          <th style="padding:7px 8px;text-align:left">Date</th>
+          <th style="padding:7px 8px;text-align:left">Ticker</th>
+          <th style="padding:7px 8px;text-align:left">Dir</th>
+          <th style="padding:7px 8px;text-align:left">Trigger</th>
+          <th style="padding:7px 8px;text-align:left">RS</th>
+          <th style="padding:7px 8px;text-align:left">Conf</th>
+          <th style="padding:7px 8px;text-align:left">P&amp;L %</th>
+          <th style="padding:7px 8px;text-align:left">W/L</th>
+          <th style="padding:7px 8px;text-align:left">Description</th>
+        </tr>
+      </thead>
+      <tbody style="color:#e2e8f0">
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-06-07</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">influencer_post_high</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">122</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+22.47%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Gill livestream — retail climax event, fade signal; opens -19%">Gill livestream — retail climax event, fade signal; opens…</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-01-26</td>
+          <td style="padding:7px 8px;font-weight:700">TSLA</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">analyst_upgrade_bold</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">77</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-0.47%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Multiple analyst upgrades following price cut news driving retail attention">Multiple analyst upgrades following price cut news drivin…</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-07-24</td>
+          <td style="padding:7px 8px;font-weight:700">TSLA</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">analyst_upgrade_bold</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">78</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-1.70%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Morgan Stanley upgrade on robotaxi narrative; retail RS builds pre-market">Morgan Stanley upgrade on robotaxi narrative; retail RS b…</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-05-08</td>
+          <td style="padding:7px 8px;font-weight:700">RDDT</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">analyst_upgrade_bold</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">83</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+0.49%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Multiple analysts initiate RDDT with Buy/Strong Buy post quiet period expiry">Multiple analysts initiate RDDT with Buy/Strong Buy post …</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-06-25</td>
+          <td style="padding:7px 8px;font-weight:700">RIVN</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">partnership_announcement</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">67</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">MEDIUM</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+5.16%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Volkswagen announces $5B JV investment in Rivian; retail RS surge overnight">Volkswagen announces $5B JV investment in Rivian; retail …</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-06-06</td>
+          <td style="padding:7px 8px;font-weight:700">COIN</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">meme_community</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">96</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-2.60%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=4.1x day, gap=-19.8%">Auto-scan: RVOL=4.1x day, gap=-19.8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-10-24</td>
+          <td style="padding:7px 8px;font-weight:700">COIN</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">83</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+1.11%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.9x day, gap=7.9%">Auto-scan: RVOL=2.9x day, gap=7.9%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-02-16</td>
+          <td style="padding:7px 8px;font-weight:700">COIN</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">90</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-3.99%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.6x day, gap=14.1%">Auto-scan: RVOL=2.6x day, gap=14.1%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-11-06</td>
+          <td style="padding:7px 8px;font-weight:700">COIN</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">91</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+4.38%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.7x day, gap=14.2%">Auto-scan: RVOL=2.7x day, gap=14.2%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-11-11</td>
+          <td style="padding:7px 8px;font-weight:700">COIN</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">82</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+5.59%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.8x day, gap=10.9%">Auto-scan: RVOL=2.8x day, gap=10.9%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-06-07</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">meme_community</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">82</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-1.35%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=4.5x day, gap=6.1%">Auto-scan: RVOL=4.5x day, gap=6.1%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-06-13</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">104</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-3.04%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.7x day, gap=7.8%">Auto-scan: RVOL=2.7x day, gap=7.8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-05-03</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">influencer_post_high</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">97</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-3.19%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=6.5x day, gap=-2.7%">Auto-scan: RVOL=6.5x day, gap=-2.7%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-05-15</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">113</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+11.18%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.4x day, gap=-17.3%">Auto-scan: RVOL=3.4x day, gap=-17.3%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-08-30</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">78</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-0.88%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.7x day, gap=1.4%">Auto-scan: RVOL=2.7x day, gap=1.4%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-09-11</td>
+          <td style="padding:7px 8px;font-weight:700">GME</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">96</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+1.69%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.2x day, gap=-11.2%">Auto-scan: RVOL=3.2x day, gap=-11.2%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-05-20</td>
+          <td style="padding:7px 8px;font-weight:700">HIMS</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">influencer_post_high</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">89</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+10.06%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=6.5x day, gap=9.5%">Auto-scan: RVOL=6.5x day, gap=9.5%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-10-03</td>
+          <td style="padding:7px 8px;font-weight:700">HIMS</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">98</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+4.87%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.3x day, gap=-10.6%">Auto-scan: RVOL=3.3x day, gap=-10.6%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-11-05</td>
+          <td style="padding:7px 8px;font-weight:700">HIMS</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">84</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+6.39%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.4x day, gap=6.4%">Auto-scan: RVOL=3.4x day, gap=6.4%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-11-11</td>
+          <td style="padding:7px 8px;font-weight:700">HIMS</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">80</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+5.40%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.5x day, gap=5.9%">Auto-scan: RVOL=2.5x day, gap=5.9%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-11-08</td>
+          <td style="padding:7px 8px;font-weight:700">HOOD</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">70</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">MEDIUM</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+1.77%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.9x day, gap=-10.0%">Auto-scan: RVOL=3.9x day, gap=-10.0%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-08-05</td>
+          <td style="padding:7px 8px;font-weight:700">HOOD</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">89</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-4.10%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.0x day, gap=-17.8%">Auto-scan: RVOL=3.0x day, gap=-17.8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-10-31</td>
+          <td style="padding:7px 8px;font-weight:700">HOOD</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">68</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">MEDIUM</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+4.39%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.8x day, gap=-7.8%">Auto-scan: RVOL=2.8x day, gap=-7.8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-11-06</td>
+          <td style="padding:7px 8px;font-weight:700">HOOD</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">81</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+5.81%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.9x day, gap=11.1%">Auto-scan: RVOL=2.9x day, gap=11.1%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-06-10</td>
+          <td style="padding:7px 8px;font-weight:700">NVDA</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">meme_community</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">74</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">MEDIUM</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-1.88%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=5.2x day, gap=-90.0%">Auto-scan: RVOL=5.2x day, gap=-90.0%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-02-14</td>
+          <td style="padding:7px 8px;font-weight:700">PLTR</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">meme_community</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">78</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+2.27%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=4.3x day, gap=12.9%">Auto-scan: RVOL=4.3x day, gap=12.9%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-05-18</td>
+          <td style="padding:7px 8px;font-weight:700">PLTR</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">78</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+6.09%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.8x day, gap=2.0%">Auto-scan: RVOL=2.8x day, gap=2.0%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-11-02</td>
+          <td style="padding:7px 8px;font-weight:700">PLTR</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">86</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-1.90%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=2.8x day, gap=17.2%">Auto-scan: RVOL=2.8x day, gap=17.2%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2024-11-05</td>
+          <td style="padding:7px 8px;font-weight:700">PLTR</td>
+          <td style="padding:7px 8px;color:#22c55e">LONG</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">press_release_positive</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">77</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">HIGH</td>
+          <td style="padding:7px 8px;color:#22c55e;font-weight:600">+1.57%</td>
+          <td style="padding:7px 8px;color:#22c55e;font-size:13px">✓</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=3.9x day, gap=15.6%">Auto-scan: RVOL=3.9x day, gap=15.6%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:7px 8px;color:#94a3b8;font-size:12px">2023-07-26</td>
+          <td style="padding:7px 8px;font-weight:700">SNAP</td>
+          <td style="padding:7px 8px;color:#f59e0b">SHORT</td>
+          <td style="padding:7px 8px;color:#94a3b8;font-size:11px">meme_community</td>
+          <td style="padding:7px 8px;color:#f1f5f9;font-weight:700">74</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px">MEDIUM</td>
+          <td style="padding:7px 8px;color:#ef4444;font-weight:600">-0.35%</td>
+          <td style="padding:7px 8px;color:#ef4444;font-size:13px">✗</td>
+          <td style="padding:7px 8px;color:#64748b;font-size:11px" title="Auto-scan: RVOL=4.0x day, gap=-17.2%">Auto-scan: RVOL=4.0x day, gap=-17.2%</td>
+        </tr></tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+
+  <!-- Candidates -->
+  <div class="two-col">
+    <div class="section">
+      <h2>Monitored Candidates <span class="section-label">30 tickers</span></h2>
+      
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase">
+          <th style="padding:8px 10px;text-align:left">Ticker</th>
+          <th style="padding:8px 10px;text-align:left">Archetype</th>
+          <th style="padding:8px 10px;text-align:left">RES Score</th>
+          <th style="padding:8px 10px;text-align:left">Tier</th>
+          <th style="padding:8px 10px;text-align:left">Short Interest</th>
+        </tr>
+      </thead>
+      <tbody style="color:#e2e8f0">
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">GME</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">79</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">22%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">AMC</td>
+          <td style="padding:8px 10px;color:#60a5fa;font-size:12px">C — Narrative Driven</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">79</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">20%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">MARA</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">72</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">15%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">HIMS</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">70</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">30%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">OPEN</td>
+          <td style="padding:8px 10px;color:#60a5fa;font-size:12px">C — Narrative Driven</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">69</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">28%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">SOUN</td>
+          <td style="padding:8px 10px;color:#60a5fa;font-size:12px">C — Narrative Driven</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">69</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">30%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">RIOT</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">68</td>
+          <td style="padding:8px 10px">
+            <span style="background:#f59e0b22;color:#f59e0b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 1</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">12%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">DJT</td>
+          <td style="padding:8px 10px;color:#60a5fa;font-size:12px">C — Narrative Driven</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">67</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">18%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">GPRO</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">65</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">20%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">SMCI</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">65</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">12%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">MSTR</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">63</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">20%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">LUNR</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">62</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">18%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">TSLA</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">61</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">4%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">COIN</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">61</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">10%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">NIO</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">60</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">15%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">RDDT</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">60</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">ASTS</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">59</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">15%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">IONQ</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">58</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">10%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">RIVN</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">57</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">10%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">HOOD</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">56</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">10%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">PLTR</td>
+          <td style="padding:8px 10px;color:#f59e0b;font-size:12px">A — Meme Flagship</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">55</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">5%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">BBAI</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">55</td>
+          <td style="padding:8px 10px">
+            <span style="background:#22c55e22;color:#22c55e;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 2</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">20%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">RKLB</td>
+          <td style="padding:8px 10px;color:#94a3b8;font-size:12px">D — Speculative</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">54</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">12%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">AFRM</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">54</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">SOFI</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">52</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">5%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">WOLF</td>
+          <td style="padding:8px 10px;color:#60a5fa;font-size:12px">C — Narrative Driven</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">52</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">15%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">SNAP</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">50</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">8%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">RKT</td>
+          <td style="padding:8px 10px;color:#60a5fa;font-size:12px">C — Narrative Driven</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">49</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">20%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">APP</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">48</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">3%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 10px;font-weight:700">NVDA</td>
+          <td style="padding:8px 10px;color:#22c55e;font-size:12px">B — Growth/Sentiment</td>
+          <td style="padding:8px 10px;font-weight:700;color:#f1f5f9">46</td>
+          <td style="padding:8px 10px">
+            <span style="background:#64748b22;color:#64748b;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700">Tier 3</span>
+          </td>
+          <td style="padding:8px 10px;color:#94a3b8">2%</td>
+        </tr></tbody>
+    </table>
+    </div>
+    </div>
+    <!-- Signal log -->
+    <div class="section">
+      <h2>Signal Log <span class="section-label">most recent 100</span></h2>
+      
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase">
+          <th style="padding:8px 6px;text-align:left">Time</th>
+          <th style="padding:8px 6px;text-align:left">Ticker</th>
+          <th style="padding:8px 6px;text-align:left">Trigger</th>
+          <th style="padding:8px 6px;text-align:left">Level</th>
+          <th style="padding:8px 6px;text-align:left">RS Score</th>
+          <th style="padding:8px 6px;text-align:left">SV</th>
+          <th style="padding:8px 6px;text-align:left">TQ</th>
+          <th style="padding:8px 6px;text-align:left">VC</th>
+          <th style="padding:8px 6px;text-align:left">Window</th>
+          <th style="padding:8px 6px;text-align:left">Approval</th>
+        </tr>
+      </thead>
+      <tbody style="color:#e2e8f0">
+        
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2026-03-07 14:43</td>
+          <td style="font-weight:700">HIMS</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">70</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=1.0x</td>
+          <td style="color:#94a3b8;font-size:12px">afternoon</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-12-12 09:35</td>
+          <td style="font-weight:700">RIOT</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">102</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=1.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-11 09:35</td>
+          <td style="font-weight:700">COIN</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">82</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=3.2x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-11 09:35</td>
+          <td style="font-weight:700">HIMS</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">80</td>
+          <td style="color:#94a3b8">40</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=5.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-11 09:35</td>
+          <td style="font-weight:700">RIOT</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">75</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=2.8x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-07 09:35</td>
+          <td style="font-weight:700">WOLF</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">76</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=1.8x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-06 09:35</td>
+          <td style="font-weight:700">COIN</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">91</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=4.7x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-06 09:35</td>
+          <td style="font-weight:700">HOOD</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">81</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=2.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-05 09:35</td>
+          <td style="font-weight:700">HIMS</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">84</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=4.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-11-05 09:35</td>
+          <td style="font-weight:700">PLTR</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">77</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=7.1x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-10-31 09:35</td>
+          <td style="font-weight:700">HOOD</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">68</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=4.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-10-30 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">95</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=6.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-10-03 09:35</td>
+          <td style="font-weight:700">HIMS</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">98</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=6.1x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-10-01 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">93</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=3.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-09-11 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">96</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=5.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-08-30 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">78</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=0.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-08-29 09:35</td>
+          <td style="font-weight:700">AFRM</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">77</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=20.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-08-28 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">85</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=3.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-08-07 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">81</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=3.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-08-05 09:35</td>
+          <td style="font-weight:700">HOOD</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">89</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=7.7x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-07-24 09:35</td>
+          <td style="font-weight:700">TSLA</td>
+          <td style="color:#94a3b8;font-size:12px">analyst_upgrade_bold</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">78</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=2.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-06-25 09:35</td>
+          <td style="font-weight:700">RIVN</td>
+          <td style="color:#94a3b8;font-size:12px">partnership_announcement</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">67</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=1.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-06-10 09:35</td>
+          <td style="font-weight:700">NVDA</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">74</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=7.2x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-06-07 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">influencer_post_high</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">122</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=12.2x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-05-20 09:35</td>
+          <td style="font-weight:700">HIMS</td>
+          <td style="color:#94a3b8;font-size:12px">influencer_post_high</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">89</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=15.1x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-05-15 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">113</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=21.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-05-08 09:35</td>
+          <td style="font-weight:700">RDDT</td>
+          <td style="color:#94a3b8;font-size:12px">analyst_upgrade_bold</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">83</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=10.1x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-05-03 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">influencer_post_high</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">97</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=2.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-05-02 09:35</td>
+          <td style="font-weight:700">WOLF</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">70</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=6.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-04-22 09:35</td>
+          <td style="font-weight:700">RIOT</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">67</td>
+          <td style="color:#94a3b8">40</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=2.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-04-19 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">67</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=1.1x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-02-16 09:35</td>
+          <td style="font-weight:700">COIN</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">90</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=5.4x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-02-15 09:35</td>
+          <td style="font-weight:700">APP</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">70</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=10.8x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-02-01 09:35</td>
+          <td style="font-weight:700">WOLF</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">69</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=9.1x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-01-22 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">67</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=7.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2024-01-19 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">analyst_upgrade_bold</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">75</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=9.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-11-09 09:35</td>
+          <td style="font-weight:700">AFRM</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">76</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=3.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-11-09 09:35</td>
+          <td style="font-weight:700">APP</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">70</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=21.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-11-08 09:35</td>
+          <td style="font-weight:700">HOOD</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">70</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=6.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-11-02 09:35</td>
+          <td style="font-weight:700">PLTR</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">86</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=2.7x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-10-31 09:35</td>
+          <td style="font-weight:700">WOLF</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">71</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=14.0x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-10-24 09:35</td>
+          <td style="font-weight:700">COIN</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">83</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=3.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-08-17 09:35</td>
+          <td style="font-weight:700">WOLF</td>
+          <td style="color:#94a3b8;font-size:12px">influencer_post_high</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">79</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=13.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-08-09 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">91</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=4.8x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-07-26 09:35</td>
+          <td style="font-weight:700">SNAP</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">74</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=5.2x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-07-05 09:35</td>
+          <td style="font-weight:700">WOLF</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">82</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=17.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-06-13 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">104</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=2.8x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-06-07 09:35</td>
+          <td style="font-weight:700">AFRM</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">72</td>
+          <td style="color:#94a3b8">85</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=4.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-06-07 09:35</td>
+          <td style="font-weight:700">GME</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">82</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=0.9x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-06-06 09:35</td>
+          <td style="font-weight:700">COIN</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">96</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=13.7x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-05-25 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">96</td>
+          <td style="color:#94a3b8">95</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=5.3x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-05-18 09:35</td>
+          <td style="font-weight:700">PLTR</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">78</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=4.4x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-05-03 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">86</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=8.6x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-04-24 09:35</td>
+          <td style="font-weight:700">SMCI</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">MEDIUM</span></td>
+          <td style="font-weight:700;color:#f1f5f9">71</td>
+          <td style="color:#94a3b8">55</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=2.0x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-03-17 09:35</td>
+          <td style="font-weight:700">RIOT</td>
+          <td style="color:#94a3b8;font-size:12px">press_release_positive</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">91</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">75</td>
+          <td style="color:#94a3b8">RVOL=1.0x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-02-14 09:35</td>
+          <td style="font-weight:700">PLTR</td>
+          <td style="color:#94a3b8;font-size:12px">meme_community</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">78</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">80</td>
+          <td style="color:#94a3b8">RVOL=8.0x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+        <tr>
+          <td style="color:#94a3b8;font-size:12px">2023-01-26 09:35</td>
+          <td style="font-weight:700">TSLA</td>
+          <td style="color:#94a3b8;font-size:12px">analyst_upgrade_bold</td>
+          <td><span style="background:#22c55e;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">HIGH</span></td>
+          <td style="font-weight:700;color:#f1f5f9">77</td>
+          <td style="color:#94a3b8">70</td>
+          <td style="color:#94a3b8">90</td>
+          <td style="color:#94a3b8">RVOL=1.5x</td>
+          <td style="color:#94a3b8;font-size:12px">W1</td>
+          <td><span style="color:#22c55e">✓ approved</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+
+  <!-- Trade history -->
+  <div class="section">
+    <h2>Live Trade History</h2>
+    
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead>
+        <tr style="border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase">
+          <th style="padding:8px 6px;text-align:left">Entry Time</th>
+          <th style="padding:8px 6px;text-align:left">Ticker</th>
+          <th style="padding:8px 6px;text-align:left">Dir</th>
+          <th style="padding:8px 6px;text-align:left">Qty</th>
+          <th style="padding:8px 6px;text-align:left">Entry</th>
+          <th style="padding:8px 6px;text-align:left">Exit</th>
+          <th style="padding:8px 6px;text-align:left">Reason</th>
+          <th style="padding:8px 6px;text-align:left">P&amp;L %</th>
+          <th style="padding:8px 6px;text-align:left">Hold</th>
+          <th style="padding:8px 6px;text-align:left">Mode</th>
+        </tr>
+      </thead>
+      <tbody style="color:#e2e8f0">
+        
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-12-12 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">RIOT</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">39</td>
+          <td style="padding:8px 6px">$12.58</td>
+          <td style="padding:8px 6px">$12.85</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+2.17%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-11 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">COIN</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$301.79</td>
+          <td style="padding:8px 6px">$318.64</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+5.59%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-11 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HIMS</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">18</td>
+          <td style="padding:8px 6px">$26.99</td>
+          <td style="padding:8px 6px">$28.45</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+5.40%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-11 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">RIOT</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">34</td>
+          <td style="padding:8px 6px">$14.56</td>
+          <td style="padding:8px 6px">$14.82</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.76%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-07 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">WOLF</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">47</td>
+          <td style="padding:8px 6px">$10.53</td>
+          <td style="padding:8px 6px">$10.51</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+0.19%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-06 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">COIN</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">2</td>
+          <td style="padding:8px 6px">$225.47</td>
+          <td style="padding:8px 6px">$235.35</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+4.38%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-06 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HOOD</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">18</td>
+          <td style="padding:8px 6px">$27.34</td>
+          <td style="padding:8px 6px">$28.93</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+5.81%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-05 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HIMS</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">24</td>
+          <td style="padding:8px 6px">$20.58</td>
+          <td style="padding:8px 6px">$21.89</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+6.39%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-11-05 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">PLTR</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">10</td>
+          <td style="padding:8px 6px">$49.73</td>
+          <td style="padding:8px 6px">$50.51</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.57%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-10-31 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HOOD</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">20</td>
+          <td style="padding:8px 6px">$24.70</td>
+          <td style="padding:8px 6px">$23.62</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+4.39%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-10-30 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">14</td>
+          <td style="padding:8px 6px">$33.87</td>
+          <td style="padding:8px 6px">$36.24</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-7.00%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">17m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-10-03 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HIMS</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">29</td>
+          <td style="padding:8px 6px">$17.10</td>
+          <td style="padding:8px 6px">$16.26</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+4.87%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-10-01 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">11</td>
+          <td style="padding:8px 6px">$41.81</td>
+          <td style="padding:8px 6px">$41.72</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+0.22%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-09-11 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">24</td>
+          <td style="padding:8px 6px">$20.14</td>
+          <td style="padding:8px 6px">$19.80</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.69%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-08-30 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">22</td>
+          <td style="padding:8px 6px">$22.08</td>
+          <td style="padding:8px 6px">$21.89</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-0.88%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-08-29 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">AFRM</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">12</td>
+          <td style="padding:8px 6px">$39.10</td>
+          <td style="padding:8px 6px">$42.10</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+7.67%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-08-28 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$449.44</td>
+          <td style="padding:8px 6px">$416.33</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+7.37%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-08-07 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$532.73</td>
+          <td style="padding:8px 6px">$512.92</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+3.72%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-08-05 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HOOD</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">33</td>
+          <td style="padding:8px 6px">$15.00</td>
+          <td style="padding:8px 6px">$15.62</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-4.10%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-07-24 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">TSLA</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">2</td>
+          <td style="padding:8px 6px">$220.06</td>
+          <td style="padding:8px 6px">$216.30</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-1.70%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">15m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-06-25 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">RIVN</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">44</td>
+          <td style="padding:8px 6px">$11.15</td>
+          <td style="padding:8px 6px">$11.72</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+5.16%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-06-10 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">NVDA</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">4</td>
+          <td style="padding:8px 6px">$119.65</td>
+          <td style="padding:8px 6px">$121.90</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-1.88%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-06-07 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">11</td>
+          <td style="padding:8px 6px">$45.19</td>
+          <td style="padding:8px 6px">$35.03</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+22.47%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-05-20 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HIMS</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">29</td>
+          <td style="padding:8px 6px">$17.20</td>
+          <td style="padding:8px 6px">$18.92</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+10.06%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-05-15 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">13</td>
+          <td style="padding:8px 6px">$37.73</td>
+          <td style="padding:8px 6px">$33.51</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+11.18%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-05-08 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">RDDT</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">9</td>
+          <td style="padding:8px 6px">$51.34</td>
+          <td style="padding:8px 6px">$51.59</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+0.49%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-05-03 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">39</td>
+          <td style="padding:8px 6px">$12.70</td>
+          <td style="padding:8px 6px">$13.11</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-3.19%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">15m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-05-02 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">WOLF</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">22</td>
+          <td style="padding:8px 6px">$22.16</td>
+          <td style="padding:8px 6px">$21.49</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+3.02%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-04-22 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">RIOT</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">51</td>
+          <td style="padding:8px 6px">$9.78</td>
+          <td style="padding:8px 6px">$10.09</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+3.07%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-04-19 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$860.00</td>
+          <td style="padding:8px 6px">$797.20</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+7.30%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-02-16 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">COIN</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">2</td>
+          <td style="padding:8px 6px">$190.26</td>
+          <td style="padding:8px 6px">$182.67</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-3.99%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">15m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-02-15 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">APP</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">8</td>
+          <td style="padding:8px 6px">$57.03</td>
+          <td style="padding:8px 6px">$57.06</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+0.05%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-02-01 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">WOLF</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">16</td>
+          <td style="padding:8px 6px">$30.35</td>
+          <td style="padding:8px 6px">$29.78</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.86%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-01-22 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$444.92</td>
+          <td style="padding:8px 6px">$417.55</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-6.15%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">45m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2024-01-19 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$376.23</td>
+          <td style="padding:8px 6px">$403.16</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+7.16%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-11-09 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">AFRM</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">18</td>
+          <td style="padding:8px 6px">$26.64</td>
+          <td style="padding:8px 6px">$26.13</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-1.91%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-11-09 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">APP</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">13</td>
+          <td style="padding:8px 6px">$38.03</td>
+          <td style="padding:8px 6px">$41.50</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+9.11%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-11-08 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">HOOD</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">58</td>
+          <td style="padding:8px 6px">$8.48</td>
+          <td style="padding:8px 6px">$8.33</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.77%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-11-02 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">PLTR</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">27</td>
+          <td style="padding:8px 6px">$17.90</td>
+          <td style="padding:8px 6px">$17.56</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-1.90%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-10-31 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">WOLF</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">14</td>
+          <td style="padding:8px 6px">$34.20</td>
+          <td style="padding:8px 6px">$35.02</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+2.38%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-10-24 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">COIN</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">5</td>
+          <td style="padding:8px 6px">$86.59</td>
+          <td style="padding:8px 6px">$87.55</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.11%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-08-17 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">WOLF</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">11</td>
+          <td style="padding:8px 6px">$43.67</td>
+          <td style="padding:8px 6px">$43.37</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+0.69%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-08-09 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">1</td>
+          <td style="padding:8px 6px">$279.49</td>
+          <td style="padding:8px 6px">$265.95</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+4.84%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-07-26 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SNAP</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">49</td>
+          <td style="padding:8px 6px">$10.07</td>
+          <td style="padding:8px 6px">$10.10</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-0.35%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-07-05 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">WOLF</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">7</td>
+          <td style="padding:8px 6px">$64.51</td>
+          <td style="padding:8px 6px">$65.41</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+1.40%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-06-13 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">19</td>
+          <td style="padding:8px 6px">$26.30</td>
+          <td style="padding:8px 6px">$25.50</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-3.04%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">39m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-06-07 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">AFRM</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">27</td>
+          <td style="padding:8px 6px">$18.49</td>
+          <td style="padding:8px 6px">$17.97</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-2.81%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-06-07 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">GME</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">19</td>
+          <td style="padding:8px 6px">$25.56</td>
+          <td style="padding:8px 6px">$25.22</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-1.35%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-06-06 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">COIN</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">10</td>
+          <td style="padding:8px 6px">$49.25</td>
+          <td style="padding:8px 6px">$50.53</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-2.60%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-05-25 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">2</td>
+          <td style="padding:8px 6px">$204.53</td>
+          <td style="padding:8px 6px">$195.00</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">stop</td>
+          <td style="color:#ef4444;font-weight:600">-4.66%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">27m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-05-18 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">PLTR</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">46</td>
+          <td style="padding:8px 6px">$10.76</td>
+          <td style="padding:8px 6px">$11.42</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+6.09%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-05-03 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">3</td>
+          <td style="padding:8px 6px">$125.31</td>
+          <td style="padding:8px 6px">$128.98</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+2.93%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-04-24 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">SMCI</td>
+          <td style="padding:8px 6px;color:#f59e0b">SHORT</td>
+          <td style="padding:8px 6px">4</td>
+          <td style="padding:8px 6px">$101.18</td>
+          <td style="padding:8px 6px">$101.61</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-0.42%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-03-17 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">RIOT</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">68</td>
+          <td style="padding:8px 6px">$7.29</td>
+          <td style="padding:8px 6px">$7.65</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+4.94%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-02-14 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">PLTR</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">58</td>
+          <td style="padding:8px 6px">$8.50</td>
+          <td style="padding:8px 6px">$8.69</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#22c55e;font-weight:600">+2.27%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+        <tr style="border-bottom:1px solid #1e293b">
+          <td style="padding:8px 6px;color:#94a3b8;font-size:12px">2023-01-26 09:45</td>
+          <td style="padding:8px 6px;font-weight:700">TSLA</td>
+          <td style="padding:8px 6px;color:#22c55e">LONG</td>
+          <td style="padding:8px 6px">3</td>
+          <td style="padding:8px 6px">$157.30</td>
+          <td style="padding:8px 6px">$156.56</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">time</td>
+          <td style="color:#ef4444;font-weight:600">-0.47%</td>
+          <td style="padding:8px 6px;color:#64748b;font-size:12px">75m</td>
+          <td style="padding:8px 6px;color:#475569;font-size:11px">paper</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <script>
+  const pnlData    = {"labels": ["2023-01-26", "2023-02-14", "2023-03-17", "2023-04-24", "2023-05-03", "2023-05-18", "2023-05-25", "2023-06-06", "2023-06-07", "2023-06-07", "2023-06-13", "2023-07-05", "2023-07-26", "2023-08-09", "2023-08-17", "2023-10-24", "2023-10-31", "2023-11-02", "2023-11-08", "2023-11-09", "2023-11-09", "2024-01-19", "2024-01-22", "2024-02-01", "2024-02-15", "2024-02-16", "2024-04-19", "2024-04-22", "2024-05-02", "2024-05-03", "2024-05-08", "2024-05-15", "2024-05-20", "2024-06-07", "2024-06-10", "2024-06-25", "2024-07-24", "2024-08-05", "2024-08-07", "2024-08-28", "2024-08-29", "2024-08-30", "2024-09-11", "2024-10-01", "2024-10-03", "2024-10-30", "2024-10-31", "2024-11-05", "2024-11-05", "2024-11-06", "2024-11-06", "2024-11-07", "2024-11-11", "2024-11-11", "2024-11-11", "2024-12-12"], "data": [-0.47, 1.8, 6.74, 6.32, 9.25, 15.34, 10.68, 8.08, 5.27, 3.92, 0.88, 2.28, 1.93, 6.77, 7.46, 8.57, 10.95, 9.05, 10.82, 8.91, 18.02, 25.18, 19.03, 20.89, 20.94, 16.95, 24.25, 27.32, 30.34, 27.15, 27.64, 38.82, 48.88, 71.35, 69.47, 74.63, 72.93, 68.83, 72.55, 79.92, 87.59, 86.71, 88.4, 88.62, 93.49, 86.49, 90.88, 97.27, 98.84, 103.22, 109.03, 109.22, 114.81, 120.21, 121.97, 124.14]};
+  const tickerData = {"labels": ["AFRM", "APP", "COIN", "GME", "HIMS", "HOOD", "NVDA", "PLTR", "RDDT", "RIOT", "RIVN", "SMCI", "SNAP", "TSLA", "WOLF"], "data": [0.98, 4.58, 0.9, 3.84, 6.68, 1.97, -1.88, 2.01, 0.49, 2.99, 5.16, 1.39, -0.35, -1.08, 1.59], "colors": ["#22c55e", "#22c55e", "#22c55e", "#22c55e", "#22c55e", "#22c55e", "#ef4444", "#22c55e", "#22c55e", "#22c55e", "#22c55e", "#22c55e", "#ef4444", "#ef4444", "#22c55e"]};
+  const scoreData  = {"labels": ["40-50", "50-60", "60-70", "70-80", "80-90", "90+"], "data": [0, 0, 7, 21, 14, 15]};
+  const btPnlData  = {"labels": ["2023-01-26", "2023-02-14", "2023-05-18", "2023-06-06", "2023-06-07", "2023-06-13", "2023-07-26", "2023-10-24", "2023-11-02", "2023-11-08", "2024-02-16", "2024-05-03", "2024-05-08", "2024-05-15", "2024-05-20", "2024-06-07", "2024-06-10", "2024-06-25", "2024-07-24", "2024-08-05", "2024-08-30", "2024-09-11", "2024-10-03", "2024-10-31", "2024-11-05", "2024-11-05", "2024-11-06", "2024-11-06", "2024-11-11", "2024-11-11"], "data": [-0.47, 1.8, 7.89, 5.29, 3.94, 0.9, 0.55, 1.66, -0.24, 1.53, -2.46, -5.65, -5.16, 6.02, 16.08, 38.55, 36.67, 41.83, 40.13, 36.03, 35.15, 36.84, 41.71, 46.1, 52.49, 54.06, 58.44, 64.25, 69.84, 75.24]};
+
+  function makeLineChart(id, chartData, color) {
+    new Chart(document.getElementById(id), {
+      type: "line",
+      data: {
+        labels: chartData.labels,
+        datasets: [{
+          data: chartData.data,
+          borderColor: color,
+          backgroundColor: color + "1a",
+          fill: true, tension: 0.3, pointRadius: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: "#475569", maxTicksLimit: 6 }, grid: { color: "#1e293b" } },
+          y: { ticks: { color: "#475569", callback: v => v + "%" }, grid: { color: "#334155" } }
+        }
+      }
+    });
+  }
+
+  makeLineChart("pnlChart",   pnlData,   "#22c55e");
+  makeLineChart("btPnlChart", btPnlData, "#60a5fa");
+
+  new Chart(document.getElementById("tickerChart"), {
+    type: "bar",
+    data: {
+      labels: tickerData.labels,
+      datasets: [{ data: tickerData.data, backgroundColor: tickerData.colors }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: "#475569" }, grid: { color: "#1e293b" } },
+        y: { ticks: { color: "#475569", callback: v => v + "%" }, grid: { color: "#334155" } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById("scoreChart"), {
+    type: "bar",
+    data: {
+      labels: scoreData.labels,
+      datasets: [{ data: scoreData.data,
+        backgroundColor: ["#334155","#334155","#f59e0b","#22c55e","#22c55e","#22c55e"] }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: "#475569" }, grid: { color: "#1e293b" } },
+        y: { ticks: { color: "#475569" }, grid: { color: "#334155" } }
+      }
+    }
+  });
+
+  // Auto-refresh every 5 minutes during market hours (Mon-Fri 9:30-16:00 ET)
+  (function() {
+    const now = new Date();
+    const day = now.getDay();
+    const etHour = now.getUTCHours() - 5; // rough ET offset (ignores DST)
+    const etMin  = now.getUTCMinutes();
+    const etMins = etHour * 60 + etMin;
+    if (day >= 1 && day <= 5 && etMins >= 570 && etMins <= 960) {
+      setTimeout(() => location.reload(), 5 * 60 * 1000);
+      document.title = "⟳ " + document.title;
+    }
+  })();
+  </script>
+</body>
+</html>
