@@ -102,7 +102,7 @@
     <div>
       <h1>DNSD RS Strategy — Phase 2 Dashboard</h1>
       <div style="color:#475569;font-size:12px;margin-top:4px">
-        Updated: 2026-03-16 18:01 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
+        Updated: 2026-03-16 18:06 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
         62 signals &nbsp;|&nbsp; 57 trades &nbsp;|&nbsp; backtest: rs_backtest_scan4.csv
       </div>
     </div>
@@ -124,6 +124,9 @@
     </button>
     <button class="tab-btn"        data-tab="candidates" onclick="switchTab('candidates')">
       Candidates <span class="tab-key">5</span>
+    </button>
+    <button class="tab-btn"        data-tab="paper"      onclick="switchTab('paper')">
+      &#x1F4B0; Paper Trading <span class="tab-key">6</span>
     </button>
   </div>
 
@@ -3454,6 +3457,166 @@
 
   </div>
 
+  <!-- TAB 6: PAPER TRADING -->
+  <div id="tab-paper" class="tab-panel">
+
+    <!-- Offline notice (shown when server unreachable) -->
+    <div id="pt-offline-banner" style="display:none;background:#1c1917;border:1px solid #44403c;
+         border-radius:8px;padding:20px;text-align:center;margin-bottom:20px">
+      <div style="font-size:18px;margin-bottom:8px">&#x26A0;&#xFE0F;</div>
+      <div style="font-size:15px;font-weight:700;color:#78716c;margin-bottom:6px">rs_server.py is offline</div>
+      <div style="font-size:13px;color:#57534e">
+        Start it with: <code style="background:#292524;padding:2px 8px;border-radius:4px">python3 rs_server.py</code>
+        &nbsp;(default port 5001)
+      </div>
+    </div>
+
+    <!-- Portfolio summary bar -->
+    <div id="pt-portfolio-bar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+      <div class="section" style="text-align:center;padding:16px">
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Total Equity</div>
+        <div id="pt-total-equity" style="font-size:26px;font-weight:700;color:#f1f5f9">—</div>
+      </div>
+      <div class="section" style="text-align:center;padding:16px">
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Cash Available</div>
+        <div id="pt-cash" style="font-size:26px;font-weight:700;color:#f1f5f9">—</div>
+      </div>
+      <div class="section" style="text-align:center;padding:16px">
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Open Positions</div>
+        <div id="pt-open-count" style="font-size:26px;font-weight:700;color:#f1f5f9">—</div>
+      </div>
+      <div class="section" style="text-align:center;padding:16px">
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Total P&amp;L</div>
+        <div id="pt-total-pnl" style="font-size:26px;font-weight:700;color:#f1f5f9">—</div>
+      </div>
+    </div>
+
+    <!-- Main content: trade form + open positions -->
+    <div style="display:grid;grid-template-columns:35% 65%;gap:16px;margin-bottom:20px">
+
+      <!-- Trade Entry Form -->
+      <div class="section">
+        <h2 style="margin-bottom:16px">New Trade</h2>
+        <form id="pt-trade-form" onsubmit="ptSubmitTrade(event)">
+          <div style="margin-bottom:12px">
+            <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px">Ticker</label>
+            <select id="pt-ticker" name="ticker"
+                style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:6px;
+                       padding:8px 10px;color:#e2e8f0;font-size:14px;font-weight:700;outline:none">
+              <option value="AFRM">AFRM</option>
+<option value="AMC">AMC</option>
+<option value="APP">APP</option>
+<option value="ASTS">ASTS</option>
+<option value="BBAI">BBAI</option>
+<option value="COIN">COIN</option>
+<option value="DJT">DJT</option>
+<option value="GME">GME</option>
+<option value="GPRO">GPRO</option>
+<option value="HIMS">HIMS</option>
+<option value="HOOD">HOOD</option>
+<option value="IONQ">IONQ</option>
+<option value="LUNR">LUNR</option>
+<option value="MARA">MARA</option>
+<option value="MSTR">MSTR</option>
+<option value="NIO">NIO</option>
+<option value="NVDA">NVDA</option>
+<option value="OPEN">OPEN</option>
+<option value="PLTR">PLTR</option>
+<option value="RDDT">RDDT</option>
+<option value="RIOT">RIOT</option>
+<option value="RIVN">RIVN</option>
+<option value="RKLB">RKLB</option>
+<option value="RKT">RKT</option>
+<option value="SMCI">SMCI</option>
+<option value="SNAP">SNAP</option>
+<option value="SOFI">SOFI</option>
+<option value="SOUN">SOUN</option>
+<option value="TSLA">TSLA</option>
+<option value="WOLF">WOLF</option>
+            </select>
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px">Direction</label>
+            <div style="display:flex;gap:8px">
+              <button type="button" id="pt-dir-long" onclick="ptSetDir('long')"
+                  style="flex:1;padding:8px;border-radius:6px;border:none;cursor:pointer;
+                         font-size:13px;font-weight:700;background:#14532d;color:#4ade80">LONG</button>
+              <button type="button" id="pt-dir-short" onclick="ptSetDir('short')"
+                  style="flex:1;padding:8px;border-radius:6px;border:1px solid #334155;cursor:pointer;
+                         font-size:13px;font-weight:700;background:#1e293b;color:#94a3b8">SHORT</button>
+            </div>
+            <input type="hidden" id="pt-direction" value="long">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+            <div>
+              <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px">Size ($)</label>
+              <input type="number" id="pt-dollars" name="dollars" value="2500" min="100" max="50000" step="100"
+                  style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:6px;
+                         padding:8px 10px;color:#e2e8f0;font-size:13px;outline:none">
+            </div>
+            <div>
+              <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px">Stop %</label>
+              <input type="number" id="pt-stop-pct" name="stop_pct" value="5.0" min="0.5" max="25" step="0.5"
+                  style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:6px;
+                         padding:8px 10px;color:#e2e8f0;font-size:13px;outline:none">
+            </div>
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px">Notes (optional)</label>
+            <input type="text" id="pt-notes" name="notes" placeholder="e.g. autotrigger signal"
+                style="width:100%;background:#0f172a;border:1px solid #334155;border-radius:6px;
+                       padding:8px 10px;color:#e2e8f0;font-size:13px;outline:none">
+          </div>
+          <button type="submit" id="pt-submit-btn"
+              style="width:100%;padding:10px;border-radius:6px;border:none;cursor:pointer;
+                     font-size:14px;font-weight:700;background:#16a34a;color:#fff;transition:opacity .15s">
+            Execute Trade
+          </button>
+        </form>
+        <div id="pt-form-msg" style="margin-top:10px;font-size:13px;min-height:20px"></div>
+
+        <!-- Reset button -->
+        <div style="margin-top:24px;border-top:1px solid #1e293b;padding-top:16px">
+          <button onclick="ptResetPortfolio()"
+              style="width:100%;padding:8px;border-radius:6px;border:1px solid #7f1d1d;
+                     cursor:pointer;font-size:12px;font-weight:600;background:#1c0a0a;
+                     color:#f87171;transition:opacity .15s">
+            Reset to $100k
+          </button>
+        </div>
+      </div>
+
+      <!-- Open Positions -->
+      <div class="section">
+        <h2 style="margin-bottom:16px">Open Positions
+          <span id="pt-positions-refresh-note" class="section-label">auto-refreshes every 30s</span>
+        </h2>
+        <div id="pt-positions-container">
+          <p style="color:#475569;font-size:13px;text-align:center;padding:24px">Loading…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Equity Curve -->
+    <div class="section" style="margin-bottom:20px">
+      <h2>Equity Curve
+        <span class="section-label">closed trades only — starting balance $100,000</span>
+      </h2>
+      <canvas id="pt-equity-chart" height="70"></canvas>
+    </div>
+
+    <!-- Closed Trades Table -->
+    <div class="section">
+      <h2>Closed Trades
+        <span class="section-label">last 50</span>
+      </h2>
+      <div id="pt-history-container">
+        <p style="color:#475569;font-size:13px;text-align:center;padding:24px">Loading…</p>
+      </div>
+    </div>
+
+  </div>
+
   <script>
   /* Tab switching */
   function switchTab(name) {
@@ -3470,12 +3633,16 @@
     if (name === 'analytics' || name === 'backtest') {
       setTimeout(initCharts, 50);
     }
+    if (name === 'paper') {
+      ptLoadPortfolio();
+      ptLoadHistory();
+    }
   }
 
-  /* Keyboard shortcuts 1-5 */
+  /* Keyboard shortcuts 1-6 */
   document.addEventListener('keydown', function(e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    var tabs = ['overview','signals','analytics','backtest','candidates'];
+    var tabs = ['overview','signals','analytics','backtest','candidates','paper'];
     var idx = parseInt(e.key) - 1;
     if (idx >= 0 && idx < tabs.length) switchTab(tabs[idx]);
   });
@@ -3557,6 +3724,336 @@
       });
     }
   }
+
+  /* ── Paper Trading ─────────────────────────────────────────────────── */
+  (function() {
+    var PT_BASE = "http://localhost:5001";
+    var _ptDir  = "long";
+    var _ptEquityChart = null;
+
+    function _fmt$(n) {
+      if (n == null) return "—";
+      return "$" + parseFloat(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+    function _fmtPct(n) {
+      if (n == null) return "—";
+      return (n >= 0 ? "+" : "") + parseFloat(n).toFixed(2) + "%";
+    }
+    function _color(n) {
+      if (n == null) return "#f1f5f9";
+      return parseFloat(n) >= 0 ? "#22c55e" : "#ef4444";
+    }
+
+    function ptShowOffline(yes) {
+      var el = document.getElementById("pt-offline-banner");
+      if (el) el.style.display = yes ? "" : "none";
+    }
+
+    window.ptSetDir = function(dir) {
+      _ptDir = dir;
+      document.getElementById("pt-direction").value = dir;
+      var btnLong  = document.getElementById("pt-dir-long");
+      var btnShort = document.getElementById("pt-dir-short");
+      if (dir === "long") {
+        btnLong.style.background  = "#14532d"; btnLong.style.color  = "#4ade80";
+        btnLong.style.border      = "none";
+        btnShort.style.background = "#1e293b"; btnShort.style.color = "#94a3b8";
+        btnShort.style.border     = "1px solid #334155";
+        document.getElementById("pt-submit-btn").style.background = "#16a34a";
+      } else {
+        btnShort.style.background = "#7c2d12"; btnShort.style.color  = "#fb923c";
+        btnShort.style.border     = "none";
+        btnLong.style.background  = "#1e293b"; btnLong.style.color  = "#94a3b8";
+        btnLong.style.border      = "1px solid #334155";
+        document.getElementById("pt-submit-btn").style.background = "#c2410c";
+      }
+    };
+
+    window.ptLoadPortfolio = function() {
+      fetch(PT_BASE + "/api/paper/portfolio", {signal: AbortSignal.timeout(4000)})
+        .then(function(r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+        .then(function(d) {
+          ptShowOffline(false);
+          // Summary cards
+          var eq   = d.total_equity;
+          var init = d.initial_balance || 100000;
+          var eqEl = document.getElementById("pt-total-equity");
+          if (eqEl) { eqEl.textContent = _fmt$(eq); eqEl.style.color = _color(eq - init); }
+          var cashEl = document.getElementById("pt-cash");
+          if (cashEl) { cashEl.textContent = _fmt$(d.cash); cashEl.style.color = "#f1f5f9"; }
+          var ocEl = document.getElementById("pt-open-count");
+          if (ocEl) { ocEl.textContent = (d.positions || []).length; ocEl.style.color = "#f1f5f9"; }
+          var pnlEl = document.getElementById("pt-total-pnl");
+          if (pnlEl) {
+            pnlEl.textContent = _fmt$(d.total_pnl_dollars) + " (" + _fmtPct(d.total_pnl_pct) + ")";
+            pnlEl.style.color = _color(d.total_pnl_dollars);
+          }
+          // Positions table
+          ptRenderPositions(d.positions || []);
+        })
+        .catch(function() {
+          ptShowOffline(true);
+          ptRenderPositions([]);
+        });
+    };
+
+    window.ptRenderPositions = function(positions) {
+      var container = document.getElementById("pt-positions-container");
+      if (!container) return;
+      if (!positions.length) {
+        container.innerHTML = '<p style="color:#475569;font-size:13px;text-align:center;padding:24px">No open positions.</p>';
+        return;
+      }
+      var rows = "";
+      positions.forEach(function(p) {
+        var dirColor = p.direction === "long" ? "#22c55e" : "#f59e0b";
+        var upnl = p.unrealized_pnl_pct;
+        var upnlDollar = p.unrealized_pnl_dollars;
+        var upnlHtml = (upnl != null)
+          ? '<span style="color:' + _color(upnl) + ';font-weight:700">' + _fmtPct(upnl) + '</span>'
+            + '<br><span style="color:' + _color(upnl) + ';font-size:11px">' + _fmt$(upnlDollar) + '</span>'
+          : "—";
+        var currHtml = p.current_price != null
+          ? '<span style="color:#94a3b8">$' + parseFloat(p.current_price).toFixed(2) + '</span>'
+          : "—";
+        rows += "<tr style='border-bottom:1px solid #1e293b'>"
+          + "<td style='padding:8px 8px;font-weight:700'>" + p.ticker + "</td>"
+          + "<td style='padding:8px 8px;color:" + dirColor + ";font-weight:600'>" + p.direction.toUpperCase() + "</td>"
+          + "<td style='padding:8px 8px;color:#94a3b8'>" + p.shares + "</td>"
+          + "<td style='padding:8px 8px'>$" + parseFloat(p.entry_price).toFixed(2) + "</td>"
+          + "<td style='padding:8px 8px'>" + currHtml + "</td>"
+          + "<td style='padding:8px 8px'>" + upnlHtml + "</td>"
+          + "<td style='padding:8px 8px;color:#94a3b8;font-size:12px'>$" + parseFloat(p.market_value || p.entry_price * p.shares).toFixed(0) + "</td>"
+          + "<td style='padding:8px 8px;color:#64748b;font-size:11px'>$" + (p.stop_price != null ? parseFloat(p.stop_price).toFixed(2) : "—") + "</td>"
+          + "<td style='padding:8px 8px;color:#475569;font-size:11px'>" + (p.notes || "") + "</td>"
+          + "<td style='padding:8px 8px'><button onclick='ptClosePosition(" + p.id + ")'"
+            + " style='background:#7f1d1d;color:#fca5a5;border:none;border-radius:4px;"
+            + "padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer'>Close</button></td>"
+          + "</tr>";
+      });
+      container.innerHTML = "<div style='overflow-x:auto'>"
+        + "<table style='width:100%;border-collapse:collapse;font-size:13px'>"
+        + "<thead><tr style='border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase'>"
+        + "<th style='padding:6px 8px;text-align:left'>Ticker</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Dir</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Shares</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Entry $</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Current $</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Unreal P&amp;L</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Mkt Val</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Stop</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Notes</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Close</th>"
+        + "</tr></thead>"
+        + "<tbody style='color:#e2e8f0'>" + rows + "</tbody>"
+        + "</table></div>";
+    };
+
+    window.ptClosePosition = function(positionId) {
+      if (!confirm("Close position #" + positionId + " at current market price?")) return;
+      fetch(PT_BASE + "/api/paper/trade/close", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({position_id: positionId, exit_reason: "manual"}),
+        signal: AbortSignal.timeout(5000),
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d.ok) {
+            var msg = "Closed: " + _fmtPct(d.pnl_pct) + " (" + _fmt$(d.pnl_dollars) + ")";
+            alert(msg);
+            ptLoadPortfolio();
+            ptLoadHistory();
+          } else {
+            alert("Error: " + (d.error || "unknown"));
+          }
+        })
+        .catch(function(err) { alert("Request failed: " + err); });
+    };
+
+    window.ptLoadHistory = function() {
+      fetch(PT_BASE + "/api/paper/history", {signal: AbortSignal.timeout(4000)})
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          ptRenderHistory(d.trades || []);
+          ptRenderEquityCurve(d.trades || []);
+        })
+        .catch(function() {
+          ptRenderHistory([]);
+          ptRenderEquityCurve([]);
+        });
+    };
+
+    window.ptRenderHistory = function(trades) {
+      var container = document.getElementById("pt-history-container");
+      if (!container) return;
+      if (!trades.length) {
+        container.innerHTML = '<p style="color:#475569;font-size:13px;text-align:center;padding:24px">No closed trades yet.</p>';
+        return;
+      }
+      var rows = "";
+      trades.forEach(function(t) {
+        var dirColor = t.direction === "long" ? "#22c55e" : "#f59e0b";
+        var pnl = t.pnl_pct;
+        rows += "<tr style='border-bottom:1px solid #1e293b'>"
+          + "<td style='padding:7px 8px;color:#94a3b8;font-size:12px'>" + (t.exit_time || "").substring(0,16).replace("T"," ") + "</td>"
+          + "<td style='padding:7px 8px;font-weight:700'>" + t.ticker + "</td>"
+          + "<td style='padding:7px 8px;color:" + dirColor + ";font-weight:600'>" + t.direction.toUpperCase() + "</td>"
+          + "<td style='padding:7px 8px;color:#94a3b8'>" + t.shares + "</td>"
+          + "<td style='padding:7px 8px'>$" + parseFloat(t.entry_price).toFixed(2) + "</td>"
+          + "<td style='padding:7px 8px'>$" + parseFloat(t.exit_price).toFixed(2) + "</td>"
+          + "<td style='padding:7px 8px;color:" + _color(t.pnl_dollars) + ";font-weight:600'>" + _fmt$(t.pnl_dollars) + "</td>"
+          + "<td style='padding:7px 8px;color:" + _color(pnl) + ";font-weight:700'>" + _fmtPct(pnl) + "</td>"
+          + "<td style='padding:7px 8px;color:#64748b;font-size:11px'>" + (t.exit_reason || "manual") + "</td>"
+          + "</tr>";
+      });
+      container.innerHTML = "<div style='overflow-x:auto'>"
+        + "<table style='width:100%;border-collapse:collapse;font-size:13px'>"
+        + "<thead><tr style='border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase'>"
+        + "<th style='padding:6px 8px;text-align:left'>Date</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Ticker</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Dir</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Shares</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Entry</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Exit</th>"
+        + "<th style='padding:6px 8px;text-align:left'>P&amp;L $</th>"
+        + "<th style='padding:6px 8px;text-align:left'>P&amp;L %</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Reason</th>"
+        + "</tr></thead>"
+        + "<tbody style='color:#e2e8f0'>" + rows + "</tbody>"
+        + "</table></div>";
+    };
+
+    window.ptRenderEquityCurve = function(trades) {
+      var el = document.getElementById("pt-equity-chart");
+      if (!el) return;
+      var INITIAL = 100000.0;
+      // Trades come sorted newest-first from the API; reverse for chronological order
+      var sorted = trades.slice().reverse();
+      var labels = [];
+      var data   = [];
+      var running = INITIAL;
+      labels.push("Start");
+      data.push(INITIAL);
+      sorted.forEach(function(t) {
+        running = running + (t.pnl_dollars || 0);
+        labels.push((t.exit_time || "").substring(0,10));
+        data.push(parseFloat(running.toFixed(2)));
+      });
+      if (_ptEquityChart) {
+        _ptEquityChart.data.labels   = labels;
+        _ptEquityChart.data.datasets[0].data = data;
+        _ptEquityChart.update();
+      } else {
+        _ptEquityChart = new Chart(el, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              borderColor: "#22c55e",
+              backgroundColor: "#22c55e1a",
+              fill: true,
+              tension: 0.3,
+              pointRadius: 2,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: "#475569", maxTicksLimit: 8 }, grid: { color: "#1e293b" } },
+              y: { ticks: { color: "#475569",
+                   callback: function(v) { return "$" + v.toLocaleString(); } },
+                   grid: { color: "#334155" } }
+            }
+          }
+        });
+      }
+    };
+
+    window.ptSubmitTrade = function(e) {
+      e.preventDefault();
+      var msgEl  = document.getElementById("pt-form-msg");
+      var btn    = document.getElementById("pt-submit-btn");
+      var ticker = document.getElementById("pt-ticker").value;
+      var dir    = document.getElementById("pt-direction").value;
+      var dollars = parseFloat(document.getElementById("pt-dollars").value);
+      var stopPct = parseFloat(document.getElementById("pt-stop-pct").value);
+      var notes   = document.getElementById("pt-notes").value;
+
+      btn.disabled    = true;
+      btn.textContent = "Executing…";
+      if (msgEl) msgEl.textContent = "";
+
+      fetch(PT_BASE + "/api/paper/trade/open", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          ticker:    ticker,
+          direction: dir,
+          dollars:   dollars,
+          stop_pct:  stopPct,
+          notes:     notes,
+        }),
+        signal: AbortSignal.timeout(6000),
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d.ok) {
+            var color = dir === "long" ? "#22c55e" : "#fb923c";
+            if (msgEl) {
+              msgEl.style.color = color;
+              msgEl.textContent = "Opened: " + d.shares + " shares of " + d.ticker
+                + " @ $" + d.entry_price.toFixed(2)
+                + " (cost " + _fmt$(d.cost) + ")";
+            }
+            ptLoadPortfolio();
+          } else {
+            if (msgEl) { msgEl.style.color = "#ef4444"; msgEl.textContent = "Error: " + (d.error || "unknown"); }
+          }
+        })
+        .catch(function(err) {
+          if (msgEl) { msgEl.style.color = "#ef4444"; msgEl.textContent = "Request failed: " + err; }
+        })
+        .finally(function() {
+          btn.disabled    = false;
+          btn.textContent = "Execute Trade";
+        });
+    };
+
+    window.ptResetPortfolio = function() {
+      if (!confirm("Reset paper portfolio to $100,000? This deletes all positions and trade history.")) return;
+      fetch(PT_BASE + "/api/paper/reset", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        signal: AbortSignal.timeout(5000),
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d.ok) {
+            alert("Portfolio reset to $100,000.");
+            ptLoadPortfolio();
+            ptLoadHistory();
+          } else {
+            alert("Reset failed: " + (d.error || "unknown"));
+          }
+        })
+        .catch(function(err) { alert("Request failed: " + err); });
+    };
+
+    // Auto-refresh when paper tab is active
+    setInterval(function() {
+      var paperPanel = document.getElementById("tab-paper");
+      if (paperPanel && paperPanel.classList.contains("active")) {
+        ptLoadPortfolio();
+      }
+    }, 30000);
+
+  })();  // end paper trading IIFE
 
   /* Live server status widget */
   (function() {
