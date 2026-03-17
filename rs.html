@@ -141,7 +141,7 @@
     <div>
       <h1>DNSD RS Strategy — Phase 2 Dashboard</h1>
       <div style="color:#475569;font-size:12px;margin-top:4px">
-        Updated: 2026-03-17 19:21 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
+        Updated: 2026-03-17 19:23 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
         69 signals &nbsp;|&nbsp; 57 trades &nbsp;|&nbsp; backtest: rs_backtest_scan4.csv
       </div>
     </div>
@@ -4164,6 +4164,19 @@
     var _ptDir  = "long";
     var _ptEquityChart = null;
 
+    window._ptToggleNote = function(btn) {
+      var id = btn.getAttribute("data-note-row");
+      var el = document.getElementById(id);
+      if (el) el.style.display = el.style.display === "none" ? "" : "none";
+    };
+    window._ptHandleNoteKey = function(evt, inp) {
+      var tid = inp.getAttribute("data-tid");
+      if (evt.key !== "Enter") return;
+      ptSubmitNote(tid, inp.value);
+      inp.style.borderColor = "#22c55e";
+      inp.disabled = true;
+    };
+
     function _fmt$(n) {
       if (n == null) return "—";
       return "$" + parseFloat(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -4616,8 +4629,7 @@
           + "<td style='padding:7px 8px;color:" + _color(pnl) + ";font-weight:700'>" + _fmtPct(pnl) + "</td>"
           + "<td style='padding:7px 8px;color:#64748b;font-size:11px'>" + (t.exit_reason || "manual") + "</td>"
           + "<td style='padding:7px 8px;text-align:center'>"
-          + "<button onclick="document.getElementById('" + noteRowId + "').style.display="
-          + "document.getElementById('" + noteRowId + "').style.display==='none'?'':'none'""
+          + "<button onclick='_ptToggleNote(this)' data-note-row='" + noteRowId + "'"
           + " title='Add note' style='background:none;border:none;cursor:pointer;font-size:13px;color:#475569;padding:0'>&#x1F4DD;</button>"
           + "</td>"
           + "</tr>"
@@ -4626,11 +4638,11 @@
           + "<td colspan='10' style='padding:8px 16px'>"
           + "<div style='display:flex;gap:8px;align-items:center'>"
           + "<span style='font-size:11px;color:#475569;white-space:nowrap'>Journal note:</span>"
-          + "<input type='text' id='pt-note-input-" + tid + "' placeholder='Add note and press Enter…'"
+          + "<input type='text' id='pt-note-input-" + tid + "' data-tid='" + tid + "'"
+          + " placeholder='Add note and press Enter…'"
           + " style='flex:1;background:#0f172a;border:1px solid #334155;border-radius:4px;"
           + "padding:5px 8px;color:#e2e8f0;font-size:12px;outline:none'"
-          + " onkeydown="if(event.key==='Enter'){ptSubmitNote('" + tid + "',this.value);"
-          + "this.style.borderColor='#22c55e';this.disabled=true;}""
+          + " onkeydown='_ptHandleNoteKey(event,this)'"
           + " />"
           + "</div></td></tr>";
       });
