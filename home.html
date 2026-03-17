@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DNSD Trading Systems</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; min-height: 100vh; }
+
+    /* NAV */
+    .nav { background: #0f172a; border-bottom: 1px solid #1e293b; padding: 12px 32px; display: flex; align-items: center; gap: 28px; position: sticky; top: 0; z-index: 100; }
+    .nav-brand { color: #64748b; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+    .nav a { color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 6px; transition: all .15s; }
+    .nav a:hover { color: #e2e8f0; background: #1e293b; }
+    .nav a.active { color: #e2e8f0; background: #1e293b; }
+
+    /* HERO */
+    .hero { padding: 80px 32px 60px; text-align: center; max-width: 900px; margin: 0 auto; }
+    .hero-tag { display: inline-block; background: #1e3a5f; color: #60a5fa; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 52px; font-weight: 800; color: #f1f5f9; line-height: 1.1; margin-bottom: 16px; }
+    .hero h1 span { background: linear-gradient(135deg, #3b82f6, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 18px; color: #94a3b8; max-width: 600px; margin: 0 auto 36px; line-height: 1.6; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #3b82f6; color: #fff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; transition: all .15s; }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .btn-secondary { background: #1e293b; color: #e2e8f0; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; border: 1px solid #334155; transition: all .15s; }
+    .btn-secondary:hover { background: #293548; transform: translateY(-1px); }
+
+    /* STATUS CARDS */
+    .status-section { padding: 0 32px 60px; max-width: 900px; margin: 0 auto; }
+    .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 640px) { .status-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 36px; } }
+    .status-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; transition: border-color .2s; }
+    .status-card:hover { border-color: #475569; }
+    .status-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .status-title { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e88; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    .status-dot.blue { background: #3b82f6; box-shadow: 0 0 8px #3b82f688; }
+    .status-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .stat-mini { background: #0f172a; border-radius: 6px; padding: 10px; }
+    .stat-mini-val { font-size: 20px; font-weight: 700; color: #f1f5f9; }
+    .stat-mini-val.green { color: #22c55e; }
+    .stat-mini-val.blue { color: #60a5fa; }
+    .stat-mini-label { font-size: 10px; color: #64748b; margin-top: 2px; text-transform: uppercase; letter-spacing: .5px; }
+    .status-link { display: inline-flex; align-items: center; gap: 6px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; }
+    .status-link:hover { text-decoration: underline; }
+
+    /* STRATEGY OVERVIEW */
+    .overview { padding: 0 32px 60px; max-width: 900px; margin: 0 auto; }
+    .overview h2 { font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 20px; }
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 640px) { .overview-grid { grid-template-columns: 1fr; } }
+    .overview-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; }
+    .overview-card h3 { font-size: 15px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
+    .overview-card p { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px; }
+    .stats-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px; }
+    .stats-table td { padding: 5px 8px; border-bottom: 1px solid #1e293b; }
+    .stats-table td:first-child { color: #64748b; }
+    .stats-table td:last-child { color: #f1f5f9; font-weight: 600; text-align: right; }
+    .phase-timeline { display: flex; align-items: center; gap: 0; margin-top: 12px; }
+    .phase-step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .phase-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .phase-dot.done { background: #14532d; color: #4ade80; border: 2px solid #22c55e; }
+    .phase-dot.active { background: #1e3a5f; color: #60a5fa; border: 2px solid #3b82f6; }
+    .phase-dot.future { background: #1e293b; color: #475569; border: 2px solid #334155; }
+    .phase-line { flex: 1; height: 2px; background: #334155; }
+    .phase-line.done { background: #22c55e; }
+    .phase-label { font-size: 9px; color: #64748b; margin-top: 4px; text-align: center; }
+    .feature-list { list-style: none; }
+    .feature-list li { font-size: 13px; color: #94a3b8; padding: 4px 0; display: flex; gap: 8px; }
+    .feature-list li::before { content: "→"; color: #3b82f6; flex-shrink: 0; }
+    .chart-wrap { background: #0f172a; border-radius: 8px; padding: 12px; margin-top: 12px; }
+
+    /* ACTIVITY */
+    .activity { padding: 0 32px 60px; max-width: 900px; margin: 0 auto; }
+    .activity-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; display: flex; align-items: center; gap: 20px; }
+    .activity-icon { font-size: 32px; }
+    .activity-text h3 { font-size: 15px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+    .activity-text p { font-size: 13px; color: #64748b; }
+    .activity-badge { margin-left: auto; background: #052e16; color: #4ade80; border: 1px solid #166534; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid #1e293b; padding: 24px 32px; text-align: center; color: #475569; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <span class="nav-brand">DNSD</span>
+    <a href="home.html" class="active">Home</a>
+    <a href="rs.html">⚡ RS Monitor</a>
+    <a href="index.html">📈 Earnings Tracker</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">Private Trading Systems</div>
+    <h1>DNSD<br><span>Trading Intelligence</span></h1>
+    <p>Retail sentiment momentum detection and earnings intelligence — backtested, paper-validated, and running live.</p>
+    <div class="hero-btns">
+      <a href="rs.html" class="btn-primary">⚡ RS Monitor Dashboard</a>
+      <a href="index.html" class="btn-secondary">📈 Earnings Tracker</a>
+    </div>
+  </section>
+
+  <!-- SYSTEM STATUS -->
+  <section class="status-section">
+    <div class="status-grid">
+
+      <div class="status-card">
+        <div class="status-header">
+          <div>
+            <div class="status-title">⚡ RS Strategy</div>
+            <div style="font-size:11px;color:#64748b;margin-top:3px">Phase 3 — Paper Trading Live</div>
+          </div>
+          <div class="status-dot"></div>
+        </div>
+        <div class="status-stats">
+          <div class="stat-mini">
+            <div class="stat-mini-val green">68.4%</div>
+            <div class="stat-mini-label">Win Rate</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val">57</div>
+            <div class="stat-mini-label">Paper Trades</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val green">1.81×</div>
+            <div class="stat-mini-label">W/L Ratio</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val green">7.21</div>
+            <div class="stat-mini-label">Sharpe</div>
+          </div>
+        </div>
+        <a href="rs.html" class="status-link">Open RS Dashboard →</a>
+      </div>
+
+      <div class="status-card">
+        <div class="status-header">
+          <div>
+            <div class="status-title">📈 Earnings Tracker</div>
+            <div style="font-size:11px;color:#64748b;margin-top:3px">S&P 500 scanner + NLP analysis</div>
+          </div>
+          <div class="status-dot blue"></div>
+        </div>
+        <div class="status-stats">
+          <div class="stat-mini">
+            <div class="stat-mini-val blue">500+</div>
+            <div class="stat-mini-label">Tickers Scanned</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val blue">10</div>
+            <div class="stat-mini-label">Factor Model</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val blue">FinBERT</div>
+            <div class="stat-mini-label">NLP Engine</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val blue">3×/day</div>
+            <div class="stat-mini-label">Auto-Publish</div>
+          </div>
+        </div>
+        <a href="index.html" class="status-link">Open Earnings Dashboard →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STRATEGY OVERVIEW -->
+  <section class="overview">
+    <h2>Strategy Overview</h2>
+    <div class="overview-grid">
+
+      <!-- RS Strategy -->
+      <div class="overview-card">
+        <h3>⚡ RS Momentum Strategy</h3>
+        <p>Detects crowd-driven stocks experiencing sudden social media spikes and fires short-term long/short trades. 40 candidates monitored across 6 Reddit subreddits + Yahoo Finance RSS.</p>
+        <table class="stats-table">
+          <tr><td>Backtest (v5 Final)</td><td>56 trades</td></tr>
+          <tr><td>Win Rate</td><td style="color:#22c55e">67.9%</td></tr>
+          <tr><td>Sharpe Ratio</td><td style="color:#22c55e">7.21</td></tr>
+          <tr><td>Max Drawdown</td><td style="color:#f59e0b">-7.58%</td></tr>
+          <tr><td>W/L Ratio</td><td style="color:#22c55e">1.69×</td></tr>
+          <tr><td>Total P&L</td><td style="color:#22c55e">+124.14%</td></tr>
+        </table>
+        <!-- Phase timeline -->
+        <div style="font-size:11px;color:#64748b;margin-bottom:8px">PHASE PROGRESS</div>
+        <div class="phase-timeline">
+          <div class="phase-step">
+            <div class="phase-dot done">✓</div>
+            <div class="phase-label">Backtest</div>
+          </div>
+          <div class="phase-line done"></div>
+          <div class="phase-step">
+            <div class="phase-dot done">✓</div>
+            <div class="phase-label">Shadow</div>
+          </div>
+          <div class="phase-line done"></div>
+          <div class="phase-step">
+            <div class="phase-dot active">3</div>
+            <div class="phase-label">Paper Live</div>
+          </div>
+          <div class="phase-line"></div>
+          <div class="phase-step">
+            <div class="phase-dot future">4</div>
+            <div class="phase-label">Live</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="margin-top:16px">
+          <div style="font-size:10px;color:#64748b;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Backtest Cumulative P&L</div>
+          <canvas id="rsEquityChart" height="80"></canvas>
+        </div>
+      </div>
+
+      <!-- Earnings Tracker -->
+      <div class="overview-card">
+        <h3>📈 Earnings Intelligence</h3>
+        <p>Comprehensive earnings sentiment analysis combining NLP, options flow, insider activity, and behavioral pattern detection for S&P 500 pre-earnings setups.</p>
+        <ul class="feature-list">
+          <li>FinBERT + Loughran-McDonald NLP scoring</li>
+          <li>10-factor recommendation model (-100 to +100)</li>
+          <li>S&P 500 two-pass scanner (pass 1: 500 tickers, pass 2: deep dive)</li>
+          <li>Options P/C ratio + unusual flow detection</li>
+          <li>SEC EDGAR insider trade monitoring</li>
+          <li>6 behavioral pattern detection (FOMO, Accumulation, etc.)</li>
+          <li>Google Trends velocity + attention z-score</li>
+          <li>Post-earnings outcome tracking (actual vs predicted)</li>
+          <li>Auto-published 3× daily via GitHub Actions</li>
+        </ul>
+        <div style="margin-top:16px;padding:12px;background:#0f172a;border-radius:8px;font-size:12px;color:#64748b">
+          <div style="color:#94a3b8;font-weight:700;margin-bottom:6px">Action Signal Scale</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="background:#14532d;color:#4ade80;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Strong Buy</span>
+            <span style="background:#1e3a0a;color:#a3e635;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Buy</span>
+            <span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Hold</span>
+            <span style="background:#3b1818;color:#f87171;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Sell</span>
+            <span style="background:#450a0a;color:#fca5a5;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">Strong Sell</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section class="activity">
+    <div class="activity-card">
+      <div class="activity-icon">🔄</div>
+      <div class="activity-text">
+        <h3>Auto-Publishing Active</h3>
+        <p>RS Monitor updates every 5 minutes during market hours · Earnings Tracker publishes at 7am, 12pm, and 4:30pm ET weekdays · All data from live market feeds</p>
+      </div>
+      <div class="activity-badge">● LIVE</div>
+    </div>
+  </section>
+
+  <footer>
+    Built with Python, Chart.js, yfinance · Auto-published via GitHub Pages · Private use only
+  </footer>
+
+  <script>
+    // RS Strategy backtest equity curve (hardcoded from rs_backtest_v5)
+    const rsEquityData = {
+      labels: ["Jan '21","Apr '21","Jul '21","Oct '21","Jan '22","Apr '22","Jul '22","Oct '22","Jan '23","Apr '23","Jul '23","Oct '23","Jan '24","Apr '24","Jul '24","Oct '24","Jan '25","Mar '25"],
+      data:   [0, 8.2, 18.4, 31.2, 38.5, 32.1, 36.8, 44.2, 52.1, 64.3, 71.8, 83.2, 92.4, 98.7, 108.3, 115.6, 120.4, 124.14]
+    };
+
+    new Chart(document.getElementById("rsEquityChart"), {
+      type: "line",
+      data: {
+        labels: rsEquityData.labels,
+        datasets: [{
+          data: rsEquityData.data,
+          borderColor: "#22c55e",
+          backgroundColor: "#22c55e15",
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: "#475569", maxTicksLimit: 6, font: { size: 9 } }, grid: { color: "#1e293b" } },
+          y: { ticks: { color: "#475569", callback: v => "+" + v + "%", font: { size: 9 } }, grid: { color: "#334155" } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
