@@ -141,7 +141,7 @@
     <div>
       <h1>DNSD RS Strategy — Phase 2 Dashboard</h1>
       <div style="color:#475569;font-size:12px;margin-top:4px">
-        Updated: 2026-03-16 22:38 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
+        Updated: 2026-03-16 22:43 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
         62 signals &nbsp;|&nbsp; 57 trades &nbsp;|&nbsp; backtest: rs_backtest_scan4.csv
       </div>
     </div>
@@ -4430,6 +4430,20 @@
         });
     };
 
+    // Trade journal note submission
+    // TODO: wire to POST /api/paper/trade/note when endpoint is implemented on rs_server.py
+    window.ptSubmitNote = function ptSubmitNote(tradeId, noteText) {
+      if (!noteText || !noteText.trim()) return;
+      // Client-side only for now — log to console
+      console.log("[TradeJournal] trade_id=" + tradeId + " note=" + noteText.trim());
+      // Stub: would POST to PT_BASE + "/api/paper/trade/note"
+      // fetch(PT_BASE + "/api/paper/trade/note", {
+      //   method: "POST",
+      //   headers: {"Content-Type": "application/json"},
+      //   body: JSON.stringify({trade_id: tradeId, note: noteText.trim()}),
+      // });
+    }
+
     window.ptRenderHistory = function(trades) {
       var container = document.getElementById("pt-history-container");
       if (!container) return;
@@ -4439,8 +4453,11 @@
       }
       var rows = "";
       trades.forEach(function(t) {
+        var tid      = t.id || ("t" + Math.random().toString(36).substr(2,6));
         var dirColor = t.direction === "long" ? "#22c55e" : "#f59e0b";
-        var pnl = t.pnl_pct;
+        var pnl      = t.pnl_pct;
+        var noteRowId = "pt-note-row-" + tid;
+        // Main trade row — clicking the last cell (📝) toggles the note row
         rows += "<tr style='border-bottom:1px solid #1e293b'>"
           + "<td style='padding:7px 8px;color:#94a3b8;font-size:12px'>" + (t.exit_time || "").substring(0,16).replace("T"," ") + "</td>"
           + "<td style='padding:7px 8px;font-weight:700'>" + t.ticker + "</td>"
@@ -4451,7 +4468,24 @@
           + "<td style='padding:7px 8px;color:" + _color(t.pnl_dollars) + ";font-weight:600'>" + _fmt$(t.pnl_dollars) + "</td>"
           + "<td style='padding:7px 8px;color:" + _color(pnl) + ";font-weight:700'>" + _fmtPct(pnl) + "</td>"
           + "<td style='padding:7px 8px;color:#64748b;font-size:11px'>" + (t.exit_reason || "manual") + "</td>"
-          + "</tr>";
+          + "<td style='padding:7px 8px;text-align:center'>"
+          + "<button onclick="document.getElementById('" + noteRowId + "').style.display="
+          + "document.getElementById('" + noteRowId + "').style.display==='none'?'':'none'""
+          + " title='Add note' style='background:none;border:none;cursor:pointer;font-size:13px;color:#475569;padding:0'>&#x1F4DD;</button>"
+          + "</td>"
+          + "</tr>"
+          // Collapsible note row
+          + "<tr id='" + noteRowId + "' style='display:none;background:#0c1526;border-bottom:1px solid #1e293b'>"
+          + "<td colspan='10' style='padding:8px 16px'>"
+          + "<div style='display:flex;gap:8px;align-items:center'>"
+          + "<span style='font-size:11px;color:#475569;white-space:nowrap'>Journal note:</span>"
+          + "<input type='text' id='pt-note-input-" + tid + "' placeholder='Add note and press Enter…'"
+          + " style='flex:1;background:#0f172a;border:1px solid #334155;border-radius:4px;"
+          + "padding:5px 8px;color:#e2e8f0;font-size:12px;outline:none'"
+          + " onkeydown="if(event.key==='Enter'){ptSubmitNote('" + tid + "',this.value);"
+          + "this.style.borderColor='#22c55e';this.disabled=true;}""
+          + " />"
+          + "</div></td></tr>";
       });
       container.innerHTML = "<div style='overflow-x:auto'>"
         + "<table style='width:100%;border-collapse:collapse;font-size:13px'>"
@@ -4465,6 +4499,7 @@
         + "<th style='padding:6px 8px;text-align:left'>P&amp;L $</th>"
         + "<th style='padding:6px 8px;text-align:left'>P&amp;L %</th>"
         + "<th style='padding:6px 8px;text-align:left'>Reason</th>"
+        + "<th style='padding:6px 8px;text-align:left'>Note</th>"
         + "</tr></thead>"
         + "<tbody style='color:#e2e8f0'>" + rows + "</tbody>"
         + "</table></div>";
