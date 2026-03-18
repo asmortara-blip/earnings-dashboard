@@ -136,7 +136,7 @@
     <div>
       <h1>DNSD RS Strategy — Phase 2 Dashboard</h1>
       <div style="color:#475569;font-size:12px;margin-top:4px">
-        Updated: 2026-03-17 23:29 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
+        Updated: 2026-03-17 23:33 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
         69 signals &nbsp;|&nbsp; 57 trades &nbsp;|&nbsp; backtest: rs_backtest_scan4.csv
       </div>
     </div>
@@ -3948,9 +3948,15 @@
 
     <!-- Equity Curve -->
     <div class="section" style="margin-bottom:20px">
-      <h2>Equity Curve
-        <span class="section-label">closed trades only — starting balance $100,000</span>
-      </h2>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <h2 style="margin:0">Equity Curve
+          <span class="section-label">closed trades only &#x2014; starting balance $100,000</span>
+        </h2>
+        <span id="pt-equity-return-badge"
+            style="display:none;background:#052e16;border:1px solid #166534;color:#4ade80;
+                   padding:3px 12px;border-radius:20px;font-size:13px;font-weight:700;
+                   letter-spacing:.02em"></span>
+      </div>
       <canvas id="pt-equity-canvas" height="70"></canvas>
     </div>
 
@@ -3964,6 +3970,90 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- TAB 7: DAILY WATCHLIST -->
+  <div id="tab-watchlist" class="tab-panel">
+    <div class="section">
+      <h2>Daily Watchlist
+        <span class="section-label">PRIME = high-conviction setups &nbsp;&middot;&nbsp; WATCH = monitor &nbsp;&middot;&nbsp; COLD = low priority</span>
+      </h2>
+      <div style="text-align:center;padding:48px"><div style="font-size:15px;color:#475569;margin-bottom:12px">No watchlist data found.</div><code style="background:#0f172a;color:#94a3b8;padding:6px 14px;border-radius:6px;font-size:13px">python3 rs_candidate_scorer.py</code><div style="color:#334155;font-size:12px;margin-top:8px">Run the above to generate today's watchlist.</div></div>
+    </div>
+  </div>
+
+  <!-- TAB 8: SIGNAL QUALITY -->
+  <div id="tab-sigquality" class="tab-panel">
+    <div class="section">
+      <h2>Signal Quality
+        <span class="section-label">active signals &mdash; freshness and edge remaining</span>
+      </h2>
+      <p style="color:#475569;font-size:13px;text-align:center;padding:48px">No active signals being tracked. Signals appear here when rs_monitor.py fires them during market hours.</p>
+    </div>
+  </div>
+
+  <!-- System Status Sidebar -->
+  <div id="sys-sidebar" style="position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:300;display:flex;align-items:center">
+    <!-- Toggle tab on the left edge of the sidebar -->
+    <button id="sys-sidebar-toggle" onclick="sysToggleSidebar()"
+        style="writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+               background:#1e293b;border:1px solid #334155;border-right:none;border-radius:0 6px 6px 0;
+               color:#64748b;font-size:11px;font-weight:700;padding:10px 5px;cursor:pointer;
+               letter-spacing:.06em;text-transform:uppercase">
+      Status
+    </button>
+    <!-- Sidebar panel -->
+    <div id="sys-sidebar-panel"
+        style="background:#0f172a;border:1px solid #334155;border-right:none;border-radius:8px 0 0 8px;
+               width:220px;padding:14px;display:none;flex-direction:column;gap:10px;
+               box-shadow:-4px 0 16px rgba(0,0,0,0.4)">
+      <div style="font-size:11px;color:#475569;font-weight:700;text-transform:uppercase;
+                  letter-spacing:.06em;margin-bottom:2px">System Status</div>
+
+      <!-- Server status -->
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;color:#64748b">Server</span>
+        <span id="sbar-server" style="font-size:12px;font-weight:700;color:#64748b">Checking&#x2026;</span>
+      </div>
+
+      <!-- Heartbeat -->
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;color:#64748b">Heartbeat</span>
+        <span id="sbar-heartbeat" style="font-size:11px;color:#64748b">—</span>
+      </div>
+
+      <!-- Regime -->
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;color:#64748b">Regime</span>
+        <span id="sbar-regime" style="font-size:11px;font-weight:700;color:#64748b">—</span>
+      </div>
+
+      <div style="border-top:1px solid #1e293b;padding-top:8px;display:flex;flex-direction:column;gap:6px">
+        <!-- Signals today -->
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#64748b">Signals today</span>
+          <span id="sbar-signals" style="font-size:13px;font-weight:700;color:#f1f5f9">7</span>
+        </div>
+        <!-- Open positions -->
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#64748b">Open positions</span>
+          <span id="sbar-positions" style="font-size:13px;font-weight:700;color:#f1f5f9">0</span>
+        </div>
+        <!-- Today P&L -->
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#64748b">Daily P&amp;L</span>
+          <span id="sbar-pnl" style="font-size:13px;font-weight:700;color:#64748b">—</span>
+        </div>
+      </div>
+
+      <!-- Refresh button -->
+      <button onclick="sysRefreshStatus()"
+          style="margin-top:4px;width:100%;padding:6px;border-radius:6px;border:1px solid #334155;
+                 cursor:pointer;font-size:12px;font-weight:600;background:#1e293b;color:#94a3b8;
+                 transition:background .15s">
+        &#x21bb; Refresh
+      </button>
+    </div>
   </div>
 
   <script>
@@ -3989,10 +4079,10 @@
     }
   }
 
-  /* Keyboard shortcuts 1-6 */
+  /* Keyboard shortcuts 1-8 */
   document.addEventListener('keydown', function(e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    var tabs = ['overview','signals','analytics','backtest','candidates','paper'];
+    var tabs = ['overview','signals','analytics','backtest','candidates','paper','watchlist','sigquality'];
     var idx = parseInt(e.key) - 1;
     if (idx >= 0 && idx < tabs.length) switchTab(tabs[idx]);
   });
@@ -4665,52 +4755,92 @@
         + "</table></div>";
     };
 
-    window.ptRenderEquityCurve = function(trades) {
-      var el = document.getElementById("pt-equity-canvas");
+    function _ptDrawEquityCurve(labels, data) {
+      var el = document.getElementById('pt-equity-canvas');
       if (!el) return;
       var INITIAL = 100000.0;
-      // Trades come sorted newest-first from the API; reverse for chronological order
-      var sorted = trades.slice().reverse();
-      var labels = [];
-      var data   = [];
-      var running = INITIAL;
-      labels.push("Start");
-      data.push(INITIAL);
-      sorted.forEach(function(t) {
-        running = running + (t.pnl_dollars || 0);
-        labels.push((t.exit_time || "").substring(0,10));
-        data.push(parseFloat(running.toFixed(2)));
-      });
+      var finalVal = data.length > 0 ? data[data.length - 1] : INITIAL;
+      var retPct   = ((finalVal - INITIAL) / INITIAL * 100);
+      var badge = document.getElementById('pt-equity-return-badge');
+      if (badge) {
+        badge.style.display = '';
+        badge.textContent = 'Return: ' + (retPct >= 0 ? '+' : '') + retPct.toFixed(2) + '%';
+        badge.style.background = retPct >= 0 ? '#052e16' : '#450a0a';
+        badge.style.borderColor = retPct >= 0 ? '#166534' : '#7f1d1d';
+        badge.style.color       = retPct >= 0 ? '#4ade80' : '#f87171';
+      }
+      // Zero-reference dataset
+      var zeroLine = labels.map(function() { return INITIAL; });
       if (_ptEquityChart) {
-        _ptEquityChart.data.labels   = labels;
-        _ptEquityChart.data.datasets[0].data = data;
+        _ptEquityChart.data.labels              = labels;
+        _ptEquityChart.data.datasets[0].data    = data;
+        _ptEquityChart.data.datasets[1].data    = zeroLine;
         _ptEquityChart.update();
       } else {
         _ptEquityChart = new Chart(el, {
-          type: "line",
+          type: 'line',
           data: {
             labels: labels,
-            datasets: [{
-              data: data,
-              borderColor: "#22c55e",
-              backgroundColor: "#22c55e1a",
-              fill: true,
-              tension: 0.3,
-              pointRadius: 2,
-            }]
+            datasets: [
+              {
+                label: 'Portfolio Value',
+                data: data,
+                borderColor: '#22c55e',
+                backgroundColor: '#22c55e1a',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 2,
+                borderWidth: 2,
+              },
+              {
+                label: 'Baseline $100k',
+                data: zeroLine,
+                borderColor: '#334155',
+                borderDash: [4, 3],
+                borderWidth: 1,
+                pointRadius: 0,
+                fill: false,
+              }
+            ]
           },
           options: {
             responsive: true,
             plugins: { legend: { display: false } },
             scales: {
-              x: { ticks: { color: "#475569", maxTicksLimit: 8 }, grid: { color: "#1e293b" } },
-              y: { ticks: { color: "#475569",
-                   callback: function(v) { return "$" + v.toLocaleString(); } },
-                   grid: { color: "#334155" } }
+              x: { ticks: { color: '#475569', maxTicksLimit: 8 }, grid: { color: '#1e293b' } },
+              y: { ticks: { color: '#475569',
+                   callback: function(v) { return '$' + v.toLocaleString(); } },
+                   grid: { color: '#334155' } }
             }
           }
         });
       }
+    }
+
+    window.ptRenderEquityCurve = function(trades) {
+      var INITIAL = 100000.0;
+      // First try the dedicated /api/equity-curve endpoint
+      fetch(PT_BASE + '/api/equity-curve', {signal: AbortSignal.timeout(3000)})
+        .then(function(r) { return r.ok ? r.json() : Promise.reject('no endpoint'); })
+        .then(function(d) {
+          var labels = d.labels || [];
+          var data   = d.data   || [];
+          if (!labels.length && trades && trades.length) throw new Error('empty');
+          _ptDrawEquityCurve(labels, data);
+        })
+        .catch(function() {
+          // Fall back: compute from closed trades already loaded
+          var sorted  = (trades || []).slice().reverse();
+          var labels  = ['Start'];
+          var data    = [INITIAL];
+          var running = INITIAL;
+          sorted.forEach(function(t) {
+            running += (t.pnl_dollars || 0);
+            labels.push((t.exit_time || '').substring(0, 10));
+            data.push(parseFloat(running.toFixed(2)));
+          });
+          _ptDrawEquityCurve(labels, data);
+        });
     };
 
     window.ptSubmitTrade = function(e) {
@@ -4876,6 +5006,71 @@
       setTimeout(function() { location.reload(); }, 5 * 60 * 1000);
       document.title = "⟳ " + document.title;
     }
+  })();
+
+  /* ── System Status Sidebar ────────────────────────────────────────── */
+  (function() {
+    var _sidebarOpen = false;
+    var PT_BASE = 'http://localhost:5001';
+
+    window.sysToggleSidebar = function() {
+      _sidebarOpen = !_sidebarOpen;
+      var panel = document.getElementById('sys-sidebar-panel');
+      if (panel) panel.style.display = _sidebarOpen ? 'flex' : 'none';
+      if (_sidebarOpen) sysRefreshStatus();
+    };
+
+    window.sysRefreshStatus = function() {
+      // Pull server status from the live server badge (already polled)
+      var lbl = document.getElementById('live-label');
+      var sbarServer = document.getElementById('sbar-server');
+      if (sbarServer && lbl) {
+        var isLive = lbl.textContent === 'LIVE';
+        sbarServer.textContent = isLive ? 'ONLINE' : 'OFFLINE';
+        sbarServer.style.color = isLive ? '#22c55e' : '#ef4444';
+      }
+
+      // Pull heartbeat + regime from live server health endpoint
+      fetch(PT_BASE + '/api/health', {signal: AbortSignal.timeout(2000)})
+        .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function(h) {
+          var sbarHb = document.getElementById('sbar-heartbeat');
+          if (sbarHb) {
+            var hbTs = h.heartbeat_ts || h.ts || '';
+            if (hbTs) {
+              var d = new Date(hbTs);
+              var age = Math.round((Date.now() - d.getTime()) / 60000);
+              sbarHb.textContent = age + 'm ago';
+              sbarHb.style.color = age <= 10 ? '#22c55e' : '#ef4444';
+            } else {
+              sbarHb.textContent = 'n/a';
+            }
+          }
+          var sbarRegime = document.getElementById('sbar-regime');
+          if (sbarRegime) {
+            var regime = h.macro_regime || h.regime || 'normal';
+            sbarRegime.textContent = regime.toUpperCase();
+            sbarRegime.style.color = regime === 'risk_off' ? '#ef4444' : '#22c55e';
+          }
+          var sbarPnl = document.getElementById('sbar-pnl');
+          if (sbarPnl && h.daily_pnl != null) {
+            var pnl = parseFloat(h.daily_pnl);
+            sbarPnl.textContent = (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '%';
+            sbarPnl.style.color = pnl >= 0 ? '#22c55e' : '#ef4444';
+          }
+        })
+        .catch(function() {
+          var sbarHb = document.getElementById('sbar-heartbeat');
+          if (sbarHb) { sbarHb.textContent = 'server offline'; sbarHb.style.color = '#ef4444'; }
+        });
+    };
+
+    // Sync sidebar server indicator whenever the main live badge changes
+    var _origUpdateBadge = window._sysUpdateBadgeHook;
+    // Poll every 30s when sidebar is open
+    setInterval(function() {
+      if (_sidebarOpen) sysRefreshStatus();
+    }, 30000);
   })();
   </script>
 </body>
