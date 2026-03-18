@@ -33,7 +33,7 @@
     /* ── Tab navigation ── */
     #tab-bar {
       position: sticky;
-      top: 0;
+      top: 37px;
       z-index: 100;
       background: #0a1120;
       border-bottom: 1px solid #1e293b;
@@ -114,34 +114,29 @@
 <body>
 
   <!-- Shared site nav -->
-  <div style="background:#0f172a;border-bottom:1px solid #1e293b;padding:10px 24px;
-              display:flex;align-items:center;gap:24px;font-size:13px;font-weight:600;letter-spacing:0.3px">
-    <span style="color:#64748b;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase">DNSD</span>
-    <a href="index.html" style="color:#94a3b8;text-decoration:none;padding:4px 10px;border-radius:6px;transition:all .15s"
-       onmouseover="this.style.color='#e2e8f0';this.style.background='#1e293b'"
-       onmouseout="this.style.color='#94a3b8';this.style.background='transparent'">
-      📈 Earnings Tracker
-    </a>
-    <a href="rs.html" style="color:#e2e8f0;text-decoration:none;padding:4px 10px;border-radius:6px;background:#1e293b">
-      ⚡ RS Monitor
-    </a>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
-      <span class="badge badge-shadow">shadow</span>
-      <span class="badge badge-paper">paper</span>
-      <span id="live-server-status" class="offline" title="rs_server.py at localhost:5001">
-        <span id="live-dot">○</span>
-        <span id="live-label">OFFLINE</span>
-      </span>
-      <a id="live-server-link" href="http://localhost:5001" target="_blank">Open Live →</a>
-    </div>
-  </div>
+  <nav style="background:#0a1120;border-bottom:1px solid #1e293b;padding:8px 24px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:200">
+    <span style="color:#64748b;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;flex-shrink:0">DNSD</span>
+    <a href="home.html" style="color:#64748b;text-decoration:none;font-size:12px;font-weight:600;padding:4px 10px;border-radius:5px;transition:all .15s" onmouseover="this.style.background='#1e293b';this.style.color='#e2e8f0'" onmouseout="this.style.background='';this.style.color='#64748b'">Home</a>
+    <a href="rs.html" style="color:#e2e8f0;text-decoration:none;font-size:12px;font-weight:600;padding:4px 10px;border-radius:5px;background:#1e293b">⚡ RS Monitor</a>
+    <a href="index.html" style="color:#64748b;text-decoration:none;font-size:12px;font-weight:600;padding:4px 10px;border-radius:5px;transition:all .15s" onmouseover="this.style.background='#1e293b';this.style.color='#e2e8f0'" onmouseout="this.style.background='';this.style.color='#64748b'">📈 Earnings Tracker</a>
+    <div style="flex:1"></div>
+    <span id="nav-live-badge" style="display:none;background:#052e16;color:#4ade80;border:1px solid #166534;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700">● LIVE</span>
+    <span id="nav-ts" style="color:#334155;font-size:10px"></span>
+    <span class="badge badge-shadow">shadow</span>
+    <span class="badge badge-paper">paper</span>
+    <span id="live-server-status" class="offline" title="rs_server.py at localhost:5001">
+      <span id="live-dot">○</span>
+      <span id="live-label">OFFLINE</span>
+    </span>
+    <a id="live-server-link" href="http://localhost:5001" target="_blank">Open Live →</a>
+  </nav>
 
   <!-- Page header -->
   <div style="padding:16px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <div>
       <h1>DNSD RS Strategy — Phase 2 Dashboard</h1>
       <div style="color:#475569;font-size:12px;margin-top:4px">
-        Updated: 2026-03-17 23:08 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
+        Updated: 2026-03-17 23:13 &nbsp;|&nbsp; DB: rs_monitor.db &nbsp;|&nbsp;
         69 signals &nbsp;|&nbsp; 57 trades &nbsp;|&nbsp; backtest: rs_backtest_scan4.csv
       </div>
     </div>
@@ -3950,7 +3945,7 @@
       <h2>Equity Curve
         <span class="section-label">closed trades only — starting balance $100,000</span>
       </h2>
-      <canvas id="pt-equity-chart" height="70"></canvas>
+      <canvas id="pt-equity-canvas" height="70"></canvas>
     </div>
 
     <!-- Closed Trades Table -->
@@ -4665,7 +4660,7 @@
     };
 
     window.ptRenderEquityCurve = function(trades) {
-      var el = document.getElementById("pt-equity-chart");
+      var el = document.getElementById("pt-equity-canvas");
       if (!el) return;
       var INITIAL = 100000.0;
       // Trades come sorted newest-first from the API; reverse for chronological order
@@ -4815,6 +4810,18 @@
 
   })();  // end paper trading IIFE
 
+  /* Nav timestamp */
+  (function() {
+    function updateNavTs() {
+      var el = document.getElementById("nav-ts");
+      if (!el) return;
+      var now = new Date();
+      el.textContent = now.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+    }
+    updateNavTs();
+    setInterval(updateNavTs, 60000);
+  })();
+
   /* Live server status widget */
   (function() {
     var HEALTH_URL  = "http://localhost:5001/api/health";
@@ -4824,16 +4831,19 @@
       var dot  = document.getElementById("live-dot");
       var lbl  = document.getElementById("live-label");
       var link = document.getElementById("live-server-link");
+      var navBadge = document.getElementById("nav-live-badge");
       if (isLive) {
         el.className = "live";
         dot.textContent  = "●";
         lbl.textContent  = "LIVE";
         link.style.display = "inline";
+        if (navBadge) navBadge.style.display = "inline-block";
       } else {
         el.className = "offline";
         dot.textContent  = "○";
         lbl.textContent  = "OFFLINE";
         link.style.display = "none";
+        if (navBadge) navBadge.style.display = "none";
       }
     }
     function checkServer() {
