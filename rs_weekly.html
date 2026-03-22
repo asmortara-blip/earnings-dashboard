@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DNSD RS Strategy — Weekly Report 2026-03-16</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    h2 { font-size: 15px; font-weight: 700; color: #94a3b8; }
+    h3 { font-size: 13px; font-weight: 700; color: #64748b; }
+    tr:hover { background: rgba(255,255,255,0.03); }
+    a { color: #60a5fa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    @media (max-width: 700px) {
+      body { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav bar -->
+  <div style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:10px 16px;
+              margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+              flex-wrap:wrap;gap:8px">
+    <div style="display:flex;gap:16px;align-items:center">
+      <a href="index.html" style="color:#94a3b8;font-size:13px">Dashboard</a>
+      <span style="color:#334155">|</span>
+      <span style="color:#60a5fa;font-size:13px;font-weight:600">Weekly Report</span>
+    </div>
+    <div style="font-size:11px;color:#475569">Generated: 2026-03-22 09:02</div>
+  </div>
+
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px"><div><h1 style="font-size:22px;font-weight:700;color:#f1f5f9;margin-bottom:4px">RS Strategy — Weekly Report</h1><div style="font-size:14px;color:#64748b">Week of: <span style="color:#94a3b8;font-weight:600">Mar 16 – 22, 2026</span></div></div><div style="font-size:11px;color:#475569">Generated 2026-03-22 09:02</div></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px"><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#94a3b8;line-height:1.1">—</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Week P&L</div></div><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#f1f5f9;line-height:1.1">0</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Trades</div></div><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#94a3b8;line-height:1.1">—</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Win Rate</div></div><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#94a3b8;line-height:1.1">—</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Best Trade</div></div></div></div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Daily P&L</h2>
+    <div style="position:relative;height:200px;max-width:600px">
+      <canvas id="daily-pnl-chart"></canvas>
+    </div>
+    <script>
+    (function() {
+      var cd = {"labels": ["Mon 16", "Tue 17", "Wed 18", "Thu 19", "Fri 20"], "data": [0.0, 0.0, 0.0, 0.0, 0.0], "colors": ["rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)"]};
+      var ctx = document.getElementById('daily-pnl-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: cd.labels,
+          datasets: [{
+            label: 'Daily P&L %',
+            data: cd.data,
+            backgroundColor: cd.colors,
+            borderColor: cd.colors,
+            borderWidth: 1,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return (ctx.parsed.y >= 0 ? '+' : '') + ctx.parsed.y.toFixed(2) + '%';
+                }
+              }
+            }
+          },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 12 } } },
+            y: {
+              grid: { color: '#334155' },
+              ticks: {
+                color: '#94a3b8', font: { size: 11 },
+                callback: function(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
+              }
+            }
+          }
+        }
+      });
+    })();
+    </script></div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Trade Log</h2><p style="color:#475569;font-size:13px;text-align:center;padding:24px">No trades recorded this week.</p></div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Signal Quality Analysis</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+          Fired vs Traded
+        </h3>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Total signals</span>
+            <span style="font-weight:700;color:#f1f5f9">34</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Trades executed</span>
+            <span style="font-weight:700;color:#f1f5f9">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Fired rate</span>
+            <span style="font-weight:700;color:#60a5fa">0%</span>
+          </div>
+        </div>
+        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-top:14px;margin-bottom:10px">
+          By Confidence
+        </h3>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#22c55e;font-weight:600">HIGH signals</span>
+            <span style="color:#94a3b8">6 signals | 0 trades | WR —</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#f59e0b;font-weight:600">MEDIUM signals</span>
+            <span style="color:#94a3b8">27 signals | 0 trades | WR —</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+          Trigger Types This Week
+        </h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">press_release_positive</span><span style="font-weight:700;color:#f1f5f9">18</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">analyst_downgrade</span><span style="font-weight:700;color:#f1f5f9">5</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">sympathy_move</span><span style="font-weight:700;color:#f1f5f9">3</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">breakout_20d</span><span style="font-weight:700;color:#f1f5f9">2</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">meme_community</span><span style="font-weight:700;color:#f1f5f9">2</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">unusual_options_flow</span><span style="font-weight:700;color:#f1f5f9">2</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">analyst_upgrade_bold</span><span style="font-weight:700;color:#f1f5f9">1</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">influencer_post_high</span><span style="font-weight:700;color:#f1f5f9">1</span></div>
+      </div>
+    </div></div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Position Management</h2><p style="color:#475569;font-size:13px;text-align:center;padding:16px">No trades this week.</p></div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Upcoming Week Watchlist</h2><p style="color:#475569;font-size:12px;margin-bottom:16px">No CANDIDATE earnings in the next 7 days.</p>
+        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">
+          ApeWisdom Top Candidates
+        </h3>
+        <div style="overflow-x:auto;margin-bottom:20px">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="color:#64748b;font-size:11px;text-transform:uppercase;border-bottom:1px solid #334155">
+            <th style="padding:5px 10px;text-align:left">Rank</th>
+            <th style="padding:5px 10px;text-align:left">Ticker</th>
+            <th style="padding:5px 10px;text-align:left">Mentions</th>
+            <th style="padding:5px 10px;text-align:left">vs 24h ago</th>
+          </tr></thead>
+          <tbody style="color:#e2e8f0"><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#3</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">NVDA</td><td style="padding:6px 10px;color:#94a3b8">41</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.3x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#4</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">SMCI</td><td style="padding:6px 10px;color:#94a3b8">39</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.2x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#13</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">TSLA</td><td style="padding:6px 10px;color:#94a3b8">17</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.3x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#14</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">PLTR</td><td style="padding:6px 10px;color:#94a3b8">17</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.8x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#24</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">OPEN</td><td style="padding:6px 10px;color:#94a3b8">10</td><td style="padding:6px 10px;color:#22c55e;font-weight:600">3.3x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#35</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">MSTR</td><td style="padding:6px 10px;color:#94a3b8">8</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.7x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#38</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">CVNA</td><td style="padding:6px 10px;color:#94a3b8">7</td><td style="padding:6px 10px;color:#22c55e;font-weight:600">7.0x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#42</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">GME</td><td style="padding:6px 10px;color:#94a3b8">7</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.2x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#43</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">AMC</td><td style="padding:6px 10px;color:#94a3b8">7</td><td style="padding:6px 10px;color:#22c55e;font-weight:600">3.5x</td></tr></tbody>
+        </table>
+        </div><p style="color:#475569;font-size:12px">No open positions carrying into next week.</p></div>
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Model Health</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div>
+        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+          Model Status
+        </h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Current min_rs_score</span>
+            <span style="font-weight:700;color:#60a5fa">65 (default)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Win rate (all-time)</span>
+            <span style="font-weight:700;color:#22c55e">68.4%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Win rate (rolling 30d)</span>
+            <span style="font-weight:700;color:#22c55e">68.4%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
+            <span style="font-size:13px;color:#94a3b8">Performance trend</span>
+            <span style="font-weight:700"><span style="color:#64748b">→ stable</span></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0">
+            <span style="font-size:13px;color:#94a3b8">Cumulative P&amp;L</span>
+            <span style="font-weight:700;color:#22c55e">+141.48%</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+          Phase 3 Gate
+          <span style="background:#22c55e22;color:#22c55e;padding:2px 8px;border-radius:4px;
+            font-size:10px;font-weight:700;margin-left:6px">PASS — Auto-execution ready</span>
+        </h3>
+        <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="color:#64748b;font-size:11px;text-transform:uppercase;border-bottom:1px solid #334155">
+            <th style="padding:5px 10px;text-align:left">Metric</th>
+            <th style="padding:5px 10px;text-align:left">Current</th>
+            <th style="padding:5px 10px;text-align:left">Target</th>
+            <th style="padding:5px 10px;text-align:left">Status</th>
+          </tr></thead>
+          <tbody style="color:#e2e8f0"><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">Trades</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">57</td><td style="padding:7px 10px;color:#475569">>= 30</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">Win Rate</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">68.4%</td><td style="padding:7px 10px;color:#475569">>= 55%</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">W/L Ratio</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">1.81x</td><td style="padding:7px 10px;color:#475569">>= 1.5x</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">Max Drawdown</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">-7.58%</td><td style="padding:7px 10px;color:#475569">>= -15%</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr></tbody>
+        </table>
+        </div>
+      </div>
+    </div></div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:20px;color:#334155;font-size:11px;margin-top:10px">
+    DNSD RS Strategy — Phase 2 Shadow Mode — Generated 2026-03-22 09:02
+  </div>
+
+</body>
+</html>
