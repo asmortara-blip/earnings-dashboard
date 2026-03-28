@@ -110,7 +110,9 @@ body {
   border-radius: 0 3px 3px 0;
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
 }
-.nav-icon { width: 20px; text-align: center; flex-shrink: 0; font-size: 15px; }
+.nav-icon { width: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-muted); }
+.nav-item.active .nav-icon { color: var(--accent); }
+.nav-item:hover .nav-icon { color: var(--text-secondary); }
 .nav-label { opacity: 0; transition: opacity var(--transition); }
 .sidebar:hover .nav-label { opacity: 1; }
 .nav-shortcut {
@@ -171,6 +173,7 @@ body {
 .main {
   margin-left: 56px; padding-top: 48px;
   min-height: 100vh; width: calc(100% - 56px);
+  background-image: radial-gradient(ellipse 50% 30% at 50% 0%, rgba(59, 130, 246, 0.04), transparent 70%);
 }
 .section {
   display: none; padding: 24px;
@@ -199,7 +202,10 @@ body {
   box-shadow: var(--shadow-card);
   transition: all var(--transition);
 }
-.card:hover { border-color: rgba(255, 255, 255, 0.1); }
+.card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
 .card-header {
   font-size: 11px; font-weight: 600; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--text-muted);
@@ -492,8 +498,16 @@ select.form-input { cursor: pointer; }
 
 /* No data state */
 .empty-state {
-  text-align: center; padding: 40px 20px;
+  text-align: center; padding: 48px 24px;
   color: var(--text-muted); font-size: 13px;
+}
+.empty-state::before {
+  content: '';
+  display: block;
+  width: 48px; height: 48px; margin: 0 auto 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 </style>
 </head>
@@ -507,49 +521,49 @@ select.form-input { cursor: pointer; }
     </div>
     <div class="sidebar-nav">
       <div class="nav-item active" data-nav="command-center">
-        <span class="nav-icon">⌘</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
         <span class="nav-label">Command Center</span>
         <span class="nav-shortcut">1</span>
       </div>
       <div class="nav-item" data-nav="signals">
-        <span class="nav-icon">⚡</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
         <span class="nav-label">Signals</span>
         <span class="nav-shortcut">2</span>
       </div>
       <div class="nav-item" data-nav="portfolio">
-        <span class="nav-icon">💼</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
         <span class="nav-label">Portfolio</span>
         <span class="nav-shortcut">3</span>
       </div>
       <div class="nav-item" data-nav="analytics">
-        <span class="nav-icon">📊</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
         <span class="nav-label">Analytics</span>
         <span class="nav-shortcut">4</span>
       </div>
       <div class="nav-item" data-nav="intelligence">
-        <span class="nav-icon">🧠</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
         <span class="nav-label">Intelligence</span>
         <span class="nav-shortcut">5</span>
       </div>
       <div class="nav-item" data-nav="market">
-        <span class="nav-icon">🌐</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
         <span class="nav-label">Market</span>
         <span class="nav-shortcut">6</span>
       </div>
       <div class="nav-item" data-nav="backtest">
-        <span class="nav-icon">⏰</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
         <span class="nav-label">Backtest</span>
         <span class="nav-shortcut">7</span>
       </div>
       <div class="nav-item" data-nav="system">
-        <span class="nav-icon">⚙️</span>
+        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
         <span class="nav-label">System</span>
         <span class="nav-shortcut">8</span>
       </div>
     </div>
     <div style="padding:12px 16px;border-top:1px solid var(--border)">
       <div class="text-xs text-muted" style="white-space:nowrap;overflow:hidden">
-        <span class="sidebar-brand-text" style="opacity:0;font-size:10px">Updated 2026-03-28 01:09</span>
+        <span class="sidebar-brand-text" style="opacity:0;font-size:10px">Updated 2026-03-28 01:14</span>
       </div>
     </div>
   </nav>
@@ -2153,7 +2167,7 @@ select.form-input { cursor: pointer; }
       </div>
       <div class="card">
         <div class="card-header">Cumulative P&L</div>
-        <div style="height:250px;position:relative"><canvas id="chart-pnl"></canvas></div>
+        <div style="height:250px;position:relative"><canvas id="chart-cum-pnl"></canvas></div>
       </div>
     </div>
     
@@ -2898,7 +2912,7 @@ select.form-input { cursor: pointer; }
         </div>
     
     <div class="card mb-md">
-      <div class="card-header">Daemon Health (29/401 running)</div>
+      <div class="card-header">Daemon Health (27/401 running)</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;max-height:400px;overflow-y:auto">
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -3134,7 +3148,7 @@ select.form-input { cursor: pointer; }
         </div>
         <div class="health-pill">
           <div class="health-dot running"></div>
-          <div><div class="font-bold text-xs">dashboard</div><div class="text-xs text-muted">pid 98796</div></div>
+          <div><div class="font-bold text-xs">dashboard</div><div class="text-xs text-muted">pid 99369</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -3285,8 +3299,8 @@ select.form-input { cursor: pointer; }
           <div><div class="font-bold text-xs">gamma-squeeze</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
-          <div class="health-dot running"></div>
-          <div><div class="font-bold text-xs">gamma-squeeze-detector</div><div class="text-xs text-muted">pid 98804</div></div>
+          <div class="health-dot stopped"></div>
+          <div><div class="font-bold text-xs">gamma-squeeze-detector</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -3341,8 +3355,8 @@ select.form-input { cursor: pointer; }
           <div><div class="font-bold text-xs">intraday-pattern-library</div><div class="text-xs text-muted">pid 2141</div></div>
         </div>
         <div class="health-pill">
-          <div class="health-dot running"></div>
-          <div><div class="font-bold text-xs">intraday-pivot-tracker</div><div class="text-xs text-muted">pid 98794</div></div>
+          <div class="health-dot stopped"></div>
+          <div><div class="font-bold text-xs">intraday-pivot-tracker</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -4205,8 +4219,8 @@ select.form-input { cursor: pointer; }
           <div><div class="font-bold text-xs">smart-sizing</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
-          <div class="health-dot running"></div>
-          <div><div class="font-bold text-xs">smoke-test-extended</div><div class="text-xs text-muted">pid 98786</div></div>
+          <div class="health-dot stopped"></div>
+          <div><div class="font-bold text-xs">smoke-test-extended</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -4245,8 +4259,8 @@ select.form-input { cursor: pointer; }
           <div><div class="font-bold text-xs">strategy-advisor</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
-          <div class="health-dot stopped"></div>
-          <div><div class="font-bold text-xs">strategy-optimizer</div><div class="text-xs text-muted">stopped</div></div>
+          <div class="health-dot running"></div>
+          <div><div class="font-bold text-xs">strategy-optimizer</div><div class="text-xs text-muted">pid 98865</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -4507,12 +4521,12 @@ select.form-input { cursor: pointer; }
     </div>
     
         <div class="card mb-md">
-          <div class="card-header">Intelligence Layer (207 <span class="text-profit">green</span> / 1 <span class="text-warn">yellow</span> / 33 <span class="text-loss">red</span>)</div>
+          <div class="card-header">Intelligence Layer (201 <span class="text-profit">green</span> / 7 <span class="text-warn">yellow</span> / 33 <span class="text-loss">red</span>)</div>
           <div class="intel-grid" style="max-height:400px;overflow-y:auto">
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">advisor_briefing</div>
-              <div class="font-mono text-xs text-muted">3m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4522,12 +4536,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">alert_escalator_sent</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">alert_prioritizer</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4537,7 +4551,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">alpha_capture</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4557,12 +4571,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">apewisdom_cache</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">attribution_report</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4577,7 +4591,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">breakout_confirm</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4592,7 +4606,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">candidate_lifecycle</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4600,9 +4614,9 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">candidate_ranking</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">13m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4642,12 +4656,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">composite_intelligence</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">consensus</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4687,17 +4701,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">daily_watchlist</div>
-              <div class="font-mono text-xs text-muted">999m</div>
+              <div class="font-mono text-xs text-muted">1004m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">daily_watchlist_v2</div>
-              <div class="font-mono text-xs text-muted">999m</div>
+              <div class="font-mono text-xs text-muted">1004m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">data_quality</div>
-              <div class="font-mono text-xs text-muted">1030m</div>
+              <div class="font-mono text-xs text-muted">1034m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4712,12 +4726,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">discoveries</div>
-              <div class="font-mono text-xs text-muted">669m</div>
+              <div class="font-mono text-xs text-muted">674m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">discovery_history</div>
-              <div class="font-mono text-xs text-muted">669m</div>
+              <div class="font-mono text-xs text-muted">674m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4747,17 +4761,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">earnings_cache</div>
-              <div class="font-mono text-xs text-muted">2466m</div>
+              <div class="font-mono text-xs text-muted">2472m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">earnings_calendar</div>
-              <div class="font-mono text-xs text-muted">1030m</div>
+              <div class="font-mono text-xs text-muted">1034m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">earnings_drift</div>
-              <div class="font-mono text-xs text-muted">489m</div>
+              <div class="font-mono text-xs text-muted">494m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4772,7 +4786,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">entry_checklist</div>
-              <div class="font-mono text-xs text-muted">6m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4797,7 +4811,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">exec_timing_v2</div>
-              <div class="font-mono text-xs text-muted">614m</div>
+              <div class="font-mono text-xs text-muted">619m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4805,9 +4819,9 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">execution_tracker</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">14m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4817,7 +4831,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">exit_optimizer</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4827,12 +4841,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">false_signals</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">feature_store</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4857,7 +4871,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">freq_optimization</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4867,7 +4881,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">gamma_squeeze</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4877,7 +4891,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">gap_momentum</div>
-              <div class="font-mono text-xs text-muted">686m</div>
+              <div class="font-mono text-xs text-muted">691m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4892,7 +4906,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">health_report</div>
-              <div class="font-mono text-xs text-muted">999m</div>
+              <div class="font-mono text-xs text-muted">1004m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4902,7 +4916,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">hold_period_optimizer</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4917,7 +4931,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_flow</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4927,7 +4941,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_momentum</div>
-              <div class="font-mono text-xs text-muted">648m</div>
+              <div class="font-mono text-xs text-muted">653m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4952,12 +4966,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_score</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_score_history</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4967,7 +4981,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">liquidity_events</div>
-              <div class="font-mono text-xs text-muted">611m</div>
+              <div class="font-mono text-xs text-muted">616m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4977,7 +4991,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">live_pnl</div>
-              <div class="font-mono text-xs text-muted">605m</div>
+              <div class="font-mono text-xs text-muted">610m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -4987,7 +5001,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">live_state</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5002,7 +5016,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">market_open</div>
-              <div class="font-mono text-xs text-muted">29m</div>
+              <div class="font-mono text-xs text-muted">34m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5012,12 +5026,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">ml_pipeline</div>
-              <div class="font-mono text-xs text-muted">3098m</div>
+              <div class="font-mono text-xs text-muted">3103m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5032,7 +5046,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum_divergence</div>
-              <div class="font-mono text-xs text-muted">580m</div>
+              <div class="font-mono text-xs text-muted">585m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5052,12 +5066,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum_regime</div>
-              <div class="font-mono text-xs text-muted">3m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum_scanner_v2</div>
-              <div class="font-mono text-xs text-muted">612m</div>
+              <div class="font-mono text-xs text-muted">617m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5127,7 +5141,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">overnight_risk</div>
-              <div class="font-mono text-xs text-muted">561m</div>
+              <div class="font-mono text-xs text-muted">566m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5137,12 +5151,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">pattern_library</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">pattern_success</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5157,7 +5171,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">portfolio_rebalance</div>
-              <div class="font-mono text-xs text-muted">910m</div>
+              <div class="font-mono text-xs text-muted">914m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5207,7 +5221,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">premarket_brief_v2</div>
-              <div class="font-mono text-xs text-muted">979m</div>
+              <div class="font-mono text-xs text-muted">984m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5237,7 +5251,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">quality_history</div>
-              <div class="font-mono text-xs text-muted">3m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5247,7 +5261,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_calendar</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5257,7 +5271,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_predictor</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5267,7 +5281,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_signal_filter</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5277,7 +5291,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_transition_score</div>
-              <div class="font-mono text-xs text-muted">668m</div>
+              <div class="font-mono text-xs text-muted">673m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5292,7 +5306,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">replay_baseline</div>
-              <div class="font-mono text-xs text-muted">168m</div>
+              <div class="font-mono text-xs text-muted">173m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5302,12 +5316,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">risk_state</div>
-              <div class="font-mono text-xs text-muted">600m</div>
+              <div class="font-mono text-xs text-muted">605m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">scanner_dashboard</div>
-              <div class="font-mono text-xs text-muted">984m</div>
+              <div class="font-mono text-xs text-muted">990m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5320,9 +5334,9 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">score_history</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">14m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5335,19 +5349,19 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">score_trends</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">14m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_history</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_leaders</div>
-              <div class="font-mono text-xs text-muted">580m</div>
+              <div class="font-mono text-xs text-muted">585m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5357,7 +5371,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_pulse</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5372,7 +5386,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sentiment_spike</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5387,32 +5401,32 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260325</div>
-              <div class="font-mono text-xs text-muted">3010m</div>
+              <div class="font-mono text-xs text-muted">3016m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260326</div>
-              <div class="font-mono text-xs text-muted">1571m</div>
+              <div class="font-mono text-xs text-muted">1576m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260327</div>
-              <div class="font-mono text-xs text-muted">135m</div>
+              <div class="font-mono text-xs text-muted">140m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260328</div>
-              <div class="font-mono text-xs text-muted">6m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_profile</div>
-              <div class="font-mono text-xs text-muted">6m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_summary</div>
-              <div class="font-mono text-xs text-muted">6m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5427,7 +5441,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">si_velocity</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">9m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5442,7 +5456,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_attribution</div>
-              <div class="font-mono text-xs text-muted">474m</div>
+              <div class="font-mono text-xs text-muted">479m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5450,14 +5464,14 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_correlator</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">14m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_digest</div>
-              <div class="font-mono text-xs text-muted">504m</div>
+              <div class="font-mono text-xs text-muted">509m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5467,7 +5481,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_heatmap</div>
-              <div class="font-mono text-xs text-muted">504m</div>
+              <div class="font-mono text-xs text-muted">509m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5492,7 +5506,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_replay</div>
-              <div class="font-mono text-xs text-muted">1052m</div>
+              <div class="font-mono text-xs text-muted">1057m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5512,7 +5526,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">social_acceleration</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">2m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5552,12 +5566,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">stress_test</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">support_resistance</div>
-              <div class="font-mono text-xs text-muted">3m</div>
+              <div class="font-mono text-xs text-muted">2m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5587,7 +5601,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">ticker_sentiment</div>
-              <div class="font-mono text-xs text-muted">6m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5615,9 +5629,9 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">trigger_confidence</div>
-              <div class="font-mono text-xs text-muted">9m</div>
+              <div class="font-mono text-xs text-muted">14m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5657,12 +5671,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">volume_profile_intraday</div>
-              <div class="font-mono text-xs text-muted">611m</div>
+              <div class="font-mono text-xs text-muted">616m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">volume_surge</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5677,7 +5691,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">watchlist_builder</div>
-              <div class="font-mono text-xs text-muted">8m</div>
+              <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5697,12 +5711,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">weekly_stats</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">win_prob</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5746,6 +5760,74 @@ select.form-input { cursor: pointer; }
 <script>
 
 'use strict';
+
+// --- Charts (must be defined before Nav calls Charts.init) ---
+const Charts = (() => {
+  const initialized = {};
+  const chartOpts = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#475569', maxTicksLimit: 10, font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+      y: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } }
+    }
+  };
+
+  function makeChart(id, type, labels, datasets, extraOpts) {
+    const el = document.getElementById(id);
+    if (!el || !labels.length) return;
+    const opts = JSON.parse(JSON.stringify(chartOpts));
+    Object.assign(opts, extraOpts || {});
+    new Chart(el, { type, data: { labels, datasets }, options: opts });
+  }
+
+  function init(section) {
+    if (initialized[section]) return;
+    try {
+      if (section === 'analytics') {
+        const pnlData = JSON.parse(document.getElementById('chart-pnl-data').textContent);
+        makeChart('chart-cum-pnl', 'line', pnlData.labels, [{
+          data: pnlData.data, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)',
+          fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#3b82f6',
+          borderWidth: 2, pointHoverRadius: 6
+        }]);
+
+        const wrData = JSON.parse(document.getElementById('chart-wr-data').textContent);
+        makeChart('chart-rolling-wr', 'line', wrData.labels, [
+          { data: wrData.data, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)', fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 },
+          { data: wrData.labels.map(() => wrData.target), borderColor: '#ef4444', borderDash: [6, 4], pointRadius: 0, fill: false, borderWidth: 1.5 }
+        ], { scales: { ...chartOpts.scales, y: { ...chartOpts.scales.y, min: 0, max: 100 } } });
+
+        const tickerData = JSON.parse(document.getElementById('chart-ticker-data').textContent);
+        makeChart('chart-ticker-pnl', 'bar', tickerData.labels, [
+          { data: tickerData.data, backgroundColor: tickerData.colors, borderRadius: 6, barThickness: 18 }
+        ], { indexAxis: 'y' });
+
+        const distData = JSON.parse(document.getElementById('chart-score-dist-data').textContent);
+        makeChart('chart-score-dist', 'bar', distData.labels, [
+          { data: distData.data, backgroundColor: distData.colors, borderRadius: 6 }
+        ]);
+      }
+      if (section === 'portfolio') {
+        const eqData = JSON.parse(document.getElementById('chart-equity-data').textContent);
+        makeChart('chart-equity', 'line', eqData.labels, [{
+          data: eqData.data, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)',
+          fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2
+        }], { scales: { ...chartOpts.scales, y: { ...chartOpts.scales.y, ticks: { ...chartOpts.scales.y.ticks, callback: v => '$' + v.toLocaleString() } } } });
+      }
+      if (section === 'backtest') {
+        const btData = JSON.parse(document.getElementById('chart-bt-pnl-data').textContent);
+        makeChart('chart-bt-pnl', 'line', btData.labels, [{
+          data: btData.data, borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.08)',
+          fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2
+        }]);
+      }
+    } catch(e) { console.warn('Chart init error for ' + section, e); }
+    initialized[section] = true;
+  }
+
+  return { init };
+})();
 
 // --- Navigation ---
 const Nav = (() => {
@@ -5989,95 +6071,7 @@ const SSE = (() => {
   return { connect };
 })();
 
-// --- Charts (lazy init) ---
-const Charts = (() => {
-  const initialized = {};
-
-  function init(section) {
-    if (initialized[section]) return;
-
-    if (section === 'analytics' || section === 'command-center') {
-      try {
-        const pnlData = JSON.parse(document.getElementById('chart-pnl-data').textContent);
-        if (pnlData.labels.length > 0) {
-          new Chart(document.getElementById('chart-pnl'), {
-            type: 'line',
-            data: { labels: pnlData.labels, datasets: [{ data: pnlData.data, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3, pointRadius: 2 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: true, ticks: { color: '#475569', maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { ticks: { color: '#475569' }, grid: { color: 'rgba(255,255,255,0.03)' } } } }
-          });
-        }
-      } catch(e) {}
-    }
-
-    if (section === 'analytics') {
-      try {
-        const wrData = JSON.parse(document.getElementById('chart-wr-data').textContent);
-        if (wrData.labels.length > 0) {
-          new Chart(document.getElementById('chart-rolling-wr'), {
-            type: 'line',
-            data: { labels: wrData.labels, datasets: [
-              { data: wrData.data, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3, pointRadius: 2 },
-              { data: wrData.labels.map(() => wrData.target), borderColor: '#ef4444', borderDash: [5, 5], pointRadius: 0, fill: false }
-            ]},
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#475569', maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { min: 0, max: 100, ticks: { color: '#475569' }, grid: { color: 'rgba(255,255,255,0.03)' } } } }
-          });
-        }
-      } catch(e) {}
-
-      try {
-        const tickerData = JSON.parse(document.getElementById('chart-ticker-data').textContent);
-        if (tickerData.labels.length > 0) {
-          new Chart(document.getElementById('chart-ticker-pnl'), {
-            type: 'bar',
-            data: { labels: tickerData.labels, datasets: [{ data: tickerData.data, backgroundColor: tickerData.colors, borderRadius: 4 }] },
-            options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#475569' }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { ticks: { color: '#94a3b8', font: { family: "'JetBrains Mono'" } }, grid: { display: false } } } }
-          });
-        }
-      } catch(e) {}
-
-      try {
-        const distData = JSON.parse(document.getElementById('chart-score-dist-data').textContent);
-        if (distData.labels.length > 0) {
-          new Chart(document.getElementById('chart-score-dist'), {
-            type: 'bar',
-            data: { labels: distData.labels, datasets: [{ data: distData.data, backgroundColor: distData.colors, borderRadius: 4 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#475569' }, grid: { color: 'rgba(255,255,255,0.03)' } } } }
-          });
-        }
-      } catch(e) {}
-    }
-
-    if (section === 'portfolio') {
-      try {
-        const eqData = JSON.parse(document.getElementById('chart-equity-data').textContent);
-        if (eqData.labels.length > 1) {
-          new Chart(document.getElementById('chart-equity'), {
-            type: 'line',
-            data: { labels: eqData.labels, datasets: [{ data: eqData.data, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.3, pointRadius: 2 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#475569', maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { ticks: { color: '#475569', callback: v => '$' + v.toLocaleString() }, grid: { color: 'rgba(255,255,255,0.03)' } } } }
-          });
-        }
-      } catch(e) {}
-    }
-
-    if (section === 'backtest') {
-      try {
-        const btData = JSON.parse(document.getElementById('chart-bt-pnl-data').textContent);
-        if (btData.labels.length > 0) {
-          new Chart(document.getElementById('chart-bt-pnl'), {
-            type: 'line',
-            data: { labels: btData.labels, datasets: [{ data: btData.data, borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true, tension: 0.3, pointRadius: 2 }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#475569', maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { ticks: { color: '#475569' }, grid: { color: 'rgba(255,255,255,0.03)' } } } }
-          });
-        }
-      } catch(e) {}
-    }
-
-    initialized[section] = true;
-  }
-
-  return { init };
-})();
+// Charts already defined above Nav
 
 // --- Paper Trading ---
 const PaperTrading = (() => {
