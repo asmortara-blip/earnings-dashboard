@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital -- Executive Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #fafaf8;
+  --ink: #1a1a1a;
+  --green: #0a7c42;
+  --red: #c41e1e;
+  --navy: #1e3a5f;
+  --rule: #d4d0c8;
+  --muted: #6b6760;
+  --light-green: rgba(10, 124, 66, 0.08);
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 11px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== NAV BAR (hidden in print) ===== */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--rule);
+  font-size: 11px;
+  font-family: var(--sans);
+}
+.nav-bar a {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 5px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.nav-bar a:hover { background: #f0f0f0; color: var(--ink); }
+.nav-bar .spacer { flex: 1; }
+.nav-bar button {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 6px 16px;
+  border: 1px solid var(--navy);
+  border-radius: 4px;
+  background: var(--navy);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nav-bar button:hover { background: #142d4d; }
+
+/* ===== PAGE ===== */
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 28px 32px 20px;
+  background: var(--cream);
+}
+
+/* ===== MASTHEAD ===== */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+.masthead-left h1 {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.masthead-left .subtitle {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.masthead-right {
+  text-align: right;
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.masthead-right .quarter {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.confidential-rule {
+  text-align: center;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--rule);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 3px 0;
+  margin: 8px 0 14px;
+}
+
+/* ===== METRIC CARDS ===== */
+.metrics-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.metric-card {
+  flex: 1;
+  text-align: center;
+  padding: 10px 6px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: #fff;
+}
+.metric-card .value {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.metric-card .value.green { color: var(--green); }
+.metric-card .value.red { color: var(--red); }
+.metric-card .value.navy { color: var(--navy); }
+.metric-card .label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ===== SECTION RULE ===== */
+.section-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 12px 0;
+}
+
+/* ===== EQUITY CHART ===== */
+.chart-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.chart-wrap {
+  height: 90px;
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 6px 8px 2px;
+}
+
+/* ===== TWO-COLUMN TABLES ===== */
+.two-col {
+  display: flex;
+  gap: 20px;
+}
+.two-col .col { flex: 1; }
+.col-header {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--rule);
+}
+.brief-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+.brief-table td {
+  padding: 2px 0;
+  vertical-align: top;
+}
+.brief-table .tk {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 10px;
+  width: 50px;
+}
+.brief-table .wr {
+  font-family: var(--mono);
+  font-weight: 600;
+  text-align: right;
+  width: 40px;
+}
+.brief-table .pnl {
+  font-family: var(--mono);
+  font-weight: 500;
+  text-align: right;
+  width: 55px;
+}
+.brief-table .cnt {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  text-align: right;
+  width: 30px;
+}
+.brief-table .trigger-name {
+  font-size: 9px;
+  font-weight: 500;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== MARKET ENV + GATES ===== */
+.env-label {
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.env-value {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+.gate-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  padding: 1px 0;
+}
+.gate-check {
+  font-size: 11px;
+  width: 16px;
+  text-align: center;
+}
+.gate-check.pass { color: var(--green); }
+.gate-check.fail { color: var(--red); }
+.gate-label { flex: 1; font-weight: 500; }
+.gate-val {
+  font-family: var(--mono);
+  font-weight: 600;
+  text-align: right;
+  min-width: 55px;
+}
+
+/* ===== RECOMMENDATIONS ===== */
+.recs-header {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.rec-item {
+  font-size: 10px;
+  padding: 2px 0;
+  padding-left: 14px;
+  text-indent: -14px;
+}
+.rec-item .num {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 9px;
+}
+
+/* ===== FOOTER ===== */
+.footer-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 10px 0 6px;
+}
+.footer {
+  text-align: center;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rule);
+}
+
+/* ===== PRINT ===== */
+@media print {
+  @page { size: letter; margin: 0.5in; }
+  .nav-bar { display: none !important; }
+  body { background: white; }
+  .page { padding: 0; max-width: 100%; }
+  .metric-card { border-color: #ccc; }
+  .chart-wrap { border-color: #ccc; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV BAR (hidden in print) -->
+<div class="nav-bar">
+  <a href="report.html">&#8592; Full Report</a>
+  <a href="rs.html">&#8592; RS Dashboard</a>
+  <span class="spacer"></span>
+  <button onclick="window.print()">Download as PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <h1>DNSD Capital</h1>
+      <div class="subtitle">RS Momentum Strategy &mdash; Executive Brief</div>
+    </div>
+    <div class="masthead-right">
+      <div>%B %d, %Y</div>
+      <div class="quarter">Q1'%y</div>
+    </div>
+  </div>
+  <div class="confidential-rule">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; CONFIDENTIAL &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</div>
+
+  <!-- PRIMARY METRICS -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="value green">67.2%</div>
+      <div class="label">Win Rate</div>
+    </div>
+    <div class="metric-card">
+      <div class="value green">+135.99%</div>
+      <div class="label">Total P&amp;L</div>
+    </div>
+    <div class="metric-card">
+      <div class="value navy">7.04</div>
+      <div class="label">Sharpe</div>
+    </div>
+    <div class="metric-card">
+      <div class="value red">-13.67%</div>
+      <div class="label">Max DD</div>
+    </div>
+  </div>
+
+  <!-- SECONDARY METRICS -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="value navy">1.72x</div>
+      <div class="label">W/L Ratio</div>
+    </div>
+    <div class="metric-card">
+      <div class="value green">$355,876</div>
+      <div class="label">NAV</div>
+    </div>
+    <div class="metric-card">
+      <div class="value navy">58 trades</div>
+      <div class="label">Phase 3</div>
+    </div>
+  </div>
+
+  <!-- EQUITY CURVE -->
+  <hr class="section-rule">
+  <div class="chart-label">Equity Curve</div>
+  <div class="chart-wrap">
+    <canvas id="equityChart"></canvas>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- TOP PERFORMERS + TRIGGER PERFORMANCE -->
+  <div class="two-col">
+    <div class="col">
+      <div class="col-header">Top Performers</div>
+      <table class="brief-table">
+        <tr><td class="tk">WOLF</td><td class="wr">100.0%%</td><td class="pnl" style="color:var(--green)">+1.59%%</td><td class="cnt">6t</td></tr>
+        <tr><td class="tk">HIMS</td><td class="wr">100.0%%</td><td class="pnl" style="color:var(--green)">+8.81%%</td><td class="cnt">5t</td></tr>
+        <tr><td class="tk">RIOT</td><td class="wr">100.0%%</td><td class="pnl" style="color:var(--green)">+2.98%%</td><td class="cnt">4t</td></tr>
+        <tr><td class="tk">APP</td><td class="wr">100.0%%</td><td class="pnl" style="color:var(--green)">+4.58%%</td><td class="cnt">2t</td></tr>
+        <tr><td class="tk">RIVN</td><td class="wr">100.0%%</td><td class="pnl" style="color:var(--green)">+5.16%%</td><td class="cnt">1t</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <div class="col-header">Trigger Performance</div>
+      <table class="brief-table">
+        <tr><td class="trigger-name">press rel pos.</td><td class="wr">71%%</td><td class="pnl" style="color:var(--green)">+1.78%%</td></tr>
+        <tr><td class="trigger-name">meme comm</td><td class="wr">50%%</td><td class="pnl" style="color:var(--green)">+1.02%%</td></tr>
+        <tr><td class="trigger-name">analyst upgra.</td><td class="wr">60%%</td><td class="pnl" style="color:var(--green)">+4.56%%</td></tr>
+        <tr><td class="trigger-name">influencer po.</td><td class="wr">75%%</td><td class="pnl" style="color:var(--green)">+7.51%%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- MARKET ENVIRONMENT + PHASE 4 GATES -->
+  <div class="two-col">
+    <div class="col">
+      <div class="col-header">Market Environment</div>
+      <div style="padding:2px 0">
+        <span class="env-label">VIX:</span>
+        <span class="env-value">31.1</span>
+        &nbsp;&nbsp;
+        <span class="env-label">Regime:</span>
+        <span class="env-value">NORMAL</span>
+      </div>
+      <div style="padding:2px 0">
+        <span class="env-label">SPY:</span>
+        <span class="env-value">N/A</span>
+        &nbsp;&nbsp;
+        <span class="env-label">Mult:</span>
+        <span class="env-value">N/A</span>
+      </div>
+      <div style="padding:2px 0">
+        <span class="env-label">Status:</span>
+        <span class="env-value">N/A</span>
+      </div>
+    </div>
+    <div class="col">
+      <div class="col-header">Phase 4 Gates</div>
+      <div class="gate-row"><span class="gate-check pass">&#10003;</span><span class="gate-label">Trades >= 50</span><span class="gate-val">58</span></div>
+      <div class="gate-row"><span class="gate-check pass">&#10003;</span><span class="gate-label">WR >= 55%%</span><span class="gate-val">67.2%</span></div>
+      <div class="gate-row"><span class="gate-check pass">&#10003;</span><span class="gate-label">W/L >= 1.5x</span><span class="gate-val">1.72x</span></div>
+      <div class="gate-row"><span class="gate-check pass">&#10003;</span><span class="gate-label">DD >= -15%%</span><span class="gate-val">-13.67%</span></div>
+      <div class="gate-row"><span class="gate-check pass">&#10003;</span><span class="gate-label">Sharpe > 1</span><span class="gate-val">7.04</span></div>
+    </div>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- KEY RECOMMENDATIONS -->
+  <div class="recs-header">Key Recommendations</div>
+  <div class="rec-item"><span class="num">1.</span> Redistribute SL weight (15%%) to SV/SA -- StockTwits 403 makes SL dead weight</div>
+  <div class="rec-item"><span class="num">2.</span> Validate through risk_off macro regime before Phase 4 go-live</div>
+  <div class="rec-item"><span class="num">3.</span> Reduce top-3 ticker concentration (41%% of trades)</div>
+
+  <!-- FOOTER -->
+  <hr class="footer-rule">
+  <div class="footer">Proprietary &amp; Confidential &mdash; DNSD Capital</div>
+
+</div>
+
+<!-- CHART.JS -->
+<script>
+(function() {
+  var data = [100000, 99530.0, 101789.33, 106817.72, 106369.09, 109485.7, 116153.38, 110740.64, 107861.38, 104830.47, 103415.26, 100271.44, 101675.24, 101319.38, 106223.23, 106956.17, 108143.39, 110717.2, 108613.57, 110536.03, 108424.8, 118302.29, 126772.74, 118976.21, 121189.17, 121249.77, 116411.9, 124909.97, 128744.71, 132632.8, 128401.81, 129030.98, 143456.64, 157888.38, 193365.9, 189730.62, 199520.72, 196128.87, 188087.59, 195084.44, 209462.17, 225527.91, 223543.27, 227321.15, 227821.26, 238916.15, 222192.02, 231946.25, 246767.62, 250641.87, 261619.98, 276820.1, 277346.06, 292849.71, 308663.59, 314096.07, 320911.95, 376570.28, 355875.86];
+  var ctx = document.getElementById('equityChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(function(_, i) { return i; }),
+      datasets: [{
+        data: data,
+        borderColor: '#0a7c42',
+        backgroundColor: 'rgba(10, 124, 66, 0.08)',
+        borderWidth: 1.5,
+        fill: true,
+        pointRadius: 0,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: {
+        x: { display: false },
+        y: {
+          display: false,
+          beginAtZero: false
+        }
+      },
+      animation: false
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
