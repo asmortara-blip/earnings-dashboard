@@ -66,6 +66,66 @@
     transition: background 0.15s;
   }
   .pdf-btn:hover { background: rgba(255,255,255,0.25); }
+  .btn-generate {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-generate:hover { background: rgba(255,255,255,0.25); }
+  .btn-generate:disabled { opacity: 0.6; cursor: default; }
+
+  /* --- DIFF INDICATORS --- */
+  .diff-cell { text-align: center; font-size: 12px; }
+  .diff-new {
+    background: #0a3d7c; color: #fff; font-size: 9px; font-weight: 700;
+    letter-spacing: 1px; padding: 2px 6px; border-radius: 2px;
+  }
+  .diff-up { color: #0a6e38; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .diff-down { color: #b91c1c; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .diff-same { color: #999; font-size: 14px; }
+
+  /* --- HISTORY SECTION --- */
+  .history-section { margin: 40px auto; }
+  .hist-entry {
+    background: #fff; border: 1px solid #e0ddd8; border-radius: 4px;
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .hist-entry[open] summary { border-bottom: 1px solid #e0ddd8; }
+  .hist-date-header {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+    color: #0a3d7c; padding: 12px 20px; cursor: pointer;
+    background: #f7f6f3; list-style: none;
+  }
+  .hist-date-header::-webkit-details-marker { display: none; }
+  .hist-date-header::before { content: '\25B6  '; font-size: 10px; }
+  details[open] > .hist-date-header::before { content: '\25BC  '; }
+  .hist-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .hist-table thead th {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: #888; background: #fafaf8;
+    padding: 8px 16px; text-align: left; border-bottom: 1px solid #e0ddd8;
+  }
+  .hist-table tbody td {
+    padding: 8px 16px; font-size: 12px; border-bottom: 1px solid #f0eeeb;
+  }
+  .hist-table tbody tr:nth-child(even) { background: #fdfcf9; }
+  .hist-new-badge {
+    background: #0a3d7c; color: #fff; font-size: 8px; font-weight: 700;
+    letter-spacing: 1px; padding: 1px 5px; border-radius: 2px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .hist-dropped {
+    padding: 8px 20px; font-size: 11px; color: #888;
+    border-top: 1px solid #f0eeeb;
+  }
 
   /* --- MASTHEAD --- */
   .masthead {
@@ -528,6 +588,7 @@
   </div>
   <div class="nav-right">
     <span class="conf-badge">Confidential</span>
+    <button class="btn-generate" onclick="generatePicks()">Generate New Report</button>
     <a href="javascript:window.print()" class="pdf-btn">Download as PDF</a>
   </div>
 </div>
@@ -538,7 +599,7 @@
   <h1>Top 10 Stock Recommendations</h1>
   <div class="subtitle">DNSD Capital &bull; Retail Sentiment Strategy</div>
   <div class="rule"></div>
-  <div class="date-line">2026-03-29 01:35 ET</div>
+  <div class="date-line">2026-03-29 01:40 ET</div>
 </div>
 
 <!-- EXECUTIVE SUMMARY -->
@@ -569,19 +630,20 @@
           <th>Hist WR</th>
           <th>Trades</th>
           <th>Avg P&amp;L</th>
+          <th style="text-align:center">Changes</th>
         </tr>
       </thead>
       <tbody>
-<tr><td class='rank-num'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>83.3</td><td class='mono'>70</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>5</td><td class='mono' style='color:#0a6e38'>+8.81%</td></tr>
-<tr><td class='rank-num'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td class='mono'>68</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+2.98%</td></tr>
-<tr><td class='rank-num'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td class='mono'>57</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>1</td><td class='mono' style='color:#0a6e38'>+5.16%</td></tr>
-<tr><td class='rank-num'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td class='mono'>48</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>2</td><td class='mono' style='color:#0a6e38'>+4.58%</td></tr>
-<tr><td class='rank-num'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td class='mono'>52</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>6</td><td class='mono' style='color:#0a6e38'>+1.59%</td></tr>
-<tr><td class='rank-num'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td class='mono'>55</td><td class='mono'>100</td><td class='mono'>75.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+2.01%</td></tr>
-<tr><td class='rank-num'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td class='mono'>56</td><td class='mono'>98</td><td class='mono'>75.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+1.97%</td></tr>
-<tr><td class='rank-num'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td class='mono'>65</td><td class='mono'>100</td><td class='mono'>63.6%</td><td class='mono'>11</td><td class='mono' style='color:#0a6e38'>+1.39%</td></tr>
-<tr><td class='rank-num'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td class='mono'>79</td><td class='mono'>100</td><td class='mono'>42.9%</td><td class='mono'>7</td><td class='mono' style='color:#0a6e38'>+3.84%</td></tr>
-<tr><td class='rank-num'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td class='mono'>61</td><td class='mono'>100</td><td class='mono'>60.0%</td><td class='mono'>5</td><td class='mono' style='color:#0a6e38'>+0.90%</td></tr>
+<tr><td class='rank-num'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>83.3</td><td class='mono'>70</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>5</td><td class='mono' style='color:#0a6e38'>+8.81%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td class='mono'>68</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+2.98%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td class='mono'>57</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>1</td><td class='mono' style='color:#0a6e38'>+5.16%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td class='mono'>48</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>2</td><td class='mono' style='color:#0a6e38'>+4.58%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td class='mono'>52</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>6</td><td class='mono' style='color:#0a6e38'>+1.59%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td class='mono'>55</td><td class='mono'>100</td><td class='mono'>75.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+2.01%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td class='mono'>56</td><td class='mono'>98</td><td class='mono'>75.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+1.97%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td class='mono'>65</td><td class='mono'>100</td><td class='mono'>63.6%</td><td class='mono'>11</td><td class='mono' style='color:#0a6e38'>+1.39%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td class='mono'>79</td><td class='mono'>100</td><td class='mono'>42.9%</td><td class='mono'>7</td><td class='mono' style='color:#0a6e38'>+3.84%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
+<tr><td class='rank-num'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td class='mono'>61</td><td class='mono'>100</td><td class='mono'>60.0%</td><td class='mono'>5</td><td class='mono' style='color:#0a6e38'>+0.90%</td><td class='diff-cell'><span class="diff-same">&mdash;</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -1376,6 +1438,77 @@
 
   </div>
 
+  <!-- HISTORICAL RECOMMENDATIONS -->
+  <div class="history-section">
+    <h2 class="section-heading">Historical Recommendations</h2>
+
+<details class="hist-entry" open>
+  <summary class="hist-date-header">2026-03-29 01:40</summary>
+  <table class="hist-table">
+    <thead>
+      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
+    </thead>
+    <tbody>
+<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>83.3</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +8.8%</td></tr>
+<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
+<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
+<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
+<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
+    </tbody>
+  </table>
+  
+</details>
+
+<details class="hist-entry">
+  <summary class="hist-date-header">2026-03-29 01:39</summary>
+  <table class="hist-table">
+    <thead>
+      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
+    </thead>
+    <tbody>
+<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>83.3</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +8.8%</td></tr>
+<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
+<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
+<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
+<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
+    </tbody>
+  </table>
+  
+</details>
+
+<details class="hist-entry">
+  <summary class="hist-date-header">2026-03-29 01:39</summary>
+  <table class="hist-table">
+    <thead>
+      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
+    </thead>
+    <tbody>
+<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>83.3</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +8.8%</td></tr>
+<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
+<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
+<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
+<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
+    </tbody>
+  </table>
+  
+</details>
+  </div>
+
   <!-- METHODOLOGY -->
   <div class="methodology">
     <h2>Methodology</h2>
@@ -1421,7 +1554,7 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <strong>PROPRIETARY &amp; CONFIDENTIAL</strong> &mdash; DNSD Capital &bull; Generated 2026-03-29 01:35 ET
+  <strong>PROPRIETARY &amp; CONFIDENTIAL</strong> &mdash; DNSD Capital &bull; Generated 2026-03-29 01:40 ET
 </div>
 
 <!-- CHART INITIALIZATION -->
@@ -1474,6 +1607,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+</script>
+
+<script>
+function generatePicks() {
+  var btn = document.querySelector('.btn-generate');
+  var orig = btn.innerHTML;
+  btn.innerHTML = 'Generating...';
+  btn.disabled = true;
+  fetch('http://localhost:5001/api/generate-picks', {method: 'POST', signal: AbortSignal.timeout(125000)})
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.status === 'ok') {
+        btn.innerHTML = 'Done! Reloading...';
+        setTimeout(function() { location.reload(); }, 1500);
+      } else {
+        btn.innerHTML = 'Failed';
+        setTimeout(function() { btn.innerHTML = orig; btn.disabled = false; }, 3000);
+      }
+    })
+    .catch(function() {
+      btn.innerHTML = 'API Offline';
+      setTimeout(function() { btn.innerHTML = orig; btn.disabled = false; }, 3000);
+    });
+}
 </script>
 
 </body>
