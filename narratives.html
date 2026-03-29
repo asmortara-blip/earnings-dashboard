@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DNSD Capital — Trade Journal &amp; Narratives</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f5f0e8;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fafaf8;
     color: #2c2c2c;
     line-height: 1.6;
   }
 
   /* --- NAV BAR --- */
   .nav-bar {
-    background: #1a1a2e;
+    background: #fafaf8;
     padding: 10px 32px;
     display: flex;
     justify-content: space-between;
@@ -26,10 +26,10 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 2px solid #c9a96e;
+    border-bottom: 2px solid #0a3d7c;
   }
   .nav-bar a {
-    color: #c9a96e;
+    color: #0a3d7c;
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
@@ -38,16 +38,16 @@
     border-radius: 4px;
     transition: background 0.2s;
   }
-  .nav-bar a:hover { background: rgba(201,169,110,0.15); }
+  .nav-bar a:hover { background: rgba(10,61,124,0.08); }
   .nav-links { display: flex; gap: 4px; }
 
   /* --- MASTHEAD --- */
   .masthead {
     text-align: center;
     padding: 48px 24px 32px;
-    border-bottom: 3px double #c9a96e;
-    background: linear-gradient(180deg, #1a1a2e 0%, #2a2a3e 100%);
-    color: #f5f0e8;
+    border-bottom: 3px double #0a3d7c;
+    background: #fafaf8;
+    color: #2c2c2c;
   }
   .masthead h1 {
     font-family: 'Playfair Display', serif;
@@ -55,14 +55,14 @@
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #c9a96e;
+    color: #0a3d7c;
     margin-bottom: 4px;
   }
   .masthead .subtitle {
     font-size: 16px;
     font-weight: 300;
     letter-spacing: 1.5px;
-    color: #a0a0b0;
+    color: #666;
   }
 
   /* --- STATS BAR --- */
@@ -72,7 +72,7 @@
     gap: 40px;
     padding: 20px 24px;
     background: #fff;
-    border-bottom: 1px solid #d4c9b8;
+    border-bottom: 1px solid #e0ddd8;
     flex-wrap: wrap;
   }
   .stat-item { text-align: center; }
@@ -80,7 +80,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 28px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: #0a3d7c;
   }
   .stat-value.green { color: #1b7a3d; }
   .stat-value.red { color: #b8352a; }
