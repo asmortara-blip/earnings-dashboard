@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital &mdash; Top 10 Stock Recommendations</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fafaf8;
+    color: #2c2c2c;
+    line-height: 1.6;
+  }
+
+  /* --- NAV BAR --- */
+  .top-nav {
+    background: #0a3d7c;
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-right {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .conf-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e6c65a;
+    border: 1px solid rgba(230,198,90,0.5);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+  .pdf-btn {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .pdf-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* --- MASTHEAD --- */
+  .masthead {
+    text-align: center;
+    padding: 56px 24px 40px;
+    border-bottom: 3px double #0a3d7c;
+    background: #fafaf8;
+  }
+  .masthead-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #0a3d7c;
+    margin-bottom: 8px;
+  }
+  .masthead .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #666;
+    text-transform: uppercase;
+  }
+  .masthead .rule {
+    width: 80px;
+    height: 2px;
+    background: #0a3d7c;
+    margin: 20px auto 0;
+  }
+  .date-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #888;
+    margin-top: 12px;
+  }
+
+  /* --- CONTAINER --- */
+  .container {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* --- EXECUTIVE SUMMARY --- */
+  .exec-summary {
+    margin: 40px auto;
+    max-width: 860px;
+    padding: 28px 32px;
+    background: #fff;
+    border: 1px solid #e0ddd8;
+    border-left: 4px solid #0a3d7c;
+    border-radius: 2px;
+  }
+  .exec-summary h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #0a3d7c;
+    margin-bottom: 12px;
+  }
+  .exec-summary p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  /* --- RANKINGS TABLE --- */
+  .rankings-section {
+    margin: 40px auto;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #0a3d7c;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0a3d7c;
+  }
+  table.rankings {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #e0ddd8;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  table.rankings thead th {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #888;
+    background: #f7f6f3;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid #e0ddd8;
+  }
+  table.rankings tbody td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #f0eeeb;
+  }
+  table.rankings tbody tr:hover { background: #fafaf8; }
+  .rank-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0a3d7c;
+    text-align: center;
+  }
+  .ticker-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0a3d7c;
+  }
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* --- PROFILE CARDS --- */
+  .profiles-section {
+    margin: 48px auto 40px;
+  }
+  .profile-card {
+    background: #fff;
+    border: 1px solid #e0ddd8;
+    border-radius: 4px;
+    margin-bottom: 36px;
+    overflow: hidden;
+  }
+  .profile-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 28px;
+    background: #f7f6f3;
+    border-bottom: 1px solid #e0ddd8;
+    gap: 20px;
+  }
+  .profile-rank {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: #0a3d7c;
+    min-width: 48px;
+  }
+  .profile-title { flex: 1; }
+  .profile-ticker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: #0a3d7c;
+    display: inline;
+    margin-right: 12px;
+  }
+  .profile-name {
+    font-size: 15px;
+    color: #555;
+  }
+  .profile-sector {
+    font-size: 13px;
+    color: #888;
+    margin-left: 4px;
+  }
+  .profile-score {
+    text-align: center;
+    min-width: 80px;
+  }
+  .score-label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 4px;
+  }
+  .score-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 600;
+    color: #0a3d7c;
+  }
+  .profile-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .profile-left, .profile-right {
+    padding: 24px 28px;
+  }
+  .profile-left {
+    border-right: 1px solid #f0eeeb;
+  }
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 12px;
+    margin-top: 20px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* Metrics grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .metric-cell {
+    padding: 8px 10px;
+    background: #fafaf8;
+    border-radius: 3px;
+  }
+  .metric-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .metric-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c2c2c;
+  }
+  .pct-from-high {
+    font-size: 10px;
+    color: #888;
+    font-weight: 400;
+  }
+
+  /* Performance grid */
+  .perf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .perf-item {
+    padding: 8px 10px;
+    background: #fafaf8;
+    border-radius: 3px;
+  }
+  .perf-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .perf-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .no-trades {
+    font-size: 13px;
+    color: #888;
+    font-style: italic;
+    padding: 12px 0;
+  }
+
+  /* Component bars */
+  .component-bars { margin-top: 4px; }
+  .comp-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 10px;
+  }
+  .comp-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    min-width: 48px;
+  }
+  .comp-track {
+    flex: 1;
+    height: 8px;
+    background: #f0eeeb;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .comp-fill {
+    height: 100%;
+    background: #0a3d7c;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .sa-fill { background: #b8860b; }
+  .si-fill { background: #b91c1c; }
+  .br-fill { background: #7c3d0a; }
+  .comp-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #555;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* Chart */
+  .chart-container {
+    height: 200px;
+    margin-bottom: 8px;
+  }
+
+  /* Thesis */
+  .thesis-text {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  /* Risk factors */
+  .risk-list {
+    list-style: none;
+    padding: 0;
+  }
+  .risk-list li {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.6;
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .risk-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: #b91c1c;
+    border-radius: 50%;
+  }
+
+  /* --- METHODOLOGY --- */
+  .methodology {
+    margin: 40px auto;
+    padding: 28px 32px;
+    background: #fff;
+    border: 1px solid #e0ddd8;
+    border-radius: 4px;
+  }
+  .methodology h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #0a3d7c;
+    margin-bottom: 16px;
+  }
+  .methodology p, .methodology li {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .methodology ul {
+    margin: 12px 0 12px 20px;
+  }
+  .method-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  .method-table th, .method-table td {
+    padding: 8px 14px;
+    text-align: left;
+    font-size: 12px;
+    border-bottom: 1px solid #f0eeeb;
+  }
+  .method-table th {
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+  }
+
+  /* --- DISCLAIMER --- */
+  .disclaimer {
+    margin: 40px auto 48px;
+    padding: 20px 28px;
+    background: #f7f6f3;
+    border: 1px solid #e0ddd8;
+    border-radius: 4px;
+  }
+  .disclaimer h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .disclaimer p {
+    font-size: 11px;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    border-top: 1px solid #e0ddd8;
+    font-size: 11px;
+    color: #999;
+    letter-spacing: 0.5px;
+  }
+  .footer strong { color: #666; font-weight: 600; }
+
+  /* --- PRINT --- */
+  @media print {
+    .top-nav { display: none; }
+    .profile-card { page-break-inside: avoid; page-break-before: auto; }
+    .profile-card:nth-child(n+2) { page-break-before: always; }
+    body { background: #fff; }
+    .masthead { padding: 24px; }
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    .profile-body { grid-template-columns: 1fr; }
+    .profile-left { border-right: none; border-bottom: 1px solid #f0eeeb; }
+    .masthead h1 { font-size: 26px; letter-spacing: 3px; }
+    .perf-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { gap: 12px; }
+    .nav-links a { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<div class="top-nav">
+  <div class="nav-links">
+    <a href="home.html">&larr; Home</a>
+    <a href="rs.html">&larr; RS Dashboard</a>
+    <a href="report.html">&larr; Full Report</a>
+  </div>
+  <div class="nav-right">
+    <span class="conf-badge">Confidential</span>
+    <a href="javascript:window.print()" class="pdf-btn">Download as PDF</a>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-label">Proprietary Research</div>
+  <h1>Top 10 Stock Recommendations</h1>
+  <div class="subtitle">DNSD Capital &bull; Retail Sentiment Strategy</div>
+  <div class="rule"></div>
+  <div class="date-line">2026-03-29 01:25 ET</div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="container">
+  <div class="exec-summary">
+    <h2>Executive Summary</h2>
+    <p>
+      The following 10 tickers represent the highest-conviction opportunities within the
+      DNSD RS strategy universe of 40 candidates. Selection is based on a composite
+      model weighing historical win rate (30%), base resonance score (25%), short squeeze
+      potential (25%), trade frequency (10%), and average P&amp;L (10%). Rankings are
+      recalculated on each publish cycle using live paper trading results from rs_monitor.db
+      and current short interest data from si_overrides.json.
+    </p>
+  </div>
+
+  <!-- RANKINGS TABLE -->
+  <div class="rankings-section">
+    <h2 class="section-heading">Rankings</h2>
+    <table class="rankings">
+      <thead>
+        <tr>
+          <th style="text-align:center">Rank</th>
+          <th>Ticker</th>
+          <th>Pick Score</th>
+          <th>RES</th>
+          <th>SA</th>
+          <th>Hist WR</th>
+          <th>Trades</th>
+          <th>Avg P&amp;L</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr><td class='rank-num'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>83.3</td><td class='mono'>70</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>5</td><td class='mono' style='color:#0a6e38'>+8.81%</td></tr>
+<tr><td class='rank-num'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td class='mono'>68</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+2.98%</td></tr>
+<tr><td class='rank-num'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td class='mono'>57</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>1</td><td class='mono' style='color:#0a6e38'>+5.16%</td></tr>
+<tr><td class='rank-num'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td class='mono'>48</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>2</td><td class='mono' style='color:#0a6e38'>+4.58%</td></tr>
+<tr><td class='rank-num'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td class='mono'>52</td><td class='mono'>100</td><td class='mono'>100.0%</td><td class='mono'>6</td><td class='mono' style='color:#0a6e38'>+1.59%</td></tr>
+<tr><td class='rank-num'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td class='mono'>55</td><td class='mono'>100</td><td class='mono'>75.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+2.01%</td></tr>
+<tr><td class='rank-num'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td class='mono'>56</td><td class='mono'>98</td><td class='mono'>75.0%</td><td class='mono'>4</td><td class='mono' style='color:#0a6e38'>+1.97%</td></tr>
+<tr><td class='rank-num'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td class='mono'>65</td><td class='mono'>100</td><td class='mono'>63.6%</td><td class='mono'>11</td><td class='mono' style='color:#0a6e38'>+1.39%</td></tr>
+<tr><td class='rank-num'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td class='mono'>79</td><td class='mono'>100</td><td class='mono'>42.9%</td><td class='mono'>7</td><td class='mono' style='color:#0a6e38'>+3.84%</td></tr>
+<tr><td class='rank-num'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td class='mono'>61</td><td class='mono'>100</td><td class='mono'>60.0%</td><td class='mono'>5</td><td class='mono' style='color:#0a6e38'>+0.90%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- INDIVIDUAL PROFILES -->
+  <div class="profiles-section">
+    <h2 class="section-heading">Individual Profiles</h2>
+
+<div class="profile-card" id="profile-HIMS">
+  <div class="profile-header">
+    <div class="profile-rank">#1</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">HIMS</h2>
+      <span class="profile-name">HIMS</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">83.3</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">45.2%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">22.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>5</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>100.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+8.81%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+17.34%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>4.87%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+44.06%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:70%"></div></div>
+          <span class="comp-val">70</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">45.2%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:44%"></div></div>
+          <span class="comp-val">22.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-HIMS" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (45%) and expensive borrow cost (22.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 100.0% win rate across 5 paper trades demonstrates consistent signal quality for this ticker. Average return of +8.81% per trade suggests strong edge when entry conditions are met.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (45%) may reflect fundamental concerns beyond retail sentiment.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-RIOT">
+  <div class="profile-header">
+    <div class="profile-rank">#2</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">RIOT</h2>
+      <span class="profile-name">RIOT</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">77.0</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">44.6%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">10.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>4</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>100.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+2.98%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+4.94%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>1.76%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+11.94%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:68%"></div></div>
+          <span class="comp-val">68</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">44.6%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:20%"></div></div>
+          <span class="comp-val">10.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-RIOT" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (45%) and expensive borrow cost (10.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 100.0% win rate across 4 paper trades demonstrates consistent signal quality for this ticker. Average return of +2.98% per trade suggests strong edge when entry conditions are met.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (45%) may reflect fundamental concerns beyond retail sentiment.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-RIVN">
+  <div class="profile-header">
+    <div class="profile-rank">#3</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">RIVN</h2>
+      <span class="profile-name">RIVN</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">74.9</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">54.2%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">6.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>1</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>100.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+5.16%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+5.16%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>5.16%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+5.16%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:57%"></div></div>
+          <span class="comp-val">57</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">54.2%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:12%"></div></div>
+          <span class="comp-val">6.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-RIVN" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (54%) and expensive borrow cost (6.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Average return of +5.16% per trade suggests strong edge when entry conditions are met.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (54%) may reflect fundamental concerns beyond retail sentiment.</li>
+<li>Limited sample size (1 trade) -- insufficient for statistical confidence in win rate.</li>
+<li>Binary/speculative archetype -- price moves driven by single events with high uncertainty.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-APP">
+  <div class="profile-header">
+    <div class="profile-rank">#4</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">APP</h2>
+      <span class="profile-name">APP</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">72.6</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">50.1%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">1.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>2</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>100.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+4.58%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+9.11%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>0.05%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+9.16%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:48%"></div></div>
+          <span class="comp-val">48</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">50.1%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:2%"></div></div>
+          <span class="comp-val">1.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-APP" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (50%) and expensive borrow cost (1.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Moderate historical track record (100.0% WR, 2 trades) supports cautious positioning. Average return of +4.58% per trade suggests strong edge when entry conditions are met.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (50%) may reflect fundamental concerns beyond retail sentiment.</li>
+<li>Limited sample size (2 trades) -- insufficient for statistical confidence in win rate.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-WOLF">
+  <div class="profile-header">
+    <div class="profile-rank">#5</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">WOLF</h2>
+      <span class="profile-name">WOLF</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">71.6</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">62.3%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">18.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>6</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>100.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+1.59%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+3.02%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>0.19%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+9.54%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:52%"></div></div>
+          <span class="comp-val">52</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">62.3%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:36%"></div></div>
+          <span class="comp-val">18.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-WOLF" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (62%) and expensive borrow cost (18.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 100.0% win rate across 6 paper trades demonstrates consistent signal quality for this ticker.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (62%) may reflect fundamental concerns beyond retail sentiment.</li>
+<li>Meme/random archetype -- sentiment spikes can be erratic and difficult to time.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-PLTR">
+  <div class="profile-header">
+    <div class="profile-rank">#6</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">PLTR</h2>
+      <span class="profile-name">PLTR</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">65.3</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">42.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">2.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>4</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>75.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+2.01%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+6.09%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>-1.90%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+8.03%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:55%"></div></div>
+          <span class="comp-val">55</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">42.0%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:4%"></div></div>
+          <span class="comp-val">2.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-PLTR" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (42%) and expensive borrow cost (2.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 75.0% win rate across 4 paper trades demonstrates consistent signal quality for this ticker. Average return of +2.01% per trade suggests strong edge when entry conditions are met.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (42%) may reflect fundamental concerns beyond retail sentiment.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-HOOD">
+  <div class="profile-header">
+    <div class="profile-rank">#7</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">HOOD</h2>
+      <span class="profile-name">HOOD</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">64.9</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">38.3%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">6.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>4</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>75.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+1.97%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+5.81%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>-4.10%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+7.87%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:56%"></div></div>
+          <span class="comp-val">56</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:98%"></div></div>
+          <span class="comp-val">98</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:96%"></div></div>
+          <span class="comp-val">38.3%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:12%"></div></div>
+          <span class="comp-val">6.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-HOOD" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (38%) and expensive borrow cost (6.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 75.0% win rate across 4 paper trades demonstrates consistent signal quality for this ticker.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (38%) may reflect fundamental concerns beyond retail sentiment.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-SMCI">
+  <div class="profile-header">
+    <div class="profile-rank">#8</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">SMCI</h2>
+      <span class="profile-name">SMCI</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">63.7</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">42.8%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">18.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>11</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>63.6%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+1.39%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+7.37%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>-7.00%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+15.31%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:65%"></div></div>
+          <span class="comp-val">65</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">42.8%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:36%"></div></div>
+          <span class="comp-val">18.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-SMCI" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (43%) and expensive borrow cost (18.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 63.6% win rate across 11 paper trades demonstrates consistent signal quality for this ticker.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (43%) may reflect fundamental concerns beyond retail sentiment.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-GME">
+  <div class="profile-header">
+    <div class="profile-rank">#9</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">GME</h2>
+      <span class="profile-name">GME</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">63.4</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">64.6%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">8.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>7</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>42.9%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+3.84%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+22.47%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>-3.19%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+26.88%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:79%"></div></div>
+          <span class="comp-val">79</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">64.6%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:16%"></div></div>
+          <span class="comp-val">8.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-GME" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (65%) and expensive borrow cost (8.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Average return of +3.84% per trade suggests strong edge when entry conditions are met.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (65%) may reflect fundamental concerns beyond retail sentiment.</li>
+<li>Below 50% win rate (42.9%) across 7 trades indicates inconsistent signal reliability.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="profile-card" id="profile-COIN">
+  <div class="profile-header">
+    <div class="profile-rank">#10</div>
+    <div class="profile-title">
+      <h2 class="profile-ticker">COIN</h2>
+      <span class="profile-name">COIN</span>
+      <span class="profile-sector">&bull; N/A</span>
+    </div>
+    <div class="profile-score">
+      <span class="score-label">Pick Score</span>
+      <span class="score-value">61.1</span>
+    </div>
+  </div>
+
+  <div class="profile-body">
+    <div class="profile-left">
+      <!-- Key Metrics -->
+      <div class="section-label">Key Metrics</div>
+      <div class="metrics-grid">
+        <div class="metric-cell"><span class="metric-label">Market Cap</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">P/E Ratio</span><span class="metric-val">N/A</span></div>
+        <div class="metric-cell"><span class="metric-label">52-Week Range</span><span class="metric-val">N/A <span class="pct-from-high"></span></span></div>
+        <div class="metric-cell"><span class="metric-label">Short Interest</span><span class="metric-val">48.1%</span></div>
+        <div class="metric-cell"><span class="metric-label">Borrow Rate</span><span class="metric-val">5.0%</span></div>
+        <div class="metric-cell"><span class="metric-label">Avg Daily Volume</span><span class="metric-val">N/A</span></div>
+      </div>
+
+      <!-- Strategy Performance -->
+      <div class="section-label">Strategy Performance</div>
+      <div class='perf-grid'><div class='perf-item'><span class='perf-label'>Trades</span><span class='perf-val'>5</span></div><div class='perf-item'><span class='perf-label'>Win Rate</span><span class='perf-val'>60.0%</span></div><div class='perf-item'><span class='perf-label'>Avg P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+0.90%</span></div><div class='perf-item'><span class='perf-label'>Best Trade</span><span class='perf-val' style='color:#0a6e38'>+5.59%</span></div><div class='perf-item'><span class='perf-label'>Worst Trade</span><span class='perf-val' style='color:#b91c1c'>-3.99%</span></div><div class='perf-item'><span class='perf-label'>Total P&amp;L</span><span class='perf-val' style='color:#0a6e38'>+4.49%</span></div></div>
+
+      <!-- RS Score Components -->
+      <div class="section-label">RS Score Components</div>
+      <div class="component-bars">
+        <div class="comp-row">
+          <span class="comp-label">RES</span>
+          <div class="comp-track"><div class="comp-fill" style="width:61%"></div></div>
+          <span class="comp-val">61</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SA</span>
+          <div class="comp-track"><div class="comp-fill sa-fill" style="width:100%"></div></div>
+          <span class="comp-val">100</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">SI%</span>
+          <div class="comp-track"><div class="comp-fill si-fill" style="width:100%"></div></div>
+          <span class="comp-val">48.1%</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-label">Borrow</span>
+          <div class="comp-track"><div class="comp-fill br-fill" style="width:10%"></div></div>
+          <span class="comp-val">5.0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <!-- Price Chart -->
+      <div class="section-label">3-Month Price History</div>
+      <div class="chart-container">
+        <canvas id="chart-COIN" data-labels='[]' data-prices='[]'></canvas>
+      </div>
+
+      <!-- Thesis -->
+      <div class="section-label">Investment Thesis</div>
+      <p class="thesis-text">Elevated short interest (48%) and expensive borrow cost (5.0%) create significant squeeze potential, amplifying upside on retail sentiment catalysts. Strong historical performance with a 60.0% win rate across 5 paper trades demonstrates consistent signal quality for this ticker.</p>
+
+      <!-- Risk Factors -->
+      <div class="section-label">Risk Factors</div>
+      <ul class="risk-list">
+        <li>Very high short interest (48%) may reflect fundamental concerns beyond retail sentiment.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="methodology">
+    <h2>Methodology</h2>
+    <p>
+      Each of the 40 candidates in the DNSD RS universe is scored using a composite
+      pick score model. The model combines five factors to identify tickers with the highest
+      probability of generating positive returns on the next RS-triggered entry signal.
+    </p>
+    <table class="method-table">
+      <thead>
+        <tr><th>Factor</th><th>Weight</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Historical Win Rate</td><td>30%</td><td>Paper trade win rate from rs_monitor.db (most predictive)</td></tr>
+        <tr><td>Base Resonance (RES)</td><td>25%</td><td>Retail engagement score 0-100 from candidate metadata</td></tr>
+        <tr><td>Short Amplifier (SA)</td><td>25%</td><td>Squeeze potential: SI%, borrow rate, SI velocity, FINRA short volume</td></tr>
+        <tr><td>Trade Frequency</td><td>10%</td><td>Number of historical trades (capped at bonus of 20)</td></tr>
+        <tr><td>Average P&amp;L</td><td>10%</td><td>Mean return per trade (positive only; negative contributes zero)</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Price data and company fundamentals are sourced from Yahoo Finance. Short interest
+      data is maintained in si_overrides.json, updated weekly via rs_update_si.py with
+      daily FINRA short volume supplements. All trade statistics derive from paper trading
+      in Phase 3 of the strategy lifecycle.
+    </p>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <h3>Important Disclaimer</h3>
+    <p>
+      This report is generated algorithmically for internal research purposes only and does
+      not constitute investment advice, a solicitation, or an offer to buy or sell any security.
+      Past performance, including paper trading results, is not indicative of future results.
+      All trading involves risk, and you should not trade with money you cannot afford to lose.
+      The authors are not registered investment advisors. Consult a qualified financial professional
+      before making any investment decision. Short selling and options trading carry substantial
+      risk of loss. The information herein is believed to be accurate but is not guaranteed.
+    </p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>PROPRIETARY &amp; CONFIDENTIAL</strong> &mdash; DNSD Capital &bull; Generated 2026-03-29 01:25 ET
+</div>
+
+<!-- CHART INITIALIZATION -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('canvas[id^="chart-"]').forEach(function(canvas) {
+    var labels = JSON.parse(canvas.getAttribute('data-labels') || '[]');
+    var prices = JSON.parse(canvas.getAttribute('data-prices') || '[]');
+    if (labels.length === 0) return;
+
+    // Thin out labels for readability
+    var step = Math.max(1, Math.floor(labels.length / 8));
+    var displayLabels = labels.map(function(l, i) {
+      return (i % step === 0) ? l.substring(5) : '';
+    });
+
+    new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: displayLabels,
+        datasets: [{
+          data: prices,
+          borderColor: '#0a3d7c',
+          backgroundColor: 'rgba(10,61,124,0.08)',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: true,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { font: { family: "'JetBrains Mono'", size: 9 }, color: '#999' }
+          },
+          y: {
+            grid: { color: '#f0eeeb' },
+            ticks: {
+              font: { family: "'JetBrains Mono'", size: 10 },
+              color: '#999',
+              callback: function(v) { return '$' + v.toFixed(2); }
+            }
+          }
+        }
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
