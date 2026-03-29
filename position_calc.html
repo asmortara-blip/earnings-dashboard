@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD RS -- Position Sizing Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #fafaf8;
+  --ink: #1a1a1a;
+  --green: #0a7c42;
+  --red: #c41e1e;
+  --navy: #1e3a5f;
+  --rule: #d4d0c8;
+  --muted: #6b6760;
+  --light-green: rgba(10, 124, 66, 0.08);
+  --light-red: rgba(196, 30, 30, 0.08);
+  --light-navy: rgba(30, 58, 95, 0.08);
+  --amber: #b45309;
+  --light-amber: rgba(180, 83, 9, 0.08);
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV BAR */
+.nav-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: #fff; border-bottom: 1px solid var(--rule);
+  font-size: 11px;
+}
+.nav-bar a {
+  text-decoration: none; color: var(--muted); font-weight: 600;
+  letter-spacing: 0.03em; padding: 5px 12px;
+  border: 1px solid var(--rule); border-radius: 4px; transition: all 0.15s;
+}
+.nav-bar a:hover { background: #f0f0f0; color: var(--ink); }
+.nav-bar .spacer { flex: 1; }
+.nav-bar .title { font-family: var(--serif); font-weight: 700; font-size: 13px; color: var(--ink); }
+
+/* LAYOUT */
+.container { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+
+h1 {
+  font-family: var(--serif); font-weight: 900; font-size: 28px;
+  color: var(--ink); margin-bottom: 4px; letter-spacing: -0.02em;
+}
+.subtitle {
+  font-size: 12px; color: var(--muted); margin-bottom: 24px;
+  font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase;
+}
+
+/* SECTIONS */
+.section {
+  background: #fff; border: 1px solid var(--rule); border-radius: 6px;
+  padding: 24px; margin-bottom: 20px;
+}
+.section-title {
+  font-family: var(--serif); font-weight: 700; font-size: 18px;
+  color: var(--ink); margin-bottom: 16px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+}
+
+/* FORM GRID */
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px;
+}
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group.full-width { grid-column: 1 / -1; }
+.form-group label {
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.form-group input[type="number"],
+.form-group select {
+  font-family: var(--mono); font-size: 14px; padding: 8px 12px;
+  border: 1px solid var(--rule); border-radius: 4px; background: var(--cream);
+  color: var(--ink); outline: none; transition: border 0.15s;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--navy);
+}
+
+/* SLIDER */
+.slider-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.slider-row input[type="range"] {
+  flex: 1; -webkit-appearance: none; height: 6px;
+  background: var(--rule); border-radius: 3px; outline: none;
+}
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px;
+  background: var(--navy); border-radius: 50%; cursor: pointer;
+  border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.slider-value {
+  font-family: var(--mono); font-size: 14px; font-weight: 600;
+  min-width: 44px; text-align: right; color: var(--navy);
+}
+
+/* DIRECTION TOGGLE */
+.direction-toggle {
+  display: flex; gap: 0; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden;
+}
+.direction-toggle button {
+  flex: 1; padding: 8px 16px; font-family: var(--sans); font-size: 13px;
+  font-weight: 600; border: none; cursor: pointer; transition: all 0.15s;
+  background: #fff; color: var(--muted);
+}
+.direction-toggle button.active-long { background: var(--green); color: #fff; }
+.direction-toggle button.active-short { background: var(--red); color: #fff; }
+
+/* OUTPUT CARDS */
+.output-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin-bottom: 20px;
+}
+.output-card {
+  background: var(--cream); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 16px; text-align: center;
+}
+.output-card .card-label {
+  font-size: 10px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+}
+.output-card .card-value {
+  font-family: var(--mono); font-size: 22px; font-weight: 700;
+  color: var(--ink);
+}
+.output-card .card-sub {
+  font-size: 11px; color: var(--muted); margin-top: 2px;
+}
+.output-card.highlight { border-color: var(--navy); background: var(--light-navy); }
+
+/* METHOD COMPARISON TABLE */
+.method-table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+}
+.method-table th {
+  text-align: left; font-size: 10px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 12px;
+  border-bottom: 2px solid var(--ink); background: var(--cream);
+}
+.method-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 12px;
+}
+.method-table tr.recommended { background: var(--light-green); }
+.method-table .method-name { font-family: var(--sans); font-weight: 600; color: var(--ink); }
+.method-table .badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 6px;
+  border-radius: 3px; margin-left: 6px;
+}
+.badge-rec { background: var(--green); color: #fff; }
+.badge-kelly { background: var(--navy); color: #fff; }
+.badge-conservative { background: var(--muted); color: #fff; }
+
+/* HISTORY TABLE */
+.hist-table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+}
+.hist-table th {
+  text-align: left; font-size: 10px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 10px;
+  border-bottom: 2px solid var(--ink); background: var(--cream);
+}
+.hist-table td {
+  padding: 8px 10px; border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 12px;
+}
+.hist-table tr:hover { background: var(--light-navy); }
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+
+/* WARNINGS */
+.warning-box {
+  display: none; padding: 12px 16px; border-radius: 4px;
+  margin-top: 12px; font-size: 12px; font-weight: 500;
+  line-height: 1.6;
+}
+.warning-box.visible { display: block; }
+.warning-box.warn { background: var(--light-amber); border: 1px solid var(--amber); color: var(--amber); }
+.warning-box.danger { background: var(--light-red); border: 1px solid var(--red); color: var(--red); }
+
+/* REGIME BADGE */
+.regime-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 8px;
+  border-radius: 3px;
+}
+.regime-normal { background: var(--light-green); color: var(--green); }
+.regime-risk_off { background: var(--light-red); color: var(--red); }
+.regime-risk_on { background: var(--light-green); color: var(--green); }
+.regime-elevated { background: var(--light-amber); color: var(--amber); }
+
+/* FORMULA BOX */
+.formula-box {
+  background: var(--cream); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 12px 16px; font-family: var(--mono); font-size: 11px;
+  color: var(--muted); line-height: 1.8; margin-top: 12px;
+}
+.formula-box .formula-label {
+  font-family: var(--sans); font-weight: 600; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink);
+  margin-bottom: 4px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center; font-size: 10px; color: var(--muted);
+  padding: 20px 0; border-top: 1px solid var(--rule); margin-top: 40px;
+}
+
+@media (max-width: 720px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .output-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <a href="rs_dashboard.html">&larr; RS Dashboard</a>
+  <a href="brief.html">&larr; Full Report</a>
+  <span class="spacer"></span>
+  <span class="title">Position Calculator</span>
+</div>
+
+<div class="container">
+
+<h1>Position Sizing Calculator</h1>
+<p class="subtitle">Interactive trade sizing with Kelly, fixed fractional, and regime-adjusted methods</p>
+
+<!-- ====== INPUT FORM ====== -->
+<div class="section">
+  <div class="section-title">Trade Parameters</div>
+  <div class="form-grid">
+
+    <div class="form-group">
+      <label>Portfolio Value ($)</label>
+      <input type="number" id="portfolio" value="100000" min="1000" step="1000">
+    </div>
+
+    <div class="form-group">
+      <label>Entry Price ($)</label>
+      <input type="number" id="entryPrice" value="25.00" min="0.01" step="0.01">
+    </div>
+
+    <div class="form-group">
+      <label>RS Score</label>
+      <div class="slider-row">
+        <input type="range" id="rsScore" min="55" max="100" value="75">
+        <span class="slider-value" id="rsScoreVal">75</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Stop Loss (%)</label>
+      <div class="slider-row">
+        <input type="range" id="stopPct" min="1" max="10" value="5" step="0.5">
+        <span class="slider-value" id="stopPctVal">5.0%</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Trigger Type</label>
+      <select id="triggerType">
+        <option value="press_release_positive">Press Release (Positive)</option>
+        <option value="meme_community">Meme Community Buzz</option>
+        <option value="analyst_upgrade_bold">Analyst Upgrade (Bold)</option>
+        <option value="influencer_post_high" selected>Influencer Post (High)</option>
+        <option value="partnership_announcement">Partnership Announcement</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Direction</label>
+      <div class="direction-toggle">
+        <button id="btnLong" class="active-long" onclick="setDirection('long')">Long</button>
+        <button id="btnShort" onclick="setDirection('short')">Short</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>ATR (Optional -- overrides stop %)</label>
+      <input type="number" id="atrInput" placeholder="e.g. 1.25" min="0" step="0.01">
+    </div>
+
+    <div class="form-group">
+      <label>Regime <span class="regime-badge regime-normal">NORMAL</span></label>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:6px;">
+        Dampener: 1.00 &nbsp;|&nbsp; VIX: 31.1 &nbsp;|&nbsp; Heat: 0%
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== SIZING OUTPUT ====== -->
+<div class="section">
+  <div class="section-title">Sizing Recommendation</div>
+
+  <div class="output-grid">
+    <div class="output-card highlight">
+      <div class="card-label">Recommended Shares</div>
+      <div class="card-value" id="outShares">--</div>
+      <div class="card-sub" id="outSharesSub"></div>
+    </div>
+    <div class="output-card">
+      <div class="card-label">Dollar Amount</div>
+      <div class="card-value" id="outDollar">--</div>
+      <div class="card-sub" id="outPctPortfolio"></div>
+    </div>
+    <div class="output-card">
+      <div class="card-label">Max Loss if Stopped</div>
+      <div class="card-value neg" id="outMaxLoss">--</div>
+      <div class="card-sub" id="outMaxLossPct"></div>
+    </div>
+    <div class="output-card">
+      <div class="card-label">Risk / Reward</div>
+      <div class="card-value" id="outRR">--</div>
+      <div class="card-sub">based on historical avg win</div>
+    </div>
+  </div>
+
+  <!-- Method Comparison -->
+  <table class="method-table">
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Shares</th>
+        <th>Dollar Size</th>
+        <th>% Portfolio</th>
+        <th>Max Loss</th>
+      </tr>
+    </thead>
+    <tbody id="methodBody"></tbody>
+  </table>
+
+  <div class="formula-box">
+    <div class="formula-label">Formulas</div>
+    <strong>Kelly:</strong> f* = WR - (1-WR) / WL &rarr; Half-Kelly = f*/2 &rarr; shares = (portfolio &times; half_kelly) / price<br>
+    <strong>Fixed Fractional:</strong> risk_amt = portfolio &times; 2% &rarr; shares = risk_amt / (price &times; stop_pct)<br>
+    <strong>RS Adjusted:</strong> Fixed Fractional &times; (rs_score / 100)<br>
+    <strong>Regime Adjusted:</strong> RS Adjusted &times; regime_dampener
+  </div>
+
+  <div class="warning-box" id="warnings"></div>
+</div>
+
+<!-- ====== HISTORICAL CONTEXT ====== -->
+<div class="section">
+  <div class="section-title">Historical Context</div>
+  <p id="histSummary" style="font-size:12px;color:var(--muted);margin-bottom:12px;"></p>
+  <table class="hist-table">
+    <thead>
+      <tr>
+        <th>Trigger Type</th>
+        <th>Trades</th>
+        <th>Win Rate</th>
+        <th>Avg P&amp;L</th>
+        <th>Avg Win</th>
+        <th>Avg Loss</th>
+        <th>Best</th>
+        <th>Worst</th>
+      </tr>
+    </thead>
+    <tbody id="histBody"></tbody>
+  </table>
+</div>
+
+<div class="footer">
+  DNSD RS Strategy &mdash; Position Calculator &mdash; Generated 2026-03-28 21:35
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ===== EMBEDDED DATA =====
+const TRADE_HISTORY = [{"ticker": "TSLA", "trigger_type": "analyst_upgrade_bold", "direction": "long", "rs_score": 76.7, "pnl_pct": -0.47, "entry_price": 157.3, "exit_price": 156.56, "entry_time": "2023-01-26T09:45:00-05:00", "exit_time": "2023-01-26T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "PLTR", "trigger_type": "meme_community", "direction": "long", "rs_score": 78.3, "pnl_pct": 2.27, "entry_price": 8.5, "exit_price": 8.69, "entry_time": "2023-02-14T09:45:00-05:00", "exit_time": "2023-02-14T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "RIOT", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 90.7, "pnl_pct": 4.94, "entry_price": 7.29, "exit_price": 7.65, "entry_time": "2023-03-17T09:45:00-04:00", "exit_time": "2023-03-17T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 70.8, "pnl_pct": -0.42, "entry_price": 101.18, "exit_price": 101.61, "entry_time": "2023-04-24T09:45:00-04:00", "exit_time": "2023-04-24T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "meme_community", "direction": "long", "rs_score": 86.1, "pnl_pct": 2.93, "entry_price": 125.31, "exit_price": 128.98, "entry_time": "2023-05-03T09:45:00-04:00", "exit_time": "2023-05-03T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "PLTR", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 77.5, "pnl_pct": 6.09, "entry_price": 10.76, "exit_price": 11.42, "entry_time": "2023-05-18T09:45:00-04:00", "exit_time": "2023-05-18T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 95.7, "pnl_pct": -4.66, "entry_price": 204.53, "exit_price": 195.0, "entry_time": "2023-05-25T09:45:00-04:00", "exit_time": "2023-05-25T10:12:00-04:00", "hold_minutes": 27, "window": "W1"}, {"ticker": "COIN", "trigger_type": "meme_community", "direction": "short", "rs_score": 95.8, "pnl_pct": -2.6, "entry_price": 49.25, "exit_price": 50.53, "entry_time": "2023-06-06T09:45:00-04:00", "exit_time": "2023-06-06T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "AFRM", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 72.1, "pnl_pct": -2.81, "entry_price": 18.49, "exit_price": 17.97, "entry_time": "2023-06-07T09:45:00-04:00", "exit_time": "2023-06-07T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "meme_community", "direction": "long", "rs_score": 81.9, "pnl_pct": -1.35, "entry_price": 25.56, "exit_price": 25.22, "entry_time": "2023-06-07T09:45:00-04:00", "exit_time": "2023-06-07T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 103.7, "pnl_pct": -3.04, "entry_price": 26.3, "exit_price": 25.5, "entry_time": "2023-06-13T09:45:00-04:00", "exit_time": "2023-06-13T10:24:00-04:00", "hold_minutes": 39, "window": "W1"}, {"ticker": "WOLF", "trigger_type": "meme_community", "direction": "long", "rs_score": 82.0, "pnl_pct": 1.4, "entry_price": 64.51, "exit_price": 65.41, "entry_time": "2023-07-05T09:45:00-04:00", "exit_time": "2023-07-05T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SNAP", "trigger_type": "meme_community", "direction": "short", "rs_score": 73.9, "pnl_pct": -0.35, "entry_price": 10.07, "exit_price": 10.1, "entry_time": "2023-07-26T09:45:00-04:00", "exit_time": "2023-07-26T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 91.3, "pnl_pct": 4.84, "entry_price": 279.49, "exit_price": 265.95, "entry_time": "2023-08-09T09:45:00-04:00", "exit_time": "2023-08-09T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "WOLF", "trigger_type": "influencer_post_high", "direction": "short", "rs_score": 78.7, "pnl_pct": 0.69, "entry_price": 43.67, "exit_price": 43.37, "entry_time": "2023-08-17T09:45:00-04:00", "exit_time": "2023-08-17T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "COIN", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 83.2, "pnl_pct": 1.11, "entry_price": 86.59, "exit_price": 87.55, "entry_time": "2023-10-24T09:45:00-04:00", "exit_time": "2023-10-24T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "WOLF", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 70.9, "pnl_pct": 2.38, "entry_price": 34.2, "exit_price": 35.02, "entry_time": "2023-10-31T09:45:00-04:00", "exit_time": "2023-10-31T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "PLTR", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 86.1, "pnl_pct": -1.9, "entry_price": 17.9, "exit_price": 17.56, "entry_time": "2023-11-02T09:45:00-04:00", "exit_time": "2023-11-02T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HOOD", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 70.1, "pnl_pct": 1.77, "entry_price": 8.48, "exit_price": 8.33, "entry_time": "2023-11-08T09:45:00-05:00", "exit_time": "2023-11-08T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "AFRM", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 75.8, "pnl_pct": -1.91, "entry_price": 26.64, "exit_price": 26.13, "entry_time": "2023-11-09T09:45:00-05:00", "exit_time": "2023-11-09T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "APP", "trigger_type": "meme_community", "direction": "long", "rs_score": 69.5, "pnl_pct": 9.11, "entry_price": 38.03, "exit_price": 41.5, "entry_time": "2023-11-09T09:45:00-05:00", "exit_time": "2023-11-09T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "analyst_upgrade_bold", "direction": "long", "rs_score": 74.6, "pnl_pct": 7.16, "entry_price": 376.23, "exit_price": 403.16, "entry_time": "2024-01-19T09:45:00-05:00", "exit_time": "2024-01-19T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 67.1, "pnl_pct": -6.15, "entry_price": 444.92, "exit_price": 417.55, "entry_time": "2024-01-22T09:45:00-05:00", "exit_time": "2024-01-22T10:30:00-05:00", "hold_minutes": 45, "window": "W1"}, {"ticker": "WOLF", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 69.1, "pnl_pct": 1.86, "entry_price": 30.35, "exit_price": 29.78, "entry_time": "2024-02-01T09:45:00-05:00", "exit_time": "2024-02-01T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "APP", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 70.2, "pnl_pct": 0.05, "entry_price": 57.03, "exit_price": 57.06, "entry_time": "2024-02-15T09:45:00-05:00", "exit_time": "2024-02-15T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "COIN", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 90.2, "pnl_pct": -3.99, "entry_price": 190.26, "exit_price": 182.67, "entry_time": "2024-02-16T09:45:00-05:00", "exit_time": "2024-02-16T10:00:00-05:00", "hold_minutes": 15, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 67.3, "pnl_pct": 7.3, "entry_price": 860.0, "exit_price": 797.2, "entry_time": "2024-04-19T09:45:00-04:00", "exit_time": "2024-04-19T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "RIOT", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 67.2, "pnl_pct": 3.07, "entry_price": 9.78, "exit_price": 10.09, "entry_time": "2024-04-22T09:45:00-04:00", "exit_time": "2024-04-22T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "WOLF", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 70.5, "pnl_pct": 3.02, "entry_price": 22.16, "exit_price": 21.49, "entry_time": "2024-05-02T09:45:00-04:00", "exit_time": "2024-05-02T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "influencer_post_high", "direction": "short", "rs_score": 97.3, "pnl_pct": -3.19, "entry_price": 12.7, "exit_price": 13.11, "entry_time": "2024-05-03T09:45:00-04:00", "exit_time": "2024-05-03T10:00:00-04:00", "hold_minutes": 15, "window": "W1"}, {"ticker": "RDDT", "trigger_type": "analyst_upgrade_bold", "direction": "long", "rs_score": 82.9, "pnl_pct": 0.49, "entry_price": 51.34, "exit_price": 51.59, "entry_time": "2024-05-08T09:45:00-04:00", "exit_time": "2024-05-08T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 113.0, "pnl_pct": 11.18, "entry_price": 37.73, "exit_price": 33.51, "entry_time": "2024-05-15T09:45:00-04:00", "exit_time": "2024-05-15T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HIMS", "trigger_type": "influencer_post_high", "direction": "long", "rs_score": 88.9, "pnl_pct": 10.06, "entry_price": 17.2, "exit_price": 18.92, "entry_time": "2024-05-20T09:45:00-04:00", "exit_time": "2024-05-20T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "influencer_post_high", "direction": "short", "rs_score": 121.6, "pnl_pct": 22.47, "entry_price": 45.19, "exit_price": 35.03, "entry_time": "2024-06-07T09:45:00-04:00", "exit_time": "2024-06-07T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "NVDA", "trigger_type": "meme_community", "direction": "short", "rs_score": 73.7, "pnl_pct": -1.88, "entry_price": 119.65, "exit_price": 121.9, "entry_time": "2024-06-10T09:45:00-04:00", "exit_time": "2024-06-10T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "RIVN", "trigger_type": "partnership_announcement", "direction": "long", "rs_score": 67.1, "pnl_pct": 5.16, "entry_price": 11.15, "exit_price": 11.72, "entry_time": "2024-06-25T09:45:00-04:00", "exit_time": "2024-06-25T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "TSLA", "trigger_type": "analyst_upgrade_bold", "direction": "long", "rs_score": 77.7, "pnl_pct": -1.7, "entry_price": 220.06, "exit_price": 216.3, "entry_time": "2024-07-24T09:45:00-04:00", "exit_time": "2024-07-24T10:00:00-04:00", "hold_minutes": 15, "window": "W1"}, {"ticker": "HOOD", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 89.4, "pnl_pct": -4.1, "entry_price": 15.0, "exit_price": 15.62, "entry_time": "2024-08-05T09:45:00-04:00", "exit_time": "2024-08-05T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 81.3, "pnl_pct": 3.72, "entry_price": 532.73, "exit_price": 512.92, "entry_time": "2024-08-07T09:45:00-04:00", "exit_time": "2024-08-07T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 85.4, "pnl_pct": 7.37, "entry_price": 449.44, "exit_price": 416.33, "entry_time": "2024-08-28T09:45:00-04:00", "exit_time": "2024-08-28T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "AFRM", "trigger_type": "meme_community", "direction": "long", "rs_score": 77.1, "pnl_pct": 7.67, "entry_price": 39.1, "exit_price": 42.1, "entry_time": "2024-08-29T09:45:00-04:00", "exit_time": "2024-08-29T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 78.5, "pnl_pct": -0.88, "entry_price": 22.08, "exit_price": 21.89, "entry_time": "2024-08-30T09:45:00-04:00", "exit_time": "2024-08-30T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "GME", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 95.8, "pnl_pct": 1.69, "entry_price": 20.14, "exit_price": 19.8, "entry_time": "2024-09-11T09:45:00-04:00", "exit_time": "2024-09-11T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 93.1, "pnl_pct": 0.22, "entry_price": 41.81, "exit_price": 41.72, "entry_time": "2024-10-01T09:45:00-04:00", "exit_time": "2024-10-01T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HIMS", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 97.5, "pnl_pct": 4.87, "entry_price": 17.1, "exit_price": 16.26, "entry_time": "2024-10-03T09:45:00-04:00", "exit_time": "2024-10-03T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "SMCI", "trigger_type": "meme_community", "direction": "short", "rs_score": 94.9, "pnl_pct": -7.0, "entry_price": 33.87, "exit_price": 36.24, "entry_time": "2024-10-30T09:45:00-04:00", "exit_time": "2024-10-30T10:02:00-04:00", "hold_minutes": 17, "window": "W1"}, {"ticker": "HOOD", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 68.5, "pnl_pct": 4.39, "entry_price": 24.7, "exit_price": 23.62, "entry_time": "2024-10-31T09:45:00-04:00", "exit_time": "2024-10-31T11:00:00-04:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HIMS", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 83.9, "pnl_pct": 6.39, "entry_price": 20.58, "exit_price": 21.89, "entry_time": "2024-11-05T09:45:00-05:00", "exit_time": "2024-11-05T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "PLTR", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 77.0, "pnl_pct": 1.57, "entry_price": 49.73, "exit_price": 50.51, "entry_time": "2024-11-05T09:45:00-05:00", "exit_time": "2024-11-05T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "COIN", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 91.1, "pnl_pct": 4.38, "entry_price": 225.47, "exit_price": 235.35, "entry_time": "2024-11-06T09:45:00-05:00", "exit_time": "2024-11-06T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HOOD", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 81.0, "pnl_pct": 5.81, "entry_price": 27.34, "exit_price": 28.93, "entry_time": "2024-11-06T09:45:00-05:00", "exit_time": "2024-11-06T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "WOLF", "trigger_type": "press_release_positive", "direction": "short", "rs_score": 76.2, "pnl_pct": 0.19, "entry_price": 10.53, "exit_price": 10.51, "entry_time": "2024-11-07T09:45:00-05:00", "exit_time": "2024-11-07T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "COIN", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 81.6, "pnl_pct": 5.59, "entry_price": 301.79, "exit_price": 318.64, "entry_time": "2024-11-11T09:45:00-05:00", "exit_time": "2024-11-11T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HIMS", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 80.0, "pnl_pct": 5.4, "entry_price": 26.99, "exit_price": 28.45, "entry_time": "2024-11-11T09:45:00-05:00", "exit_time": "2024-11-11T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "RIOT", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 75.2, "pnl_pct": 1.76, "entry_price": 14.56, "exit_price": 14.82, "entry_time": "2024-11-11T09:45:00-05:00", "exit_time": "2024-11-11T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "RIOT", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 101.9, "pnl_pct": 2.17, "entry_price": 12.58, "exit_price": 12.85, "entry_time": "2024-12-12T09:45:00-05:00", "exit_time": "2024-12-12T11:00:00-05:00", "hold_minutes": 75, "window": "W1"}, {"ticker": "HIMS", "trigger_type": "analyst_upgrade_bold", "direction": "long", "rs_score": 68.2, "pnl_pct": 17.3438, "entry_price": 22.889999389648438, "exit_price": 26.860000610351562, "entry_time": "2026-03-11T09:30:00-04:00", "exit_time": "2026-03-11T13:53:49.486744-04:00", "hold_minutes": 263, "window": "late_morning"}, {"ticker": "RDDT", "trigger_type": "press_release_positive", "direction": "long", "rs_score": 61.8, "pnl_pct": -5.4955, "entry_price": 147.2217, "exit_price": 139.1312, "entry_time": "2026-03-17T10:41:00-04:00", "exit_time": "2026-03-25T22:12:10.602018-04:00", "hold_minutes": 12211, "window": "late_morning"}];
+const REGIME = {"regime": "normal", "dampener": 1.0, "vix": 31.05, "spy_move": null, "portfolio_heat": 0.0, "ts": "2026-03-28T22:30:32.832697-04:00"};
+
+// ===== OVERALL STATS =====
+const OVERALL_WR = 0.672;
+const OVERALL_AVG_WIN = 4.87;
+const OVERALL_AVG_LOSS = 2.84;
+const OVERALL_WL = OVERALL_AVG_WIN / OVERALL_AVG_LOSS;
+
+// ===== STATE =====
+let direction = 'long';
+
+function setDirection(d) {
+  direction = d;
+  document.getElementById('btnLong').className = d === 'long' ? 'active-long' : '';
+  document.getElementById('btnShort').className = d === 'short' ? 'active-short' : '';
+  recalc();
+}
+
+// ===== HELPERS =====
+function fmt$(v) { return '$' + v.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
+function fmtPct(v) { return v.toFixed(1) + '%'; }
+function fmtShares(v) { return Math.floor(v).toLocaleString(); }
+
+function getStats(triggerType) {
+  const filtered = TRADE_HISTORY.filter(t => t.trigger_type === triggerType);
+  if (filtered.length === 0) return null;
+  const wins = filtered.filter(t => t.pnl_pct > 0);
+  const losses = filtered.filter(t => t.pnl_pct <= 0);
+  return {
+    n: filtered.length,
+    wr: (wins.length / filtered.length * 100).toFixed(1),
+    avgPnl: (filtered.reduce((s, t) => s + t.pnl_pct, 0) / filtered.length).toFixed(2),
+    avgWin: wins.length > 0 ? (wins.reduce((s, t) => s + t.pnl_pct, 0) / wins.length).toFixed(2) : 'N/A',
+    avgLoss: losses.length > 0 ? (losses.reduce((s, t) => s + t.pnl_pct, 0) / losses.length).toFixed(2) : 'N/A',
+    best: Math.max(...filtered.map(t => t.pnl_pct)).toFixed(2),
+    worst: Math.min(...filtered.map(t => t.pnl_pct)).toFixed(2),
+  };
+}
+
+// ===== MAIN CALCULATION =====
+function recalc() {
+  const portfolio = parseFloat(document.getElementById('portfolio').value) || 100000;
+  const price = parseFloat(document.getElementById('entryPrice').value) || 25;
+  const rsScore = parseInt(document.getElementById('rsScore').value) || 75;
+  const stopPct = parseFloat(document.getElementById('stopPct').value) || 5;
+  const triggerType = document.getElementById('triggerType').value;
+  const atr = parseFloat(document.getElementById('atrInput').value) || 0;
+
+  // Effective stop distance
+  const effectiveStopPct = atr > 0 ? (atr * 2 / price * 100) : stopPct;
+
+  // Kelly Criterion
+  const kellyFull = OVERALL_WR - (1 - OVERALL_WR) / OVERALL_WL;
+  const kellyHalf = Math.max(kellyFull / 2, 0.01);
+  const kellyDollar = portfolio * kellyHalf;
+  const kellyShares = Math.floor(kellyDollar / price);
+
+  // Fixed Fractional (2% risk)
+  const riskAmt = portfolio * 0.02;
+  const ffShares = Math.floor(riskAmt / (price * effectiveStopPct / 100));
+
+  // RS Score Adjusted
+  const rsMultiplier = rsScore / 100;
+  const rsShares = Math.floor(ffShares * rsMultiplier);
+
+  // Regime Adjusted
+  const regimeDampener = REGIME.dampener || 1.0;
+  const raShares = Math.floor(rsShares * regimeDampener);
+
+  // Recommended = regime adjusted (capped at 10% portfolio)
+  const maxShares = Math.floor(portfolio * 0.10 / price);
+  const recommended = Math.min(raShares, maxShares);
+  const recDollar = recommended * price;
+  const recPctPortfolio = recDollar / portfolio * 100;
+  const maxLoss = recommended * price * effectiveStopPct / 100;
+  const maxLossPct = maxLoss / portfolio * 100;
+  const rr = effectiveStopPct > 0 ? (OVERALL_AVG_WIN / effectiveStopPct).toFixed(2) : '--';
+
+  // Update output cards
+  document.getElementById('outShares').textContent = fmtShares(recommended);
+  document.getElementById('outSharesSub').textContent = direction === 'long' ? 'BUY' : 'SELL SHORT';
+  document.getElementById('outDollar').textContent = fmt$(recDollar);
+  document.getElementById('outPctPortfolio').textContent = fmtPct(recPctPortfolio) + ' of portfolio';
+  document.getElementById('outMaxLoss').textContent = '-' + fmt$(maxLoss);
+  document.getElementById('outMaxLossPct').textContent = fmtPct(maxLossPct) + ' of portfolio';
+  document.getElementById('outRR').textContent = rr + 'x';
+
+  // Method comparison table
+  const methods = [
+    { name: 'Kelly (Half)', shares: kellyShares, badge: 'kelly', badgeLabel: 'KELLY' },
+    { name: 'Fixed Fractional (2%)', shares: ffShares, badge: 'conservative', badgeLabel: 'BASE' },
+    { name: 'RS Score Adjusted', shares: rsShares, badge: '', badgeLabel: '' },
+    { name: 'Regime Adjusted', shares: raShares, badge: 'rec', badgeLabel: 'REC' },
+  ];
+
+  let tbody = '';
+  methods.forEach(m => {
+    const sh = Math.min(m.shares, maxShares);
+    const dol = sh * price;
+    const pct = dol / portfolio * 100;
+    const loss = sh * price * effectiveStopPct / 100;
+    const isRec = m.name === 'Regime Adjusted';
+    tbody += '<tr class="' + (isRec ? 'recommended' : '') + '">';
+    tbody += '<td class="method-name">' + m.name;
+    if (m.badgeLabel) tbody += ' <span class="badge badge-' + m.badge + '">' + m.badgeLabel + '</span>';
+    tbody += '</td>';
+    tbody += '<td>' + fmtShares(sh) + '</td>';
+    tbody += '<td>' + fmt$(dol) + '</td>';
+    tbody += '<td>' + fmtPct(pct) + '</td>';
+    tbody += '<td class="neg">-' + fmt$(loss) + '</td>';
+    tbody += '</tr>';
+  });
+  document.getElementById('methodBody').innerHTML = tbody;
+
+  // Historical context
+  const triggerStats = getStats(triggerType);
+  const allTriggers = [...new Set(TRADE_HISTORY.map(t => t.trigger_type))];
+  const allStats = allTriggers.map(tt => ({ type: tt, ...getStats(tt) })).filter(s => s.n);
+
+  let histHtml = '';
+  allStats.sort((a, b) => b.n - a.n).forEach(s => {
+    const isSelected = s.type === triggerType;
+    const wrNum = parseFloat(s.wr);
+    histHtml += '<tr style="' + (isSelected ? 'background:var(--light-navy);font-weight:600;' : '') + '">';
+    histHtml += '<td style="font-family:var(--sans);">' + s.type.replace(/_/g, ' ') + (isSelected ? ' &#9668;' : '') + '</td>';
+    histHtml += '<td>' + s.n + '</td>';
+    histHtml += '<td class="' + (wrNum >= 60 ? 'pos' : wrNum < 50 ? 'neg' : '') + '">' + s.wr + '%</td>';
+    histHtml += '<td class="' + (parseFloat(s.avgPnl) >= 0 ? 'pos' : 'neg') + '">' + s.avgPnl + '%</td>';
+    histHtml += '<td class="pos">' + (s.avgWin !== 'N/A' ? '+' + s.avgWin + '%' : 'N/A') + '</td>';
+    histHtml += '<td class="neg">' + s.avgLoss + '%</td>';
+    histHtml += '<td class="pos">+' + s.best + '%</td>';
+    histHtml += '<td class="neg">' + s.worst + '%</td>';
+    histHtml += '</tr>';
+  });
+  document.getElementById('histBody').innerHTML = histHtml;
+
+  if (triggerStats) {
+    document.getElementById('histSummary').innerHTML =
+      'Selected trigger <strong>' + triggerType.replace(/_/g, ' ') + '</strong>: ' +
+      triggerStats.n + ' trades, ' + triggerStats.wr + '% win rate, ' +
+      triggerStats.avgPnl + '% avg P&L. ' +
+      'Overall strategy: ' + TRADE_HISTORY.length + ' trades, ' +
+      (OVERALL_WR * 100).toFixed(1) + '% WR, ' + OVERALL_AVG_WIN.toFixed(2) + '% avg win.';
+  } else {
+    document.getElementById('histSummary').innerHTML =
+      'No historical trades for <strong>' + triggerType.replace(/_/g, ' ') + '</strong>. ' +
+      'Using overall stats: ' + TRADE_HISTORY.length + ' trades, ' +
+      (OVERALL_WR * 100).toFixed(1) + '% WR.';
+  }
+
+  // Warnings
+  const warnings = [];
+  if (recPctPortfolio > 10) warnings.push('Position exceeds 10% concentration limit. Consider reducing size.');
+  if (rsScore < 65) warnings.push('RS score below minimum execution threshold (65). Shadow-only territory.');
+  if (REGIME.regime === 'risk_off') warnings.push('Risk-off regime active (VIX: ' + REGIME.vix + '). Consider reducing position size by 30-50%.');
+  if (REGIME.portfolio_heat > 0.7) warnings.push('Portfolio heat elevated (' + (REGIME.portfolio_heat * 100).toFixed(0) + '%). Reduce new exposure.');
+  if (effectiveStopPct > 8) warnings.push('Wide stop (' + effectiveStopPct.toFixed(1) + '%): max loss exposure is high relative to typical RS trade.');
+
+  const warnBox = document.getElementById('warnings');
+  if (warnings.length > 0) {
+    const hasDanger = rsScore < 65 || REGIME.regime === 'risk_off';
+    warnBox.className = 'warning-box visible ' + (hasDanger ? 'danger' : 'warn');
+    warnBox.innerHTML = warnings.join('<br>');
+  } else {
+    warnBox.className = 'warning-box';
+  }
+}
+
+// ===== EVENT LISTENERS =====
+document.getElementById('portfolio').addEventListener('input', recalc);
+document.getElementById('entryPrice').addEventListener('input', recalc);
+document.getElementById('rsScore').addEventListener('input', function() {
+  document.getElementById('rsScoreVal').textContent = this.value;
+  recalc();
+});
+document.getElementById('stopPct').addEventListener('input', function() {
+  document.getElementById('stopPctVal').textContent = parseFloat(this.value).toFixed(1) + '%';
+  recalc();
+});
+document.getElementById('triggerType').addEventListener('change', recalc);
+document.getElementById('atrInput').addEventListener('input', recalc);
+
+// Initial calculation
+recalc();
+</script>
+</body>
+</html>

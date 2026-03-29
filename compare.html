@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital — Strategy Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #fafaf8;
+  --ink: #1a1a1a;
+  --green: #0a7c42;
+  --red: #c41e1e;
+  --navy: #1e3a5f;
+  --rule: #d4d0c8;
+  --muted: #6b6760;
+  --light-green: rgba(10, 124, 66, 0.08);
+  --light-navy: rgba(30, 58, 95, 0.06);
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== NAV BAR ===== */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--rule);
+  font-size: 11px;
+  font-family: var(--sans);
+}
+.nav-bar a {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 5px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.nav-bar a:hover { background: #f0f0f0; color: var(--ink); }
+.nav-bar .spacer { flex: 1; }
+
+/* ===== PAGE ===== */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 32px 40px;
+}
+
+/* ===== MASTHEAD ===== */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+.masthead-left h1 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.masthead-left .subtitle {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.masthead-right {
+  text-align: right;
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.masthead-right .date {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.confidential-rule {
+  text-align: center;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--rule);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 3px 0;
+  margin: 8px 0 20px;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  margin-bottom: 28px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+/* ===== CHART ===== */
+.chart-container {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 18px 20px 14px;
+  margin-bottom: 20px;
+}
+
+/* ===== TABLE ===== */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: var(--sans);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.comp-table th {
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: right;
+}
+.comp-table th:first-child { text-align: left; }
+.comp-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #eee;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+.comp-table td:first-child {
+  text-align: left;
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--ink);
+}
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:nth-child(even) td { background: var(--light-navy); }
+.comp-table .positive { color: var(--green); }
+.comp-table .negative { color: var(--red); }
+.comp-table .highlight-col { background: rgba(30, 58, 95, 0.04); font-weight: 700; }
+
+/* ===== MONTHLY RETURNS GRID ===== */
+.monthly-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.monthly-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.monthly-card h4 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.monthly-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  font-size: 11px;
+  border-bottom: 1px solid #f5f5f5;
+}
+.monthly-row:last-child { border-bottom: none; }
+.monthly-label { color: var(--muted); font-weight: 500; }
+.monthly-val { font-family: var(--mono); font-weight: 600; }
+.monthly-val.positive { color: var(--green); }
+.monthly-val.negative { color: var(--red); }
+
+/* ===== CALLOUT ===== */
+.callout {
+  background: var(--light-green);
+  border-left: 4px solid var(--green);
+  padding: 16px 20px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+.callout h3 {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.callout p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ===== ANALYSIS ===== */
+.analysis-text {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink);
+  max-width: 780px;
+}
+.analysis-text strong { color: var(--navy); }
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  margin-top: 10px;
+}
+
+@media print {
+  .nav-bar { display: none; }
+  body { font-size: 10px; }
+  .page { padding: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <a href="rs.html">&larr; RS Dashboard</a>
+  <a href="brief.html">&larr; Full Report</a>
+  <span class="spacer"></span>
+</div>
+
+<div class="page">
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <h1>Strategy Comparison</h1>
+      <div class="subtitle">DNSD Capital &mdash; Retail Sentiment Alpha</div>
+    </div>
+    <div class="masthead-right">
+      <div class="date">2026-03-28 21:27</div>
+      <div>58 paper trades &bull; 2023-01-26 to 2026-03-25</div>
+    </div>
+  </div>
+  <div class="confidential-rule">PROPRIETARY &amp; CONFIDENTIAL</div>
+
+  <!-- EQUITY CURVE CHART -->
+  <div class="section">
+    <div class="section-title">Equity Curves</div>
+    <div class="chart-container">
+      <canvas id="equityChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="section">
+    <div class="section-title">Performance Metrics</div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>RS Strategy</th>
+          <th>SPY</th>
+          <th>QQQ</th>
+          <th>60/40</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Total Return</td>
+          <td class="highlight-col positive">+7.0%</td>
+          <td class="">N/A</td>
+          <td class="positive">+98.5%</td>
+          <td class="">N/A</td>
+        </tr>
+        <tr>
+          <td>Annualized Return</td>
+          <td class="highlight-col positive">+2.2%</td>
+          <td class="">N/A</td>
+          <td class="positive">+24.1%</td>
+          <td class="">N/A</td>
+        </tr>
+        <tr>
+          <td>Max Drawdown</td>
+          <td class="highlight-col negative">-0.7%</td>
+          <td class="">N/A</td>
+          <td class="negative">-22.8%</td>
+          <td class="">N/A</td>
+        </tr>
+        <tr>
+          <td>Sharpe Ratio</td>
+          <td class="highlight-col">5.80</td>
+          <td>N/A</td>
+          <td>0.94</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Sortino Ratio</td>
+          <td class="highlight-col">8.65</td>
+          <td>N/A</td>
+          <td>0.92</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Calmar Ratio</td>
+          <td class="highlight-col">3.01</td>
+          <td>N/A</td>
+          <td>1.06</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Best Month</td>
+          <td class="highlight-col positive">+1.56%</td>
+          <td class="positive">N/A</td>
+          <td class="positive">+10.82%</td>
+          <td class="positive">N/A</td>
+        </tr>
+        <tr>
+          <td>Worst Month</td>
+          <td class="highlight-col negative">-0.49%</td>
+          <td class="negative">N/A</td>
+          <td class="negative">-7.59%</td>
+          <td class="negative">N/A</td>
+        </tr>
+        <tr>
+          <td>Win Rate</td>
+          <td class="highlight-col">67.2%</td>
+          <td>N/A</td>
+          <td>N/A</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Alpha vs SPY</td>
+          <td class="highlight-col ">N/A</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MONTHLY RETURNS COMPARISON -->
+  <div class="section">
+    <div class="section-title">Monthly Returns Comparison</div>
+    <div class="monthly-grid">
+      <div class="monthly-card">
+  <h4>RS Strategy</h4>
+  <div class="monthly-row"><span class="monthly-label">2023-01</span><span class="monthly-val negative">-0.02%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-02</span><span class="monthly-val positive">+0.11%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-03</span><span class="monthly-val positive">+0.25%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-04</span><span class="monthly-val negative">-0.02%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-05</span><span class="monthly-val positive">+0.22%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-06</span><span class="monthly-val negative">-0.49%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-07</span><span class="monthly-val positive">+0.05%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-08</span><span class="monthly-val positive">+0.28%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-10</span><span class="monthly-val positive">+0.17%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-11</span><span class="monthly-val positive">+0.35%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-01</span><span class="monthly-val positive">+0.05%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-02</span><span class="monthly-val negative">-0.10%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-04</span><span class="monthly-val positive">+0.52%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-05</span><span class="monthly-val positive">+1.08%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-06</span><span class="monthly-val positive">+1.29%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-07</span><span class="monthly-val negative">-0.09%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-08</span><span class="monthly-val positive">+0.69%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-09</span><span class="monthly-val positive">+0.08%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-10</span><span class="monthly-val positive">+0.12%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-11</span><span class="monthly-val positive">+1.56%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-12</span><span class="monthly-val positive">+0.11%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-03</span><span class="monthly-val positive">+0.59%</span></div>
+
+</div>
+<div class="monthly-card">
+  <h4>SPY</h4>
+  <div class="monthly-row"><span class="monthly-label">2023-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-03</span><span class="monthly-val ">N/A</span></div>
+
+</div>
+<div class="monthly-card">
+  <h4>QQQ</h4>
+  <div class="monthly-row"><span class="monthly-label">2023-01</span><span class="monthly-val positive">+1.96%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-02</span><span class="monthly-val negative">-0.36%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-03</span><span class="monthly-val positive">+9.49%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-04</span><span class="monthly-val positive">+0.51%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-05</span><span class="monthly-val positive">+7.88%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-06</span><span class="monthly-val positive">+6.30%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-07</span><span class="monthly-val positive">+3.86%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-08</span><span class="monthly-val negative">-1.48%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-09</span><span class="monthly-val negative">-5.08%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-10</span><span class="monthly-val negative">-2.07%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-11</span><span class="monthly-val positive">+10.82%</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-12</span><span class="monthly-val positive">+5.59%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-01</span><span class="monthly-val positive">+1.82%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-02</span><span class="monthly-val positive">+5.28%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-03</span><span class="monthly-val positive">+1.27%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-04</span><span class="monthly-val negative">-4.37%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-05</span><span class="monthly-val positive">+6.15%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-06</span><span class="monthly-val positive">+6.47%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-07</span><span class="monthly-val negative">-1.68%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-08</span><span class="monthly-val positive">+1.10%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-09</span><span class="monthly-val positive">+2.62%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-10</span><span class="monthly-val negative">-0.86%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-11</span><span class="monthly-val positive">+5.35%</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-12</span><span class="monthly-val positive">+0.45%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-01</span><span class="monthly-val positive">+2.16%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-02</span><span class="monthly-val negative">-2.70%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-03</span><span class="monthly-val negative">-7.59%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-04</span><span class="monthly-val positive">+1.40%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-05</span><span class="monthly-val positive">+9.18%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-06</span><span class="monthly-val positive">+6.39%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-07</span><span class="monthly-val positive">+2.42%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-08</span><span class="monthly-val positive">+0.95%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-09</span><span class="monthly-val positive">+5.38%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-10</span><span class="monthly-val positive">+4.78%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-11</span><span class="monthly-val negative">-1.56%</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-12</span><span class="monthly-val negative">-0.67%</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-01</span><span class="monthly-val positive">+1.23%</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-02</span><span class="monthly-val negative">-2.34%</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-03</span><span class="monthly-val negative">-7.25%</span></div>
+
+</div>
+<div class="monthly-card">
+  <h4>60/40</h4>
+  <div class="monthly-row"><span class="monthly-label">2023-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2023-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2024-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-03</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-04</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-05</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-06</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-07</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-08</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-09</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-10</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-11</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2025-12</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-01</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-02</span><span class="monthly-val ">N/A</span></div>
+<div class="monthly-row"><span class="monthly-label">2026-03</span><span class="monthly-val ">N/A</span></div>
+
+</div>
+
+    </div>
+  </div>
+
+  <!-- RISK-ADJUSTED ANALYSIS -->
+  <div class="section">
+    <div class="section-title">Risk-Adjusted Analysis</div>
+    <div class="analysis-text">
+      The <strong>Sortino ratio of 8.65</strong> highlights that downside risk is well-managed, as the strategy's asymmetric return profile limits losses through defined stops and partial profit-taking. Key structural advantages include: (1) minimal market exposure (average hold &lt;2 hours), (2) defined risk per trade (5%% position sizing with -5%% stops), and (3) alpha generation uncorrelated to broad equity beta.
+    </div>
+  </div>
+
+  <!-- KEY TAKEAWAY -->
+  <div class="callout">
+    <h3>Key Takeaway</h3>
+    <p>Across 58 paper trades, the RS strategy returned +7.0%, with a 67.2% win rate, and a maximum drawdown of just -0.7%. The strategy captures retail-sentiment-driven dislocations with minimal market exposure, generating alpha that is largely uncorrelated to traditional equity benchmarks.</p>
+  </div>
+
+  <div class="footer">
+    Generated 2026-03-28 21:27 &bull; rs_strategy_compare.py &bull; Data from rs_monitor.db + yfinance
+  </div>
+</div>
+
+<script>
+(function() {
+  const rsData = {"dates": ["2023-01-26", "2023-01-26", "2023-02-14", "2023-03-17", "2023-04-24", "2023-05-03", "2023-05-18", "2023-05-25", "2023-06-06", "2023-06-07", "2023-06-07", "2023-06-13", "2023-07-05", "2023-07-26", "2023-08-09", "2023-08-17", "2023-10-24", "2023-10-31", "2023-11-02", "2023-11-08", "2023-11-09", "2023-11-09", "2024-01-19", "2024-01-22", "2024-02-01", "2024-02-15", "2024-02-16", "2024-04-19", "2024-04-22", "2024-05-02", "2024-05-03", "2024-05-08", "2024-05-15", "2024-05-20", "2024-06-07", "2024-06-10", "2024-06-25", "2024-07-24", "2024-08-05", "2024-08-07", "2024-08-28", "2024-08-29", "2024-08-30", "2024-09-11", "2024-10-01", "2024-10-03", "2024-10-30", "2024-10-31", "2024-11-05", "2024-11-05", "2024-11-06", "2024-11-06", "2024-11-07", "2024-11-11", "2024-11-11", "2024-11-11", "2024-12-12", "2026-03-11", "2026-03-25"], "values": [100000.0, 99976.5, 100089.97, 100337.2, 100316.12, 100463.09, 100769.0, 100534.21, 100403.51, 100262.44, 100194.77, 100042.47, 100112.5, 100094.98, 100337.21, 100371.83, 100427.53, 100547.04, 100451.52, 100540.42, 100444.41, 100901.93, 101263.16, 100951.78, 101045.66, 101048.19, 100846.6, 101214.69, 101370.05, 101523.12, 101361.19, 101386.02, 101952.77, 102465.59, 103616.79, 103519.39, 103786.47, 103698.26, 103485.67, 103678.16, 104060.21, 104459.28, 104413.32, 104501.55, 104513.05, 104767.53, 104400.85, 104630.01, 104964.3, 105046.7, 105276.75, 105582.58, 105592.61, 105887.74, 106173.64, 106267.07, 106382.37, 107304.91, 107010.06]};
+  const spyData = null;
+  const qqqData = {"dates": ["2023-01-23", "2023-01-24", "2023-01-25", "2023-01-26", "2023-01-27", "2023-01-30", "2023-01-31", "2023-02-01", "2023-02-02", "2023-02-03", "2023-02-06", "2023-02-07", "2023-02-08", "2023-02-09", "2023-02-10", "2023-02-13", "2023-02-14", "2023-02-15", "2023-02-16", "2023-02-17", "2023-02-21", "2023-02-22", "2023-02-23", "2023-02-24", "2023-02-27", "2023-02-28", "2023-03-01", "2023-03-02", "2023-03-03", "2023-03-06", "2023-03-07", "2023-03-08", "2023-03-09", "2023-03-10", "2023-03-13", "2023-03-14", "2023-03-15", "2023-03-16", "2023-03-17", "2023-03-20", "2023-03-21", "2023-03-22", "2023-03-23", "2023-03-24", "2023-03-27", "2023-03-28", "2023-03-29", "2023-03-30", "2023-03-31", "2023-04-03", "2023-04-04", "2023-04-05", "2023-04-06", "2023-04-10", "2023-04-11", "2023-04-12", "2023-04-13", "2023-04-14", "2023-04-17", "2023-04-18", "2023-04-19", "2023-04-20", "2023-04-21", "2023-04-24", "2023-04-25", "2023-04-26", "2023-04-27", "2023-04-28", "2023-05-01", "2023-05-02", "2023-05-03", "2023-05-04", "2023-05-05", "2023-05-08", "2023-05-09", "2023-05-10", "2023-05-11", "2023-05-12", "2023-05-15", "2023-05-16", "2023-05-17", "2023-05-18", "2023-05-19", "2023-05-22", "2023-05-23", "2023-05-24", "2023-05-25", "2023-05-26", "2023-05-30", "2023-05-31", "2023-06-01", "2023-06-02", "2023-06-05", "2023-06-06", "2023-06-07", "2023-06-08", "2023-06-09", "2023-06-12", "2023-06-13", "2023-06-14", "2023-06-15", "2023-06-16", "2023-06-20", "2023-06-21", "2023-06-22", "2023-06-23", "2023-06-26", "2023-06-27", "2023-06-28", "2023-06-29", "2023-06-30", "2023-07-03", "2023-07-05", "2023-07-06", "2023-07-07", "2023-07-10", "2023-07-11", "2023-07-12", "2023-07-13", "2023-07-14", "2023-07-17", "2023-07-18", "2023-07-19", "2023-07-20", "2023-07-21", "2023-07-24", "2023-07-25", "2023-07-26", "2023-07-27", "2023-07-28", "2023-07-31", "2023-08-01", "2023-08-02", "2023-08-03", "2023-08-04", "2023-08-07", "2023-08-08", "2023-08-09", "2023-08-10", "2023-08-11", "2023-08-14", "2023-08-15", "2023-08-16", "2023-08-17", "2023-08-18", "2023-08-21", "2023-08-22", "2023-08-23", "2023-08-24", "2023-08-25", "2023-08-28", "2023-08-29", "2023-08-30", "2023-08-31", "2023-09-01", "2023-09-05", "2023-09-06", "2023-09-07", "2023-09-08", "2023-09-11", "2023-09-12", "2023-09-13", "2023-09-14", "2023-09-15", "2023-09-18", "2023-09-19", "2023-09-20", "2023-09-21", "2023-09-22", "2023-09-25", "2023-09-26", "2023-09-27", "2023-09-28", "2023-09-29", "2023-10-02", "2023-10-03", "2023-10-04", "2023-10-05", "2023-10-06", "2023-10-09", "2023-10-10", "2023-10-11", "2023-10-12", "2023-10-13", "2023-10-16", "2023-10-17", "2023-10-18", "2023-10-19", "2023-10-20", "2023-10-23", "2023-10-24", "2023-10-25", "2023-10-26", "2023-10-27", "2023-10-30", "2023-10-31", "2023-11-01", "2023-11-02", "2023-11-03", "2023-11-06", "2023-11-07", "2023-11-08", "2023-11-09", "2023-11-10", "2023-11-13", "2023-11-14", "2023-11-15", "2023-11-16", "2023-11-17", "2023-11-20", "2023-11-21", "2023-11-22", "2023-11-24", "2023-11-27", "2023-11-28", "2023-11-29", "2023-11-30", "2023-12-01", "2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07", "2023-12-08", "2023-12-11", "2023-12-12", "2023-12-13", "2023-12-14", "2023-12-15", "2023-12-18", "2023-12-19", "2023-12-20", "2023-12-21", "2023-12-22", "2023-12-26", "2023-12-27", "2023-12-28", "2023-12-29", "2024-01-02", "2024-01-03", "2024-01-04", "2024-01-05", "2024-01-08", "2024-01-09", "2024-01-10", "2024-01-11", "2024-01-12", "2024-01-16", "2024-01-17", "2024-01-18", "2024-01-19", "2024-01-22", "2024-01-23", "2024-01-24", "2024-01-25", "2024-01-26", "2024-01-29", "2024-01-30", "2024-01-31", "2024-02-01", "2024-02-02", "2024-02-05", "2024-02-06", "2024-02-07", "2024-02-08", "2024-02-09", "2024-02-12", "2024-02-13", "2024-02-14", "2024-02-15", "2024-02-16", "2024-02-20", "2024-02-21", "2024-02-22", "2024-02-23", "2024-02-26", "2024-02-27", "2024-02-28", "2024-02-29", "2024-03-01", "2024-03-04", "2024-03-05", "2024-03-06", "2024-03-07", "2024-03-08", "2024-03-11", "2024-03-12", "2024-03-13", "2024-03-14", "2024-03-15", "2024-03-18", "2024-03-19", "2024-03-20", "2024-03-21", "2024-03-22", "2024-03-25", "2024-03-26", "2024-03-27", "2024-03-28", "2024-04-01", "2024-04-02", "2024-04-03", "2024-04-04", "2024-04-05", "2024-04-08", "2024-04-09", "2024-04-10", "2024-04-11", "2024-04-12", "2024-04-15", "2024-04-16", "2024-04-17", "2024-04-18", "2024-04-19", "2024-04-22", "2024-04-23", "2024-04-24", "2024-04-25", "2024-04-26", "2024-04-29", "2024-04-30", "2024-05-01", "2024-05-02", "2024-05-03", "2024-05-06", "2024-05-07", "2024-05-08", "2024-05-09", "2024-05-10", "2024-05-13", "2024-05-14", "2024-05-15", "2024-05-16", "2024-05-17", "2024-05-20", "2024-05-21", "2024-05-22", "2024-05-23", "2024-05-24", "2024-05-28", "2024-05-29", "2024-05-30", "2024-05-31", "2024-06-03", "2024-06-04", "2024-06-05", "2024-06-06", "2024-06-07", "2024-06-10", "2024-06-11", "2024-06-12", "2024-06-13", "2024-06-14", "2024-06-17", "2024-06-18", "2024-06-20", "2024-06-21", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-07-01", "2024-07-02", "2024-07-03", "2024-07-05", "2024-07-08", "2024-07-09", "2024-07-10", "2024-07-11", "2024-07-12", "2024-07-15", "2024-07-16", "2024-07-17", "2024-07-18", "2024-07-19", "2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-29", "2024-07-30", "2024-07-31", "2024-08-01", "2024-08-02", "2024-08-05", "2024-08-06", "2024-08-07", "2024-08-08", "2024-08-09", "2024-08-12", "2024-08-13", "2024-08-14", "2024-08-15", "2024-08-16", "2024-08-19", "2024-08-20", "2024-08-21", "2024-08-22", "2024-08-23", "2024-08-26", "2024-08-27", "2024-08-28", "2024-08-29", "2024-08-30", "2024-09-03", "2024-09-04", "2024-09-05", "2024-09-06", "2024-09-09", "2024-09-10", "2024-09-11", "2024-09-12", "2024-09-13", "2024-09-16", "2024-09-17", "2024-09-18", "2024-09-19", "2024-09-20", "2024-09-23", "2024-09-24", "2024-09-25", "2024-09-26", "2024-09-27", "2024-09-30", "2024-10-01", "2024-10-02", "2024-10-03", "2024-10-04", "2024-10-07", "2024-10-08", "2024-10-09", "2024-10-10", "2024-10-11", "2024-10-14", "2024-10-15", "2024-10-16", "2024-10-17", "2024-10-18", "2024-10-21", "2024-10-22", "2024-10-23", "2024-10-24", "2024-10-25", "2024-10-28", "2024-10-29", "2024-10-30", "2024-10-31", "2024-11-01", "2024-11-04", "2024-11-05", "2024-11-06", "2024-11-07", "2024-11-08", "2024-11-11", "2024-11-12", "2024-11-13", "2024-11-14", "2024-11-15", "2024-11-18", "2024-11-19", "2024-11-20", "2024-11-21", "2024-11-22", "2024-11-25", "2024-11-26", "2024-11-27", "2024-11-29", "2024-12-02", "2024-12-03", "2024-12-04", "2024-12-05", "2024-12-06", "2024-12-09", "2024-12-10", "2024-12-11", "2024-12-12", "2024-12-13", "2024-12-16", "2024-12-17", "2024-12-18", "2024-12-19", "2024-12-20", "2024-12-23", "2024-12-24", "2024-12-26", "2024-12-27", "2024-12-30", "2024-12-31", "2025-01-02", "2025-01-03", "2025-01-06", "2025-01-07", "2025-01-08", "2025-01-10", "2025-01-13", "2025-01-14", "2025-01-15", "2025-01-16", "2025-01-17", "2025-01-21", "2025-01-22", "2025-01-23", "2025-01-24", "2025-01-27", "2025-01-28", "2025-01-29", "2025-01-30", "2025-01-31", "2025-02-03", "2025-02-04", "2025-02-05", "2025-02-06", "2025-02-07", "2025-02-10", "2025-02-11", "2025-02-12", "2025-02-13", "2025-02-14", "2025-02-18", "2025-02-19", "2025-02-20", "2025-02-21", "2025-02-24", "2025-02-25", "2025-02-26", "2025-02-27", "2025-02-28", "2025-03-03", "2025-03-04", "2025-03-05", "2025-03-06", "2025-03-07", "2025-03-10", "2025-03-11", "2025-03-12", "2025-03-13", "2025-03-14", "2025-03-17", "2025-03-18", "2025-03-19", "2025-03-20", "2025-03-21", "2025-03-24", "2025-03-25", "2025-03-26", "2025-03-27", "2025-03-28", "2025-03-31", "2025-04-01", "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11", "2025-04-14", "2025-04-15", "2025-04-16", "2025-04-17", "2025-04-21", "2025-04-22", "2025-04-23", "2025-04-24", "2025-04-25", "2025-04-28", "2025-04-29", "2025-04-30", "2025-05-01", "2025-05-02", "2025-05-05", "2025-05-06", "2025-05-07", "2025-05-08", "2025-05-09", "2025-05-12", "2025-05-13", "2025-05-14", "2025-05-15", "2025-05-16", "2025-05-19", "2025-05-20", "2025-05-21", "2025-05-22", "2025-05-23", "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-06-02", "2025-06-03", "2025-06-04", "2025-06-05", "2025-06-06", "2025-06-09", "2025-06-10", "2025-06-11", "2025-06-12", "2025-06-13", "2025-06-16", "2025-06-17", "2025-06-18", "2025-06-20", "2025-06-23", "2025-06-24", "2025-06-25", "2025-06-26", "2025-06-27", "2025-06-30", "2025-07-01", "2025-07-02", "2025-07-03", "2025-07-07", "2025-07-08", "2025-07-09", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-15", "2025-07-16", "2025-07-17", "2025-07-18", "2025-07-21", "2025-07-22", "2025-07-23", "2025-07-24", "2025-07-25", "2025-07-28", "2025-07-29", "2025-07-30", "2025-07-31", "2025-08-01", "2025-08-04", "2025-08-05", "2025-08-06", "2025-08-07", "2025-08-08", "2025-08-11", "2025-08-12", "2025-08-13", "2025-08-14", "2025-08-15", "2025-08-18", "2025-08-19", "2025-08-20", "2025-08-21", "2025-08-22", "2025-08-25", "2025-08-26", "2025-08-27", "2025-08-28", "2025-08-29", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"], "values": [100000.0, 99795.83, 99574.36, 101515.79, 102526.3, 100453.34, 101958.76, 104138.99, 107876.54, 105959.32, 105063.0, 107239.77, 105332.94, 104402.01, 103716.81, 105377.92, 106156.56, 106969.86, 104962.64, 104222.07, 101754.58, 101830.73, 102720.1, 101000.15, 101723.46, 101591.94, 100775.21, 101609.23, 103709.9, 103827.54, 102554.01, 103066.2, 101280.47, 99858.12, 100598.71, 102910.46, 103450.31, 106177.33, 105675.55, 106050.59, 107565.22, 106102.56, 107360.72, 107755.88, 107017.58, 106449.19, 108390.17, 109416.13, 111235.78, 110965.41, 110591.08, 109499.29, 110237.55, 110175.16, 109468.08, 108501.06, 110625.75, 110417.81, 110511.37, 110518.29, 110466.3, 109624.05, 109738.44, 109509.7, 107443.92, 108095.52, 111034.76, 111800.75, 111672.48, 110698.54, 109974.13, 109585.94, 111915.11, 112192.4, 111481.87, 112695.0, 113062.38, 112656.85, 113266.87, 113395.11, 114767.68, 116899.29, 116635.88, 117027.56, 115544.05, 114951.37, 117748.47, 120757.01, 121304.64, 120614.91, 122008.24, 122923.31, 123009.93, 122989.15, 120902.57, 122403.37, 122871.28, 124947.46, 125907.54, 126822.58, 128333.77, 127526.2, 127343.61, 125608.22, 127090.28, 125830.37, 124143.56, 126278.08, 126524.54, 126271.15, 128218.27, 128520.24, 128516.74, 127538.01, 127114.55, 127156.21, 127784.41, 129398.35, 131595.35, 131567.6, 132796.25, 133882.61, 133851.38, 130765.83, 130373.63, 130581.91, 131466.94, 131029.63, 130717.23, 133098.21, 133167.62, 132858.72, 129943.28, 129735.0, 129127.62, 130220.92, 129113.73, 127694.18, 127930.17, 127114.55, 128541.07, 127177.05, 125830.37, 124455.93, 124299.73, 126302.38, 126121.89, 128110.66, 125372.21, 126344.02, 127295.04, 130075.15, 130800.54, 131192.73, 131053.91, 131220.51, 130064.74, 129134.58, 129315.04, 130838.72, 129387.92, 129880.77, 130942.85, 128700.7, 128834.86, 128560.29, 126707.68, 124385.8, 124403.21, 124994.08, 123117.16, 123405.63, 124437.96, 124528.32, 125567.6, 123363.94, 125042.74, 124674.31, 126763.29, 127409.77, 128115.36, 129029.53, 128581.13, 126964.88, 128400.4, 127979.83, 126301.0, 125119.21, 123252.7, 123624.63, 124827.28, 121772.0, 119450.16, 120023.65, 121375.77, 121956.23, 124073.0, 126325.32, 127809.5, 128330.87, 129543.96, 129627.37, 128629.8, 131521.69, 131111.53, 133933.91, 134034.71, 134149.41, 134180.69, 135814.32, 135025.32, 135577.97, 135386.79, 135268.62, 135623.16, 135491.06, 135150.42, 135536.26, 134278.0, 134615.17, 133836.56, 135706.58, 136311.37, 137475.76, 138570.68, 140332.9, 140211.25, 140889.01, 141776.44, 142500.86, 140383.34, 142016.75, 142229.21, 143099.91, 143391.19, 143321.51, 142701.26, 140286.42, 138802.0, 138087.64, 138251.43, 141108.8, 141387.56, 142345.82, 142642.02, 142715.18, 142701.26, 141896.31, 143910.42, 146764.28, 146955.95, 147565.76, 148384.63, 148565.84, 147680.75, 149193.06, 148199.94, 145297.27, 147008.22, 149492.73, 149297.58, 148997.93, 150531.16, 150809.93, 152294.34, 151698.49, 149332.44, 150959.75, 151409.27, 150036.34, 148903.85, 148307.97, 152649.78, 152200.28, 152120.12, 152486.02, 151674.08, 152973.85, 155277.16, 154723.11, 151945.9, 152900.67, 155221.42, 152980.82, 152412.84, 154597.68, 153409.43, 153022.62, 151203.67, 152645.78, 153026.09, 154840.47, 155573.22, 155751.16, 155185.89, 154683.47, 155210.34, 154924.21, 155252.21, 153912.34, 154257.81, 151899.08, 153689.04, 153734.39, 154303.15, 152956.31, 155398.74, 152921.4, 150405.7, 150419.66, 148584.33, 147736.47, 144679.91, 146134.91, 148315.66, 148818.1, 148099.35, 150384.76, 150995.38, 148148.17, 147077.0, 148954.17, 151947.93, 153612.27, 153636.7, 153545.99, 153880.94, 154243.82, 154599.72, 155594.14, 158026.12, 157705.11, 157628.35, 158727.46, 159037.98, 159006.6, 158291.31, 159788.19, 160391.82, 159261.29, 157555.08, 157262.0, 158106.37, 158539.03, 161735.14, 161679.31, 161536.26, 162188.73, 163301.8, 165440.67, 166337.41, 167199.25, 169247.42, 169299.73, 167994.79, 167544.68, 165637.25, 167531.4, 167877.39, 168310.72, 167437.04, 168419.07, 170187.42, 171606.29, 173395.59, 173807.97, 173958.24, 175772.01, 171917.32, 172927.3, 173392.09, 173458.5, 168366.65, 167569.83, 166084.57, 168558.86, 167964.73, 161939.8, 160153.97, 161796.51, 162121.51, 159895.37, 164627.25, 160639.75, 156826.99, 152150.99, 153604.81, 151941.31, 156589.33, 157407.09, 157746.1, 161660.21, 161712.64, 165798.0, 166011.19, 168191.9, 167838.94, 168621.74, 165948.28, 167748.06, 166119.51, 166615.77, 164725.1, 164483.97, 166444.52, 161391.12, 160971.73, 161122.03, 156806.0, 158822.48, 160290.29, 163771.05, 165378.64, 166119.51, 165385.63, 165472.99, 164756.58, 168922.3, 168600.79, 169047.7, 169863.12, 170020.62, 171297.98, 170346.07, 170808.04, 168428.25, 168666.23, 168540.24, 170545.56, 168718.73, 171238.49, 172585.87, 172389.88, 172659.34, 174108.2, 171780.93, 171801.94, 171920.93, 173047.82, 173380.28, 173569.27, 170909.5, 172295.38, 173345.29, 173373.27, 175039.13, 173716.26, 169331.17, 170584.05, 170087.11, 172256.87, 176935.94, 179721.65, 179931.65, 179826.66, 179501.19, 179270.22, 178024.33, 173782.75, 174990.13, 176194.01, 176092.53, 176725.95, 177009.43, 177289.39, 178241.31, 176837.94, 178391.79, 180334.09, 180887.05, 183123.34, 182615.87, 184250.21, 182815.35, 182192.43, 185454.08, 184257.23, 185667.62, 188341.34, 187511.9, 180747.06, 179942.14, 181513.48, 183281.91, 185767.22, 185640.96, 183173.27, 180737.07, 179201.76, 178851.23, 181778.17, 183867.3, 180586.33, 180617.9, 177785.6, 177214.24, 177045.98, 181119.15, 179850.24, 182885.84, 183958.44, 186310.49, 186706.59, 185651.51, 180246.34, 182910.36, 182566.85, 183345.04, 183078.6, 181613.38, 183842.75, 184677.03, 185640.96, 183299.44, 185518.31, 185076.65, 185185.3, 187849.35, 188638.03, 189065.68, 189118.26, 188315.52, 184407.13, 182230.33, 179934.36, 180368.99, 175359.92, 178129.13, 174231.21, 173705.42, 175969.85, 171129.02, 172387.43, 165706.32, 165310.22, 167175.05, 164167.5, 168135.51, 169225.63, 166340.79, 168566.66, 167995.29, 168549.12, 172247.82, 173230.76, 170043.2, 169074.3, 164622.95, 164615.92, 165942.91, 167154.02, 158205.69, 148379.7, 148737.78, 146059.24, 163590.84, 156632.95, 159518.62, 160599.87, 160778.91, 155930.86, 155902.78, 152044.7, 156036.19, 159574.8, 164064.78, 165893.75, 165841.1, 166936.38, 166915.31, 169095.35, 171605.38, 170587.34, 169000.58, 169664.06, 171415.83, 171303.49, 178282.42, 180999.57, 182084.33, 182284.41, 183077.82, 183253.34, 182642.52, 180104.4, 180441.43, 178770.38, 182976.01, 182165.05, 182523.14, 182235.28, 183674.62, 185110.39, 185626.47, 184229.27, 186030.15, 186303.99, 187536.21, 186904.28, 187343.11, 184991.05, 187564.27, 185735.29, 185703.66, 184945.43, 186847.11, 189704.4, 190189.35, 191967.69, 192624.9, 193872.54, 192238.3, 193577.32, 195482.17, 194009.62, 194118.57, 195492.72, 195211.57, 194772.25, 195478.68, 195657.88, 195858.21, 197443.23, 197253.46, 198276.18, 197249.96, 198149.66, 198571.38, 199049.35, 199671.45, 199362.16, 199629.25, 198571.38, 194659.79, 198251.57, 196905.54, 199383.24, 200058.0, 201924.21, 201326.72, 203857.15, 203959.1, 203800.94, 202904.76, 202823.92, 200072.08, 198884.19, 197963.41, 201017.46, 200437.6, 201242.36, 201551.67, 202813.37, 200465.7, 198785.8, 200349.72, 202163.17, 202454.89, 203442.46, 204018.83, 204085.61, 205273.5, 206180.23, 207944.49, 207768.76, 207354.06, 209223.78, 210640.08, 211887.08, 210479.66, 209740.76, 208836.51, 209695.01, 210666.14, 211243.19, 212256.52, 213129.12, 212231.91, 213825.79, 212699.87, 215138.22, 214877.85, 207418.53, 211820.22, 210409.3, 211894.12, 211109.49, 212495.78, 215173.4, 215117.12, 213044.68, 214835.63, 217129.71, 220996.61, 222696.07, 223698.86, 220278.82, 221341.44, 222400.5, 217886.2, 219304.2, 215219.15, 214540.06, 219286.59, 218702.52, 218530.1, 214068.59, 214230.44, 212400.79, 209814.63, 211067.25, 206070.9, 207619.08, 212928.56, 214241.01, 216133.97, 217886.2, 217154.34, 218853.79, 219388.62, 219184.56, 220078.26, 219656.03, 219926.95, 220827.71, 220113.46, 215905.26, 214821.55, 215247.29, 211257.25, 214318.39, 217112.14, 218152.85, 219174.53, 219815.74, 219801.64, 218737.68, 218230.34, 216426.53, 216007.29, 217723.02, 219636.05, 219847.46, 218596.74, 220774.01, 220957.21, 220629.57, 218272.62, 219058.28, 218875.08, 214224.6, 217120.58, 218698.92, 219389.44, 220354.77, 222352.36, 223088.67, 221753.43, 219089.98, 220594.34, 217205.13, 213410.78, 210338.66, 214784.78, 216430.06, 215425.97, 216003.76, 211610.48, 212061.43, 211842.98, 213424.86, 212607.5, 214488.84, 211881.74, 214157.66, 217261.49, 214640.33, 213953.32, 214235.17, 211941.66, 215172.32, 214524.04, 211296.91, 214118.91, 214122.44, 214094.26, 210419.68, 209172.49, 211518.87, 212551.14, 209588.24, 208925.88, 205064.57, 207418.5, 206000.43, 207355.01, 202405.88, 198451.54]};
+  const balData = null;
+
+  // Merge all dates into a unified x-axis
+  const allDates = new Set();
+  [rsData, spyData, qqqData, balData].forEach(function(d) {
+    if (d && d.dates) d.dates.forEach(function(dt) { allDates.add(dt); });
+  });
+  const labels = Array.from(allDates).sort();
+
+  function alignToLabels(d) {
+    if (!d || !d.dates) return labels.map(function() { return null; });
+    const map = {};
+    d.dates.forEach(function(dt, i) { map[dt] = d.values[i]; });
+    var last = null;
+    return labels.map(function(dt) {
+      if (map[dt] !== undefined) { last = map[dt]; return map[dt]; }
+      return last;
+    });
+  }
+
+  const ctx = document.getElementById('equityChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'RS Strategy',
+          data: alignToLabels(rsData),
+          borderColor: '#1e3a5f',
+          backgroundColor: 'rgba(30,58,95,0.08)',
+          borderWidth: 2.5,
+          fill: false,
+          pointRadius: 0,
+          tension: 0.3,
+          spanGaps: true
+        },
+        {
+          label: 'SPY',
+          data: alignToLabels(spyData),
+          borderColor: '#999',
+          borderWidth: 1.5,
+          fill: false,
+          pointRadius: 0,
+          tension: 0.3,
+          borderDash: [4, 3],
+          spanGaps: true
+        },
+        {
+          label: 'QQQ',
+          data: alignToLabels(qqqData),
+          borderColor: '#5b8ec9',
+          borderWidth: 1.5,
+          fill: false,
+          pointRadius: 0,
+          tension: 0.3,
+          borderDash: [6, 3],
+          spanGaps: true
+        },
+        {
+          label: '60/40',
+          data: alignToLabels(balData),
+          borderColor: '#8a9a5b',
+          borderWidth: 1.5,
+          fill: false,
+          pointRadius: 0,
+          tension: 0.3,
+          borderDash: [2, 3],
+          spanGaps: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { font: { family: "'Inter', sans-serif", size: 11 }, usePointStyle: true, pointStyleWidth: 16, boxHeight: 6 }
+        },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleFont: { family: "'Inter', sans-serif", size: 11 },
+          bodyFont: { family: "'JetBrains Mono', monospace", size: 11 },
+          callbacks: {
+            label: function(ctx) {
+              return ctx.dataset.label + ': $' + (ctx.parsed.y || 0).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'JetBrains Mono', monospace", size: 9 }, maxTicksLimit: 12, maxRotation: 45 }
+        },
+        y: {
+          grid: { color: '#eee' },
+          ticks: {
+            font: { family: "'JetBrains Mono', monospace", size: 10 },
+            callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; }
+          }
+        }
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

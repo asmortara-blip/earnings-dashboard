@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital — Ticker Correlation Matrix</title>
+<style>
+:root {
+  --cream: #f5f0e8;
+  --cream-dark: #e8e0d0;
+  --ink: #1a1a1a;
+  --ink-light: #555;
+  --accent: #8b0000;
+  --accent-blue: #1a3a5c;
+  --border: #c8bfa8;
+  --mono: 'SFMono-Regular', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Georgia', 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.masthead {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.masthead h1 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.masthead .subtitle {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: #aaa;
+}
+.nav-bar {
+  background: var(--cream-dark);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 32px;
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+}
+.nav-bar a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+.nav-bar a:hover { text-decoration: underline; }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent);
+  color: var(--ink);
+}
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 20px;
+  min-width: 160px;
+  text-align: center;
+}
+.stat-card .stat-value {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.stat-card .stat-label {
+  font-size: 11px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.heatmap-wrap {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+.corr-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 1px;
+  font-family: var(--mono);
+  font-size: 10px;
+  max-width: 100%;
+}
+.corr-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  min-width: 48px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  border-radius: 2px;
+  font-weight: 600;
+  user-select: none;
+}
+.corr-cell:hover {
+  opacity: 0.85;
+  outline: 2px solid var(--ink);
+  z-index: 2;
+  transform: scale(1.05);
+}
+.corr-cell.highlighted {
+  outline: 2px solid var(--accent) !important;
+  z-index: 3;
+}
+.corr-cell.dimmed { opacity: 0.3; }
+.corr-label { cursor: default; }
+.corr-diag { font-style: italic; }
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.legend-bar {
+  height: 14px;
+  width: 200px;
+  border-radius: 3px;
+  background: linear-gradient(to right, rgb(0,0,255), rgb(180,180,180), rgb(255,0,0));
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+table.data-table th {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+table.data-table td {
+  padding: 6px 12px;
+  border-bottom: 1px solid #eee;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+table.data-table tr:hover { background: #faf7f0; }
+
+.cluster-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.cluster-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px 20px;
+  min-width: 200px;
+  flex: 1;
+}
+.cluster-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.cluster-tickers {
+  font-family: var(--mono);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.cluster-corr {
+  font-size: 12px;
+  color: var(--ink-light);
+}
+.implications {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.implications h3 {
+  font-family: var(--serif);
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.implications ul { margin-left: 18px; }
+.implications li { margin-bottom: 4px; }
+.supp-badge {
+  display: inline-block;
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+  margin-top: 40px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div>
+    <h1>DNSD Capital &mdash; Ticker Correlation Matrix</h1>
+    <div class="subtitle">60-Day Daily Returns &bull; 15 Tickers &bull; Generated %Y-%m-%d %H:%M ET</div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <a href="rs_dashboard.html">&larr; RS Dashboard</a>
+  <a href="rs_market_report.html">&larr; Full Report</a>
+</div>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value">15</div>
+      <div class="stat-label">Tickers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">+0.320</div>
+      <div class="stat-label">Avg Pairwise Corr</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">14</div>
+      <div class="stat-label">High Corr Pairs (&gt;0.50)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">20</div>
+      <div class="stat-label">Diversifier Pairs (&lt;0.15)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">2</div>
+      <div class="stat-label">Clusters Detected</div>
+    </div>
+  </div>
+
+  <div class="supp-badge">Live concentration risk: <strong>LOW</strong></div>
+
+  <h2 class="section-title">Interactive Correlation Heatmap</h2>
+  <p style="font-size:12px; color:#888; margin-bottom:10px;">Click a cell to highlight its row and column. Click again to clear.</p>
+  <div class="heatmap-wrap">
+    <div class="corr-grid" id="corrGrid">
+<div class="corr-cell corr-label" style="background:#f5f0e8;"></div>
+<div class="corr-cell corr-label col-label" data-ticker="SMCI" style="background:#f5f0e8; font-weight:700; font-size:9px;">SMCI</div>
+<div class="corr-cell corr-label col-label" data-ticker="GME" style="background:#f5f0e8; font-weight:700; font-size:9px;">GME</div>
+<div class="corr-cell corr-label col-label" data-ticker="WOLF" style="background:#f5f0e8; font-weight:700; font-size:9px;">WOLF</div>
+<div class="corr-cell corr-label col-label" data-ticker="HIMS" style="background:#f5f0e8; font-weight:700; font-size:9px;">HIMS</div>
+<div class="corr-cell corr-label col-label" data-ticker="COIN" style="background:#f5f0e8; font-weight:700; font-size:9px;">COIN</div>
+<div class="corr-cell corr-label col-label" data-ticker="RIOT" style="background:#f5f0e8; font-weight:700; font-size:9px;">RIOT</div>
+<div class="corr-cell corr-label col-label" data-ticker="PLTR" style="background:#f5f0e8; font-weight:700; font-size:9px;">PLTR</div>
+<div class="corr-cell corr-label col-label" data-ticker="HOOD" style="background:#f5f0e8; font-weight:700; font-size:9px;">HOOD</div>
+<div class="corr-cell corr-label col-label" data-ticker="AFRM" style="background:#f5f0e8; font-weight:700; font-size:9px;">AFRM</div>
+<div class="corr-cell corr-label col-label" data-ticker="TSLA" style="background:#f5f0e8; font-weight:700; font-size:9px;">TSLA</div>
+<div class="corr-cell corr-label col-label" data-ticker="RDDT" style="background:#f5f0e8; font-weight:700; font-size:9px;">RDDT</div>
+<div class="corr-cell corr-label col-label" data-ticker="APP" style="background:#f5f0e8; font-weight:700; font-size:9px;">APP</div>
+<div class="corr-cell corr-label col-label" data-ticker="SNAP" style="background:#f5f0e8; font-weight:700; font-size:9px;">SNAP</div>
+<div class="corr-cell corr-label col-label" data-ticker="RIVN" style="background:#f5f0e8; font-weight:700; font-size:9px;">RIVN</div>
+<div class="corr-cell corr-label col-label" data-ticker="NVDA" style="background:#f5f0e8; font-weight:700; font-size:9px;">NVDA</div>
+<div class="corr-cell corr-label row-label" data-ticker="SMCI" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">SMCI</div>
+<div class="corr-cell corr-diag" data-row="SMCI" data-col="SMCI" data-val="1.000" data-t1="SMCI" data-t2="SMCI" style="background:#d5d0c8; color:#888;" title="SMCI vs SMCI: 1.000">1.00</div>
+<div class="corr-cell " data-row="SMCI" data-col="GME" data-val="0.281" data-t1="SMCI" data-t2="GME" style="background:rgb(201,129,129); color:#1a1a1a;" title="SMCI vs GME: 0.281">0.28</div>
+<div class="corr-cell " data-row="SMCI" data-col="WOLF" data-val="0.322" data-t1="SMCI" data-t2="WOLF" style="background:rgb(204,122,122); color:#1a1a1a;" title="SMCI vs WOLF: 0.322">0.32</div>
+<div class="corr-cell " data-row="SMCI" data-col="HIMS" data-val="0.193" data-t1="SMCI" data-t2="HIMS" style="background:rgb(194,145,145); color:#1a1a1a;" title="SMCI vs HIMS: 0.193">0.19</div>
+<div class="corr-cell " data-row="SMCI" data-col="COIN" data-val="0.329" data-t1="SMCI" data-t2="COIN" style="background:rgb(204,120,120); color:#1a1a1a;" title="SMCI vs COIN: 0.329">0.33</div>
+<div class="corr-cell " data-row="SMCI" data-col="RIOT" data-val="0.485" data-t1="SMCI" data-t2="RIOT" style="background:rgb(216,92,92); color:#1a1a1a;" title="SMCI vs RIOT: 0.485">0.49</div>
+<div class="corr-cell " data-row="SMCI" data-col="PLTR" data-val="0.108" data-t1="SMCI" data-t2="PLTR" style="background:rgb(188,160,160); color:#1a1a1a;" title="SMCI vs PLTR: 0.108">0.11</div>
+<div class="corr-cell " data-row="SMCI" data-col="HOOD" data-val="0.324" data-t1="SMCI" data-t2="HOOD" style="background:rgb(204,121,121); color:#1a1a1a;" title="SMCI vs HOOD: 0.324">0.32</div>
+<div class="corr-cell " data-row="SMCI" data-col="AFRM" data-val="0.252" data-t1="SMCI" data-t2="AFRM" style="background:rgb(198,134,134); color:#1a1a1a;" title="SMCI vs AFRM: 0.252">0.25</div>
+<div class="corr-cell " data-row="SMCI" data-col="TSLA" data-val="0.336" data-t1="SMCI" data-t2="TSLA" style="background:rgb(205,119,119); color:#1a1a1a;" title="SMCI vs TSLA: 0.336">0.34</div>
+<div class="corr-cell " data-row="SMCI" data-col="RDDT" data-val="-0.013" data-t1="SMCI" data-t2="RDDT" style="background:rgb(177,177,181); color:#1a1a1a;" title="SMCI vs RDDT: -0.013">-0.01</div>
+<div class="corr-cell " data-row="SMCI" data-col="APP" data-val="0.050" data-t1="SMCI" data-t2="APP" style="background:rgb(183,171,171); color:#1a1a1a;" title="SMCI vs APP: 0.050">0.05</div>
+<div class="corr-cell " data-row="SMCI" data-col="SNAP" data-val="0.319" data-t1="SMCI" data-t2="SNAP" style="background:rgb(203,122,122); color:#1a1a1a;" title="SMCI vs SNAP: 0.319">0.32</div>
+<div class="corr-cell " data-row="SMCI" data-col="RIVN" data-val="0.268" data-t1="SMCI" data-t2="RIVN" style="background:rgb(200,131,131); color:#1a1a1a;" title="SMCI vs RIVN: 0.268">0.27</div>
+<div class="corr-cell " data-row="SMCI" data-col="NVDA" data-val="0.379" data-t1="SMCI" data-t2="NVDA" style="background:rgb(208,111,111); color:#1a1a1a;" title="SMCI vs NVDA: 0.379">0.38</div>
+<div class="corr-cell corr-label row-label" data-ticker="GME" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">GME</div>
+<div class="corr-cell " data-row="GME" data-col="SMCI" data-val="0.281" data-t1="GME" data-t2="SMCI" style="background:rgb(201,129,129); color:#1a1a1a;" title="GME vs SMCI: 0.281">0.28</div>
+<div class="corr-cell corr-diag" data-row="GME" data-col="GME" data-val="1.000" data-t1="GME" data-t2="GME" style="background:#d5d0c8; color:#888;" title="GME vs GME: 1.000">1.00</div>
+<div class="corr-cell " data-row="GME" data-col="WOLF" data-val="0.118" data-t1="GME" data-t2="WOLF" style="background:rgb(188,158,158); color:#1a1a1a;" title="GME vs WOLF: 0.118">0.12</div>
+<div class="corr-cell " data-row="GME" data-col="HIMS" data-val="0.145" data-t1="GME" data-t2="HIMS" style="background:rgb(190,153,153); color:#1a1a1a;" title="GME vs HIMS: 0.145">0.14</div>
+<div class="corr-cell " data-row="GME" data-col="COIN" data-val="0.140" data-t1="GME" data-t2="COIN" style="background:rgb(190,154,154); color:#1a1a1a;" title="GME vs COIN: 0.140">0.14</div>
+<div class="corr-cell " data-row="GME" data-col="RIOT" data-val="0.098" data-t1="GME" data-t2="RIOT" style="background:rgb(187,162,162); color:#1a1a1a;" title="GME vs RIOT: 0.098">0.10</div>
+<div class="corr-cell " data-row="GME" data-col="PLTR" data-val="0.074" data-t1="GME" data-t2="PLTR" style="background:rgb(185,166,166); color:#1a1a1a;" title="GME vs PLTR: 0.074">0.07</div>
+<div class="corr-cell " data-row="GME" data-col="HOOD" data-val="0.109" data-t1="GME" data-t2="HOOD" style="background:rgb(188,160,160); color:#1a1a1a;" title="GME vs HOOD: 0.109">0.11</div>
+<div class="corr-cell " data-row="GME" data-col="AFRM" data-val="0.214" data-t1="GME" data-t2="AFRM" style="background:rgb(196,141,141); color:#1a1a1a;" title="GME vs AFRM: 0.214">0.21</div>
+<div class="corr-cell " data-row="GME" data-col="TSLA" data-val="0.259" data-t1="GME" data-t2="TSLA" style="background:rgb(199,133,133); color:#1a1a1a;" title="GME vs TSLA: 0.259">0.26</div>
+<div class="corr-cell " data-row="GME" data-col="RDDT" data-val="0.114" data-t1="GME" data-t2="RDDT" style="background:rgb(188,159,159); color:#1a1a1a;" title="GME vs RDDT: 0.114">0.11</div>
+<div class="corr-cell " data-row="GME" data-col="APP" data-val="0.037" data-t1="GME" data-t2="APP" style="background:rgb(182,173,173); color:#1a1a1a;" title="GME vs APP: 0.037">0.04</div>
+<div class="corr-cell " data-row="GME" data-col="SNAP" data-val="0.262" data-t1="GME" data-t2="SNAP" style="background:rgb(199,132,132); color:#1a1a1a;" title="GME vs SNAP: 0.262">0.26</div>
+<div class="corr-cell " data-row="GME" data-col="RIVN" data-val="0.112" data-t1="GME" data-t2="RIVN" style="background:rgb(188,159,159); color:#1a1a1a;" title="GME vs RIVN: 0.112">0.11</div>
+<div class="corr-cell " data-row="GME" data-col="NVDA" data-val="0.163" data-t1="GME" data-t2="NVDA" style="background:rgb(192,150,150); color:#1a1a1a;" title="GME vs NVDA: 0.163">0.16</div>
+<div class="corr-cell corr-label row-label" data-ticker="WOLF" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">WOLF</div>
+<div class="corr-cell " data-row="WOLF" data-col="SMCI" data-val="0.322" data-t1="WOLF" data-t2="SMCI" style="background:rgb(204,122,122); color:#1a1a1a;" title="WOLF vs SMCI: 0.322">0.32</div>
+<div class="corr-cell " data-row="WOLF" data-col="GME" data-val="0.118" data-t1="WOLF" data-t2="GME" style="background:rgb(188,158,158); color:#1a1a1a;" title="WOLF vs GME: 0.118">0.12</div>
+<div class="corr-cell corr-diag" data-row="WOLF" data-col="WOLF" data-val="1.000" data-t1="WOLF" data-t2="WOLF" style="background:#d5d0c8; color:#888;" title="WOLF vs WOLF: 1.000">1.00</div>
+<div class="corr-cell " data-row="WOLF" data-col="HIMS" data-val="0.350" data-t1="WOLF" data-t2="HIMS" style="background:rgb(206,117,117); color:#1a1a1a;" title="WOLF vs HIMS: 0.350">0.35</div>
+<div class="corr-cell " data-row="WOLF" data-col="COIN" data-val="0.331" data-t1="WOLF" data-t2="COIN" style="background:rgb(204,120,120); color:#1a1a1a;" title="WOLF vs COIN: 0.331">0.33</div>
+<div class="corr-cell " data-row="WOLF" data-col="RIOT" data-val="0.488" data-t1="WOLF" data-t2="RIOT" style="background:rgb(216,92,92); color:#1a1a1a;" title="WOLF vs RIOT: 0.488">0.49</div>
+<div class="corr-cell " data-row="WOLF" data-col="PLTR" data-val="0.179" data-t1="WOLF" data-t2="PLTR" style="background:rgb(193,147,147); color:#1a1a1a;" title="WOLF vs PLTR: 0.179">0.18</div>
+<div class="corr-cell " data-row="WOLF" data-col="HOOD" data-val="0.252" data-t1="WOLF" data-t2="HOOD" style="background:rgb(198,134,134); color:#1a1a1a;" title="WOLF vs HOOD: 0.252">0.25</div>
+<div class="corr-cell " data-row="WOLF" data-col="AFRM" data-val="0.307" data-t1="WOLF" data-t2="AFRM" style="background:rgb(203,124,124); color:#1a1a1a;" title="WOLF vs AFRM: 0.307">0.31</div>
+<div class="corr-cell " data-row="WOLF" data-col="TSLA" data-val="0.140" data-t1="WOLF" data-t2="TSLA" style="background:rgb(190,154,154); color:#1a1a1a;" title="WOLF vs TSLA: 0.140">0.14</div>
+<div class="corr-cell " data-row="WOLF" data-col="RDDT" data-val="0.365" data-t1="WOLF" data-t2="RDDT" style="background:rgb(207,114,114); color:#1a1a1a;" title="WOLF vs RDDT: 0.365">0.37</div>
+<div class="corr-cell " data-row="WOLF" data-col="APP" data-val="0.206" data-t1="WOLF" data-t2="APP" style="background:rgb(195,142,142); color:#1a1a1a;" title="WOLF vs APP: 0.206">0.21</div>
+<div class="corr-cell " data-row="WOLF" data-col="SNAP" data-val="0.344" data-t1="WOLF" data-t2="SNAP" style="background:rgb(205,118,118); color:#1a1a1a;" title="WOLF vs SNAP: 0.344">0.34</div>
+<div class="corr-cell " data-row="WOLF" data-col="RIVN" data-val="0.271" data-t1="WOLF" data-t2="RIVN" style="background:rgb(200,131,131); color:#1a1a1a;" title="WOLF vs RIVN: 0.271">0.27</div>
+<div class="corr-cell " data-row="WOLF" data-col="NVDA" data-val="0.281" data-t1="WOLF" data-t2="NVDA" style="background:rgb(201,129,129); color:#1a1a1a;" title="WOLF vs NVDA: 0.281">0.28</div>
+<div class="corr-cell corr-label row-label" data-ticker="HIMS" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">HIMS</div>
+<div class="corr-cell " data-row="HIMS" data-col="SMCI" data-val="0.193" data-t1="HIMS" data-t2="SMCI" style="background:rgb(194,145,145); color:#1a1a1a;" title="HIMS vs SMCI: 0.193">0.19</div>
+<div class="corr-cell " data-row="HIMS" data-col="GME" data-val="0.145" data-t1="HIMS" data-t2="GME" style="background:rgb(190,153,153); color:#1a1a1a;" title="HIMS vs GME: 0.145">0.14</div>
+<div class="corr-cell " data-row="HIMS" data-col="WOLF" data-val="0.350" data-t1="HIMS" data-t2="WOLF" style="background:rgb(206,117,117); color:#1a1a1a;" title="HIMS vs WOLF: 0.350">0.35</div>
+<div class="corr-cell corr-diag" data-row="HIMS" data-col="HIMS" data-val="1.000" data-t1="HIMS" data-t2="HIMS" style="background:#d5d0c8; color:#888;" title="HIMS vs HIMS: 1.000">1.00</div>
+<div class="corr-cell " data-row="HIMS" data-col="COIN" data-val="0.294" data-t1="HIMS" data-t2="COIN" style="background:rgb(202,127,127); color:#1a1a1a;" title="HIMS vs COIN: 0.294">0.29</div>
+<div class="corr-cell " data-row="HIMS" data-col="RIOT" data-val="0.239" data-t1="HIMS" data-t2="RIOT" style="background:rgb(197,136,136); color:#1a1a1a;" title="HIMS vs RIOT: 0.239">0.24</div>
+<div class="corr-cell " data-row="HIMS" data-col="PLTR" data-val="0.145" data-t1="HIMS" data-t2="PLTR" style="background:rgb(190,153,153); color:#1a1a1a;" title="HIMS vs PLTR: 0.145">0.14</div>
+<div class="corr-cell " data-row="HIMS" data-col="HOOD" data-val="0.284" data-t1="HIMS" data-t2="HOOD" style="background:rgb(201,128,128); color:#1a1a1a;" title="HIMS vs HOOD: 0.284">0.28</div>
+<div class="corr-cell " data-row="HIMS" data-col="AFRM" data-val="0.160" data-t1="HIMS" data-t2="AFRM" style="background:rgb(192,151,151); color:#1a1a1a;" title="HIMS vs AFRM: 0.160">0.16</div>
+<div class="corr-cell " data-row="HIMS" data-col="TSLA" data-val="0.098" data-t1="HIMS" data-t2="TSLA" style="background:rgb(187,162,162); color:#1a1a1a;" title="HIMS vs TSLA: 0.098">0.10</div>
+<div class="corr-cell " data-row="HIMS" data-col="RDDT" data-val="0.169" data-t1="HIMS" data-t2="RDDT" style="background:rgb(192,149,149); color:#1a1a1a;" title="HIMS vs RDDT: 0.169">0.17</div>
+<div class="corr-cell " data-row="HIMS" data-col="APP" data-val="0.108" data-t1="HIMS" data-t2="APP" style="background:rgb(188,160,160); color:#1a1a1a;" title="HIMS vs APP: 0.108">0.11</div>
+<div class="corr-cell " data-row="HIMS" data-col="SNAP" data-val="0.144" data-t1="HIMS" data-t2="SNAP" style="background:rgb(190,154,154); color:#1a1a1a;" title="HIMS vs SNAP: 0.144">0.14</div>
+<div class="corr-cell " data-row="HIMS" data-col="RIVN" data-val="0.246" data-t1="HIMS" data-t2="RIVN" style="background:rgb(198,135,135); color:#1a1a1a;" title="HIMS vs RIVN: 0.246">0.25</div>
+<div class="corr-cell " data-row="HIMS" data-col="NVDA" data-val="0.270" data-t1="HIMS" data-t2="NVDA" style="background:rgb(200,131,131); color:#1a1a1a;" title="HIMS vs NVDA: 0.270">0.27</div>
+<div class="corr-cell corr-label row-label" data-ticker="COIN" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">COIN</div>
+<div class="corr-cell " data-row="COIN" data-col="SMCI" data-val="0.329" data-t1="COIN" data-t2="SMCI" style="background:rgb(204,120,120); color:#1a1a1a;" title="COIN vs SMCI: 0.329">0.33</div>
+<div class="corr-cell " data-row="COIN" data-col="GME" data-val="0.140" data-t1="COIN" data-t2="GME" style="background:rgb(190,154,154); color:#1a1a1a;" title="COIN vs GME: 0.140">0.14</div>
+<div class="corr-cell " data-row="COIN" data-col="WOLF" data-val="0.331" data-t1="COIN" data-t2="WOLF" style="background:rgb(204,120,120); color:#1a1a1a;" title="COIN vs WOLF: 0.331">0.33</div>
+<div class="corr-cell " data-row="COIN" data-col="HIMS" data-val="0.294" data-t1="COIN" data-t2="HIMS" style="background:rgb(202,127,127); color:#1a1a1a;" title="COIN vs HIMS: 0.294">0.29</div>
+<div class="corr-cell corr-diag" data-row="COIN" data-col="COIN" data-val="1.000" data-t1="COIN" data-t2="COIN" style="background:#d5d0c8; color:#888;" title="COIN vs COIN: 1.000">1.00</div>
+<div class="corr-cell " data-row="COIN" data-col="RIOT" data-val="0.648" data-t1="COIN" data-t2="RIOT" style="background:rgb(228,63,63); color:#ffffff;" title="COIN vs RIOT: 0.648">0.65</div>
+<div class="corr-cell " data-row="COIN" data-col="PLTR" data-val="0.523" data-t1="COIN" data-t2="PLTR" style="background:rgb(219,85,85); color:#1a1a1a;" title="COIN vs PLTR: 0.523">0.52</div>
+<div class="corr-cell " data-row="COIN" data-col="HOOD" data-val="0.860" data-t1="COIN" data-t2="HOOD" style="background:rgb(244,25,25); color:#ffffff;" title="COIN vs HOOD: 0.860">0.86</div>
+<div class="corr-cell " data-row="COIN" data-col="AFRM" data-val="0.408" data-t1="COIN" data-t2="AFRM" style="background:rgb(210,106,106); color:#1a1a1a;" title="COIN vs AFRM: 0.408">0.41</div>
+<div class="corr-cell " data-row="COIN" data-col="TSLA" data-val="0.479" data-t1="COIN" data-t2="TSLA" style="background:rgb(215,93,93); color:#1a1a1a;" title="COIN vs TSLA: 0.479">0.48</div>
+<div class="corr-cell " data-row="COIN" data-col="RDDT" data-val="0.476" data-t1="COIN" data-t2="RDDT" style="background:rgb(215,94,94); color:#1a1a1a;" title="COIN vs RDDT: 0.476">0.48</div>
+<div class="corr-cell " data-row="COIN" data-col="APP" data-val="0.494" data-t1="COIN" data-t2="APP" style="background:rgb(217,91,91); color:#1a1a1a;" title="COIN vs APP: 0.494">0.49</div>
+<div class="corr-cell " data-row="COIN" data-col="SNAP" data-val="0.542" data-t1="COIN" data-t2="SNAP" style="background:rgb(220,82,82); color:#1a1a1a;" title="COIN vs SNAP: 0.542">0.54</div>
+<div class="corr-cell " data-row="COIN" data-col="RIVN" data-val="0.493" data-t1="COIN" data-t2="RIVN" style="background:rgb(216,91,91); color:#1a1a1a;" title="COIN vs RIVN: 0.493">0.49</div>
+<div class="corr-cell " data-row="COIN" data-col="NVDA" data-val="0.406" data-t1="COIN" data-t2="NVDA" style="background:rgb(210,106,106); color:#1a1a1a;" title="COIN vs NVDA: 0.406">0.41</div>
+<div class="corr-cell corr-label row-label" data-ticker="RIOT" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">RIOT</div>
+<div class="corr-cell " data-row="RIOT" data-col="SMCI" data-val="0.485" data-t1="RIOT" data-t2="SMCI" style="background:rgb(216,92,92); color:#1a1a1a;" title="RIOT vs SMCI: 0.485">0.49</div>
+<div class="corr-cell " data-row="RIOT" data-col="GME" data-val="0.098" data-t1="RIOT" data-t2="GME" style="background:rgb(187,162,162); color:#1a1a1a;" title="RIOT vs GME: 0.098">0.10</div>
+<div class="corr-cell " data-row="RIOT" data-col="WOLF" data-val="0.488" data-t1="RIOT" data-t2="WOLF" style="background:rgb(216,92,92); color:#1a1a1a;" title="RIOT vs WOLF: 0.488">0.49</div>
+<div class="corr-cell " data-row="RIOT" data-col="HIMS" data-val="0.239" data-t1="RIOT" data-t2="HIMS" style="background:rgb(197,136,136); color:#1a1a1a;" title="RIOT vs HIMS: 0.239">0.24</div>
+<div class="corr-cell " data-row="RIOT" data-col="COIN" data-val="0.648" data-t1="RIOT" data-t2="COIN" style="background:rgb(228,63,63); color:#ffffff;" title="RIOT vs COIN: 0.648">0.65</div>
+<div class="corr-cell corr-diag" data-row="RIOT" data-col="RIOT" data-val="1.000" data-t1="RIOT" data-t2="RIOT" style="background:#d5d0c8; color:#888;" title="RIOT vs RIOT: 1.000">1.00</div>
+<div class="corr-cell " data-row="RIOT" data-col="PLTR" data-val="0.385" data-t1="RIOT" data-t2="PLTR" style="background:rgb(208,110,110); color:#1a1a1a;" title="RIOT vs PLTR: 0.385">0.39</div>
+<div class="corr-cell " data-row="RIOT" data-col="HOOD" data-val="0.680" data-t1="RIOT" data-t2="HOOD" style="background:rgb(231,57,57); color:#ffffff;" title="RIOT vs HOOD: 0.680">0.68</div>
+<div class="corr-cell " data-row="RIOT" data-col="AFRM" data-val="0.278" data-t1="RIOT" data-t2="AFRM" style="background:rgb(200,130,130); color:#1a1a1a;" title="RIOT vs AFRM: 0.278">0.28</div>
+<div class="corr-cell " data-row="RIOT" data-col="TSLA" data-val="0.443" data-t1="RIOT" data-t2="TSLA" style="background:rgb(213,100,100); color:#1a1a1a;" title="RIOT vs TSLA: 0.443">0.44</div>
+<div class="corr-cell " data-row="RIOT" data-col="RDDT" data-val="0.313" data-t1="RIOT" data-t2="RDDT" style="background:rgb(203,123,123); color:#1a1a1a;" title="RIOT vs RDDT: 0.313">0.31</div>
+<div class="corr-cell " data-row="RIOT" data-col="APP" data-val="0.376" data-t1="RIOT" data-t2="APP" style="background:rgb(208,112,112); color:#1a1a1a;" title="RIOT vs APP: 0.376">0.38</div>
+<div class="corr-cell " data-row="RIOT" data-col="SNAP" data-val="0.470" data-t1="RIOT" data-t2="SNAP" style="background:rgb(215,95,95); color:#1a1a1a;" title="RIOT vs SNAP: 0.470">0.47</div>
+<div class="corr-cell " data-row="RIOT" data-col="RIVN" data-val="0.320" data-t1="RIOT" data-t2="RIVN" style="background:rgb(204,122,122); color:#1a1a1a;" title="RIOT vs RIVN: 0.320">0.32</div>
+<div class="corr-cell " data-row="RIOT" data-col="NVDA" data-val="0.539" data-t1="RIOT" data-t2="NVDA" style="background:rgb(220,83,83); color:#1a1a1a;" title="RIOT vs NVDA: 0.539">0.54</div>
+<div class="corr-cell corr-label row-label" data-ticker="PLTR" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">PLTR</div>
+<div class="corr-cell " data-row="PLTR" data-col="SMCI" data-val="0.108" data-t1="PLTR" data-t2="SMCI" style="background:rgb(188,160,160); color:#1a1a1a;" title="PLTR vs SMCI: 0.108">0.11</div>
+<div class="corr-cell " data-row="PLTR" data-col="GME" data-val="0.074" data-t1="PLTR" data-t2="GME" style="background:rgb(185,166,166); color:#1a1a1a;" title="PLTR vs GME: 0.074">0.07</div>
+<div class="corr-cell " data-row="PLTR" data-col="WOLF" data-val="0.179" data-t1="PLTR" data-t2="WOLF" style="background:rgb(193,147,147); color:#1a1a1a;" title="PLTR vs WOLF: 0.179">0.18</div>
+<div class="corr-cell " data-row="PLTR" data-col="HIMS" data-val="0.145" data-t1="PLTR" data-t2="HIMS" style="background:rgb(190,153,153); color:#1a1a1a;" title="PLTR vs HIMS: 0.145">0.14</div>
+<div class="corr-cell " data-row="PLTR" data-col="COIN" data-val="0.523" data-t1="PLTR" data-t2="COIN" style="background:rgb(219,85,85); color:#1a1a1a;" title="PLTR vs COIN: 0.523">0.52</div>
+<div class="corr-cell " data-row="PLTR" data-col="RIOT" data-val="0.385" data-t1="PLTR" data-t2="RIOT" style="background:rgb(208,110,110); color:#1a1a1a;" title="PLTR vs RIOT: 0.385">0.39</div>
+<div class="corr-cell corr-diag" data-row="PLTR" data-col="PLTR" data-val="1.000" data-t1="PLTR" data-t2="PLTR" style="background:#d5d0c8; color:#888;" title="PLTR vs PLTR: 1.000">1.00</div>
+<div class="corr-cell " data-row="PLTR" data-col="HOOD" data-val="0.558" data-t1="PLTR" data-t2="HOOD" style="background:rgb(221,79,79); color:#1a1a1a;" title="PLTR vs HOOD: 0.558">0.56</div>
+<div class="corr-cell " data-row="PLTR" data-col="AFRM" data-val="0.364" data-t1="PLTR" data-t2="AFRM" style="background:rgb(207,114,114); color:#1a1a1a;" title="PLTR vs AFRM: 0.364">0.36</div>
+<div class="corr-cell " data-row="PLTR" data-col="TSLA" data-val="0.381" data-t1="PLTR" data-t2="TSLA" style="background:rgb(208,111,111); color:#1a1a1a;" title="PLTR vs TSLA: 0.381">0.38</div>
+<div class="corr-cell " data-row="PLTR" data-col="RDDT" data-val="0.297" data-t1="PLTR" data-t2="RDDT" style="background:rgb(202,126,126); color:#1a1a1a;" title="PLTR vs RDDT: 0.297">0.30</div>
+<div class="corr-cell " data-row="PLTR" data-col="APP" data-val="0.612" data-t1="PLTR" data-t2="APP" style="background:rgb(225,69,69); color:#ffffff;" title="PLTR vs APP: 0.612">0.61</div>
+<div class="corr-cell " data-row="PLTR" data-col="SNAP" data-val="0.400" data-t1="PLTR" data-t2="SNAP" style="background:rgb(210,107,107); color:#1a1a1a;" title="PLTR vs SNAP: 0.400">0.40</div>
+<div class="corr-cell " data-row="PLTR" data-col="RIVN" data-val="0.240" data-t1="PLTR" data-t2="RIVN" style="background:rgb(198,136,136); color:#1a1a1a;" title="PLTR vs RIVN: 0.240">0.24</div>
+<div class="corr-cell " data-row="PLTR" data-col="NVDA" data-val="0.279" data-t1="PLTR" data-t2="NVDA" style="background:rgb(200,129,129); color:#1a1a1a;" title="PLTR vs NVDA: 0.279">0.28</div>
+<div class="corr-cell corr-label row-label" data-ticker="HOOD" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">HOOD</div>
+<div class="corr-cell " data-row="HOOD" data-col="SMCI" data-val="0.324" data-t1="HOOD" data-t2="SMCI" style="background:rgb(204,121,121); color:#1a1a1a;" title="HOOD vs SMCI: 0.324">0.32</div>
+<div class="corr-cell " data-row="HOOD" data-col="GME" data-val="0.109" data-t1="HOOD" data-t2="GME" style="background:rgb(188,160,160); color:#1a1a1a;" title="HOOD vs GME: 0.109">0.11</div>
+<div class="corr-cell " data-row="HOOD" data-col="WOLF" data-val="0.252" data-t1="HOOD" data-t2="WOLF" style="background:rgb(198,134,134); color:#1a1a1a;" title="HOOD vs WOLF: 0.252">0.25</div>
+<div class="corr-cell " data-row="HOOD" data-col="HIMS" data-val="0.284" data-t1="HOOD" data-t2="HIMS" style="background:rgb(201,128,128); color:#1a1a1a;" title="HOOD vs HIMS: 0.284">0.28</div>
+<div class="corr-cell " data-row="HOOD" data-col="COIN" data-val="0.860" data-t1="HOOD" data-t2="COIN" style="background:rgb(244,25,25); color:#ffffff;" title="HOOD vs COIN: 0.860">0.86</div>
+<div class="corr-cell " data-row="HOOD" data-col="RIOT" data-val="0.680" data-t1="HOOD" data-t2="RIOT" style="background:rgb(231,57,57); color:#ffffff;" title="HOOD vs RIOT: 0.680">0.68</div>
+<div class="corr-cell " data-row="HOOD" data-col="PLTR" data-val="0.558" data-t1="HOOD" data-t2="PLTR" style="background:rgb(221,79,79); color:#1a1a1a;" title="HOOD vs PLTR: 0.558">0.56</div>
+<div class="corr-cell corr-diag" data-row="HOOD" data-col="HOOD" data-val="1.000" data-t1="HOOD" data-t2="HOOD" style="background:#d5d0c8; color:#888;" title="HOOD vs HOOD: 1.000">1.00</div>
+<div class="corr-cell " data-row="HOOD" data-col="AFRM" data-val="0.389" data-t1="HOOD" data-t2="AFRM" style="background:rgb(209,110,110); color:#1a1a1a;" title="HOOD vs AFRM: 0.389">0.39</div>
+<div class="corr-cell " data-row="HOOD" data-col="TSLA" data-val="0.559" data-t1="HOOD" data-t2="TSLA" style="background:rgb(221,79,79); color:#1a1a1a;" title="HOOD vs TSLA: 0.559">0.56</div>
+<div class="corr-cell " data-row="HOOD" data-col="RDDT" data-val="0.451" data-t1="HOOD" data-t2="RDDT" style="background:rgb(213,98,98); color:#1a1a1a;" title="HOOD vs RDDT: 0.451">0.45</div>
+<div class="corr-cell " data-row="HOOD" data-col="APP" data-val="0.546" data-t1="HOOD" data-t2="APP" style="background:rgb(220,81,81); color:#1a1a1a;" title="HOOD vs APP: 0.546">0.55</div>
+<div class="corr-cell " data-row="HOOD" data-col="SNAP" data-val="0.582" data-t1="HOOD" data-t2="SNAP" style="background:rgb(223,75,75); color:#1a1a1a;" title="HOOD vs SNAP: 0.582">0.58</div>
+<div class="corr-cell " data-row="HOOD" data-col="RIVN" data-val="0.435" data-t1="HOOD" data-t2="RIVN" style="background:rgb(212,101,101); color:#1a1a1a;" title="HOOD vs RIVN: 0.435">0.43</div>
+<div class="corr-cell " data-row="HOOD" data-col="NVDA" data-val="0.519" data-t1="HOOD" data-t2="NVDA" style="background:rgb(218,86,86); color:#1a1a1a;" title="HOOD vs NVDA: 0.519">0.52</div>
+<div class="corr-cell corr-label row-label" data-ticker="AFRM" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">AFRM</div>
+<div class="corr-cell " data-row="AFRM" data-col="SMCI" data-val="0.252" data-t1="AFRM" data-t2="SMCI" style="background:rgb(198,134,134); color:#1a1a1a;" title="AFRM vs SMCI: 0.252">0.25</div>
+<div class="corr-cell " data-row="AFRM" data-col="GME" data-val="0.214" data-t1="AFRM" data-t2="GME" style="background:rgb(196,141,141); color:#1a1a1a;" title="AFRM vs GME: 0.214">0.21</div>
+<div class="corr-cell " data-row="AFRM" data-col="WOLF" data-val="0.307" data-t1="AFRM" data-t2="WOLF" style="background:rgb(203,124,124); color:#1a1a1a;" title="AFRM vs WOLF: 0.307">0.31</div>
+<div class="corr-cell " data-row="AFRM" data-col="HIMS" data-val="0.160" data-t1="AFRM" data-t2="HIMS" style="background:rgb(192,151,151); color:#1a1a1a;" title="AFRM vs HIMS: 0.160">0.16</div>
+<div class="corr-cell " data-row="AFRM" data-col="COIN" data-val="0.408" data-t1="AFRM" data-t2="COIN" style="background:rgb(210,106,106); color:#1a1a1a;" title="AFRM vs COIN: 0.408">0.41</div>
+<div class="corr-cell " data-row="AFRM" data-col="RIOT" data-val="0.278" data-t1="AFRM" data-t2="RIOT" style="background:rgb(200,130,130); color:#1a1a1a;" title="AFRM vs RIOT: 0.278">0.28</div>
+<div class="corr-cell " data-row="AFRM" data-col="PLTR" data-val="0.364" data-t1="AFRM" data-t2="PLTR" style="background:rgb(207,114,114); color:#1a1a1a;" title="AFRM vs PLTR: 0.364">0.36</div>
+<div class="corr-cell " data-row="AFRM" data-col="HOOD" data-val="0.389" data-t1="AFRM" data-t2="HOOD" style="background:rgb(209,110,110); color:#1a1a1a;" title="AFRM vs HOOD: 0.389">0.39</div>
+<div class="corr-cell corr-diag" data-row="AFRM" data-col="AFRM" data-val="1.000" data-t1="AFRM" data-t2="AFRM" style="background:#d5d0c8; color:#888;" title="AFRM vs AFRM: 1.000">1.00</div>
+<div class="corr-cell " data-row="AFRM" data-col="TSLA" data-val="0.376" data-t1="AFRM" data-t2="TSLA" style="background:rgb(208,112,112); color:#1a1a1a;" title="AFRM vs TSLA: 0.376">0.38</div>
+<div class="corr-cell " data-row="AFRM" data-col="RDDT" data-val="0.407" data-t1="AFRM" data-t2="RDDT" style="background:rgb(210,106,106); color:#1a1a1a;" title="AFRM vs RDDT: 0.407">0.41</div>
+<div class="corr-cell " data-row="AFRM" data-col="APP" data-val="0.434" data-t1="AFRM" data-t2="APP" style="background:rgb(212,101,101); color:#1a1a1a;" title="AFRM vs APP: 0.434">0.43</div>
+<div class="corr-cell " data-row="AFRM" data-col="SNAP" data-val="0.383" data-t1="AFRM" data-t2="SNAP" style="background:rgb(208,111,111); color:#1a1a1a;" title="AFRM vs SNAP: 0.383">0.38</div>
+<div class="corr-cell " data-row="AFRM" data-col="RIVN" data-val="0.242" data-t1="AFRM" data-t2="RIVN" style="background:rgb(198,136,136); color:#1a1a1a;" title="AFRM vs RIVN: 0.242">0.24</div>
+<div class="corr-cell " data-row="AFRM" data-col="NVDA" data-val="0.097" data-t1="AFRM" data-t2="NVDA" style="background:rgb(187,162,162); color:#1a1a1a;" title="AFRM vs NVDA: 0.097">0.10</div>
+<div class="corr-cell corr-label row-label" data-ticker="TSLA" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">TSLA</div>
+<div class="corr-cell " data-row="TSLA" data-col="SMCI" data-val="0.336" data-t1="TSLA" data-t2="SMCI" style="background:rgb(205,119,119); color:#1a1a1a;" title="TSLA vs SMCI: 0.336">0.34</div>
+<div class="corr-cell " data-row="TSLA" data-col="GME" data-val="0.259" data-t1="TSLA" data-t2="GME" style="background:rgb(199,133,133); color:#1a1a1a;" title="TSLA vs GME: 0.259">0.26</div>
+<div class="corr-cell " data-row="TSLA" data-col="WOLF" data-val="0.140" data-t1="TSLA" data-t2="WOLF" style="background:rgb(190,154,154); color:#1a1a1a;" title="TSLA vs WOLF: 0.140">0.14</div>
+<div class="corr-cell " data-row="TSLA" data-col="HIMS" data-val="0.098" data-t1="TSLA" data-t2="HIMS" style="background:rgb(187,162,162); color:#1a1a1a;" title="TSLA vs HIMS: 0.098">0.10</div>
+<div class="corr-cell " data-row="TSLA" data-col="COIN" data-val="0.479" data-t1="TSLA" data-t2="COIN" style="background:rgb(215,93,93); color:#1a1a1a;" title="TSLA vs COIN: 0.479">0.48</div>
+<div class="corr-cell " data-row="TSLA" data-col="RIOT" data-val="0.443" data-t1="TSLA" data-t2="RIOT" style="background:rgb(213,100,100); color:#1a1a1a;" title="TSLA vs RIOT: 0.443">0.44</div>
+<div class="corr-cell " data-row="TSLA" data-col="PLTR" data-val="0.381" data-t1="TSLA" data-t2="PLTR" style="background:rgb(208,111,111); color:#1a1a1a;" title="TSLA vs PLTR: 0.381">0.38</div>
+<div class="corr-cell " data-row="TSLA" data-col="HOOD" data-val="0.559" data-t1="TSLA" data-t2="HOOD" style="background:rgb(221,79,79); color:#1a1a1a;" title="TSLA vs HOOD: 0.559">0.56</div>
+<div class="corr-cell " data-row="TSLA" data-col="AFRM" data-val="0.376" data-t1="TSLA" data-t2="AFRM" style="background:rgb(208,112,112); color:#1a1a1a;" title="TSLA vs AFRM: 0.376">0.38</div>
+<div class="corr-cell corr-diag" data-row="TSLA" data-col="TSLA" data-val="1.000" data-t1="TSLA" data-t2="TSLA" style="background:#d5d0c8; color:#888;" title="TSLA vs TSLA: 1.000">1.00</div>
+<div class="corr-cell " data-row="TSLA" data-col="RDDT" data-val="0.200" data-t1="TSLA" data-t2="RDDT" style="background:rgb(194,144,144); color:#1a1a1a;" title="TSLA vs RDDT: 0.200">0.20</div>
+<div class="corr-cell " data-row="TSLA" data-col="APP" data-val="0.317" data-t1="TSLA" data-t2="APP" style="background:rgb(203,123,123); color:#1a1a1a;" title="TSLA vs APP: 0.317">0.32</div>
+<div class="corr-cell " data-row="TSLA" data-col="SNAP" data-val="0.343" data-t1="TSLA" data-t2="SNAP" style="background:rgb(205,118,118); color:#1a1a1a;" title="TSLA vs SNAP: 0.343">0.34</div>
+<div class="corr-cell " data-row="TSLA" data-col="RIVN" data-val="0.291" data-t1="TSLA" data-t2="RIVN" style="background:rgb(201,127,127); color:#1a1a1a;" title="TSLA vs RIVN: 0.291">0.29</div>
+<div class="corr-cell " data-row="TSLA" data-col="NVDA" data-val="0.569" data-t1="TSLA" data-t2="NVDA" style="background:rgb(222,77,77); color:#1a1a1a;" title="TSLA vs NVDA: 0.569">0.57</div>
+<div class="corr-cell corr-label row-label" data-ticker="RDDT" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">RDDT</div>
+<div class="corr-cell " data-row="RDDT" data-col="SMCI" data-val="-0.013" data-t1="RDDT" data-t2="SMCI" style="background:rgb(177,177,181); color:#1a1a1a;" title="RDDT vs SMCI: -0.013">-0.01</div>
+<div class="corr-cell " data-row="RDDT" data-col="GME" data-val="0.114" data-t1="RDDT" data-t2="GME" style="background:rgb(188,159,159); color:#1a1a1a;" title="RDDT vs GME: 0.114">0.11</div>
+<div class="corr-cell " data-row="RDDT" data-col="WOLF" data-val="0.365" data-t1="RDDT" data-t2="WOLF" style="background:rgb(207,114,114); color:#1a1a1a;" title="RDDT vs WOLF: 0.365">0.37</div>
+<div class="corr-cell " data-row="RDDT" data-col="HIMS" data-val="0.169" data-t1="RDDT" data-t2="HIMS" style="background:rgb(192,149,149); color:#1a1a1a;" title="RDDT vs HIMS: 0.169">0.17</div>
+<div class="corr-cell " data-row="RDDT" data-col="COIN" data-val="0.476" data-t1="RDDT" data-t2="COIN" style="background:rgb(215,94,94); color:#1a1a1a;" title="RDDT vs COIN: 0.476">0.48</div>
+<div class="corr-cell " data-row="RDDT" data-col="RIOT" data-val="0.313" data-t1="RDDT" data-t2="RIOT" style="background:rgb(203,123,123); color:#1a1a1a;" title="RDDT vs RIOT: 0.313">0.31</div>
+<div class="corr-cell " data-row="RDDT" data-col="PLTR" data-val="0.297" data-t1="RDDT" data-t2="PLTR" style="background:rgb(202,126,126); color:#1a1a1a;" title="RDDT vs PLTR: 0.297">0.30</div>
+<div class="corr-cell " data-row="RDDT" data-col="HOOD" data-val="0.451" data-t1="RDDT" data-t2="HOOD" style="background:rgb(213,98,98); color:#1a1a1a;" title="RDDT vs HOOD: 0.451">0.45</div>
+<div class="corr-cell " data-row="RDDT" data-col="AFRM" data-val="0.407" data-t1="RDDT" data-t2="AFRM" style="background:rgb(210,106,106); color:#1a1a1a;" title="RDDT vs AFRM: 0.407">0.41</div>
+<div class="corr-cell " data-row="RDDT" data-col="TSLA" data-val="0.200" data-t1="RDDT" data-t2="TSLA" style="background:rgb(194,144,144); color:#1a1a1a;" title="RDDT vs TSLA: 0.200">0.20</div>
+<div class="corr-cell corr-diag" data-row="RDDT" data-col="RDDT" data-val="1.000" data-t1="RDDT" data-t2="RDDT" style="background:#d5d0c8; color:#888;" title="RDDT vs RDDT: 1.000">1.00</div>
+<div class="corr-cell " data-row="RDDT" data-col="APP" data-val="0.442" data-t1="RDDT" data-t2="APP" style="background:rgb(213,100,100); color:#1a1a1a;" title="RDDT vs APP: 0.442">0.44</div>
+<div class="corr-cell " data-row="RDDT" data-col="SNAP" data-val="0.519" data-t1="RDDT" data-t2="SNAP" style="background:rgb(218,86,86); color:#1a1a1a;" title="RDDT vs SNAP: 0.519">0.52</div>
+<div class="corr-cell " data-row="RDDT" data-col="RIVN" data-val="0.243" data-t1="RDDT" data-t2="RIVN" style="background:rgb(198,136,136); color:#1a1a1a;" title="RDDT vs RIVN: 0.243">0.24</div>
+<div class="corr-cell " data-row="RDDT" data-col="NVDA" data-val="0.106" data-t1="RDDT" data-t2="NVDA" style="background:rgb(187,160,160); color:#1a1a1a;" title="RDDT vs NVDA: 0.106">0.11</div>
+<div class="corr-cell corr-label row-label" data-ticker="APP" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">APP</div>
+<div class="corr-cell " data-row="APP" data-col="SMCI" data-val="0.050" data-t1="APP" data-t2="SMCI" style="background:rgb(183,171,171); color:#1a1a1a;" title="APP vs SMCI: 0.050">0.05</div>
+<div class="corr-cell " data-row="APP" data-col="GME" data-val="0.037" data-t1="APP" data-t2="GME" style="background:rgb(182,173,173); color:#1a1a1a;" title="APP vs GME: 0.037">0.04</div>
+<div class="corr-cell " data-row="APP" data-col="WOLF" data-val="0.206" data-t1="APP" data-t2="WOLF" style="background:rgb(195,142,142); color:#1a1a1a;" title="APP vs WOLF: 0.206">0.21</div>
+<div class="corr-cell " data-row="APP" data-col="HIMS" data-val="0.108" data-t1="APP" data-t2="HIMS" style="background:rgb(188,160,160); color:#1a1a1a;" title="APP vs HIMS: 0.108">0.11</div>
+<div class="corr-cell " data-row="APP" data-col="COIN" data-val="0.494" data-t1="APP" data-t2="COIN" style="background:rgb(217,91,91); color:#1a1a1a;" title="APP vs COIN: 0.494">0.49</div>
+<div class="corr-cell " data-row="APP" data-col="RIOT" data-val="0.376" data-t1="APP" data-t2="RIOT" style="background:rgb(208,112,112); color:#1a1a1a;" title="APP vs RIOT: 0.376">0.38</div>
+<div class="corr-cell " data-row="APP" data-col="PLTR" data-val="0.612" data-t1="APP" data-t2="PLTR" style="background:rgb(225,69,69); color:#ffffff;" title="APP vs PLTR: 0.612">0.61</div>
+<div class="corr-cell " data-row="APP" data-col="HOOD" data-val="0.546" data-t1="APP" data-t2="HOOD" style="background:rgb(220,81,81); color:#1a1a1a;" title="APP vs HOOD: 0.546">0.55</div>
+<div class="corr-cell " data-row="APP" data-col="AFRM" data-val="0.434" data-t1="APP" data-t2="AFRM" style="background:rgb(212,101,101); color:#1a1a1a;" title="APP vs AFRM: 0.434">0.43</div>
+<div class="corr-cell " data-row="APP" data-col="TSLA" data-val="0.317" data-t1="APP" data-t2="TSLA" style="background:rgb(203,123,123); color:#1a1a1a;" title="APP vs TSLA: 0.317">0.32</div>
+<div class="corr-cell " data-row="APP" data-col="RDDT" data-val="0.442" data-t1="APP" data-t2="RDDT" style="background:rgb(213,100,100); color:#1a1a1a;" title="APP vs RDDT: 0.442">0.44</div>
+<div class="corr-cell corr-diag" data-row="APP" data-col="APP" data-val="1.000" data-t1="APP" data-t2="APP" style="background:#d5d0c8; color:#888;" title="APP vs APP: 1.000">1.00</div>
+<div class="corr-cell " data-row="APP" data-col="SNAP" data-val="0.422" data-t1="APP" data-t2="SNAP" style="background:rgb(211,104,104); color:#1a1a1a;" title="APP vs SNAP: 0.422">0.42</div>
+<div class="corr-cell " data-row="APP" data-col="RIVN" data-val="0.311" data-t1="APP" data-t2="RIVN" style="background:rgb(203,123,123); color:#1a1a1a;" title="APP vs RIVN: 0.311">0.31</div>
+<div class="corr-cell " data-row="APP" data-col="NVDA" data-val="0.304" data-t1="APP" data-t2="NVDA" style="background:rgb(202,125,125); color:#1a1a1a;" title="APP vs NVDA: 0.304">0.30</div>
+<div class="corr-cell corr-label row-label" data-ticker="SNAP" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">SNAP</div>
+<div class="corr-cell " data-row="SNAP" data-col="SMCI" data-val="0.319" data-t1="SNAP" data-t2="SMCI" style="background:rgb(203,122,122); color:#1a1a1a;" title="SNAP vs SMCI: 0.319">0.32</div>
+<div class="corr-cell " data-row="SNAP" data-col="GME" data-val="0.262" data-t1="SNAP" data-t2="GME" style="background:rgb(199,132,132); color:#1a1a1a;" title="SNAP vs GME: 0.262">0.26</div>
+<div class="corr-cell " data-row="SNAP" data-col="WOLF" data-val="0.344" data-t1="SNAP" data-t2="WOLF" style="background:rgb(205,118,118); color:#1a1a1a;" title="SNAP vs WOLF: 0.344">0.34</div>
+<div class="corr-cell " data-row="SNAP" data-col="HIMS" data-val="0.144" data-t1="SNAP" data-t2="HIMS" style="background:rgb(190,154,154); color:#1a1a1a;" title="SNAP vs HIMS: 0.144">0.14</div>
+<div class="corr-cell " data-row="SNAP" data-col="COIN" data-val="0.542" data-t1="SNAP" data-t2="COIN" style="background:rgb(220,82,82); color:#1a1a1a;" title="SNAP vs COIN: 0.542">0.54</div>
+<div class="corr-cell " data-row="SNAP" data-col="RIOT" data-val="0.470" data-t1="SNAP" data-t2="RIOT" style="background:rgb(215,95,95); color:#1a1a1a;" title="SNAP vs RIOT: 0.470">0.47</div>
+<div class="corr-cell " data-row="SNAP" data-col="PLTR" data-val="0.400" data-t1="SNAP" data-t2="PLTR" style="background:rgb(210,107,107); color:#1a1a1a;" title="SNAP vs PLTR: 0.400">0.40</div>
+<div class="corr-cell " data-row="SNAP" data-col="HOOD" data-val="0.582" data-t1="SNAP" data-t2="HOOD" style="background:rgb(223,75,75); color:#1a1a1a;" title="SNAP vs HOOD: 0.582">0.58</div>
+<div class="corr-cell " data-row="SNAP" data-col="AFRM" data-val="0.383" data-t1="SNAP" data-t2="AFRM" style="background:rgb(208,111,111); color:#1a1a1a;" title="SNAP vs AFRM: 0.383">0.38</div>
+<div class="corr-cell " data-row="SNAP" data-col="TSLA" data-val="0.343" data-t1="SNAP" data-t2="TSLA" style="background:rgb(205,118,118); color:#1a1a1a;" title="SNAP vs TSLA: 0.343">0.34</div>
+<div class="corr-cell " data-row="SNAP" data-col="RDDT" data-val="0.519" data-t1="SNAP" data-t2="RDDT" style="background:rgb(218,86,86); color:#1a1a1a;" title="SNAP vs RDDT: 0.519">0.52</div>
+<div class="corr-cell " data-row="SNAP" data-col="APP" data-val="0.422" data-t1="SNAP" data-t2="APP" style="background:rgb(211,104,104); color:#1a1a1a;" title="SNAP vs APP: 0.422">0.42</div>
+<div class="corr-cell corr-diag" data-row="SNAP" data-col="SNAP" data-val="1.000" data-t1="SNAP" data-t2="SNAP" style="background:#d5d0c8; color:#888;" title="SNAP vs SNAP: 1.000">1.00</div>
+<div class="corr-cell " data-row="SNAP" data-col="RIVN" data-val="0.216" data-t1="SNAP" data-t2="RIVN" style="background:rgb(196,141,141); color:#1a1a1a;" title="SNAP vs RIVN: 0.216">0.22</div>
+<div class="corr-cell " data-row="SNAP" data-col="NVDA" data-val="0.364" data-t1="SNAP" data-t2="NVDA" style="background:rgb(207,114,114); color:#1a1a1a;" title="SNAP vs NVDA: 0.364">0.36</div>
+<div class="corr-cell corr-label row-label" data-ticker="RIVN" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">RIVN</div>
+<div class="corr-cell " data-row="RIVN" data-col="SMCI" data-val="0.268" data-t1="RIVN" data-t2="SMCI" style="background:rgb(200,131,131); color:#1a1a1a;" title="RIVN vs SMCI: 0.268">0.27</div>
+<div class="corr-cell " data-row="RIVN" data-col="GME" data-val="0.112" data-t1="RIVN" data-t2="GME" style="background:rgb(188,159,159); color:#1a1a1a;" title="RIVN vs GME: 0.112">0.11</div>
+<div class="corr-cell " data-row="RIVN" data-col="WOLF" data-val="0.271" data-t1="RIVN" data-t2="WOLF" style="background:rgb(200,131,131); color:#1a1a1a;" title="RIVN vs WOLF: 0.271">0.27</div>
+<div class="corr-cell " data-row="RIVN" data-col="HIMS" data-val="0.246" data-t1="RIVN" data-t2="HIMS" style="background:rgb(198,135,135); color:#1a1a1a;" title="RIVN vs HIMS: 0.246">0.25</div>
+<div class="corr-cell " data-row="RIVN" data-col="COIN" data-val="0.493" data-t1="RIVN" data-t2="COIN" style="background:rgb(216,91,91); color:#1a1a1a;" title="RIVN vs COIN: 0.493">0.49</div>
+<div class="corr-cell " data-row="RIVN" data-col="RIOT" data-val="0.320" data-t1="RIVN" data-t2="RIOT" style="background:rgb(204,122,122); color:#1a1a1a;" title="RIVN vs RIOT: 0.320">0.32</div>
+<div class="corr-cell " data-row="RIVN" data-col="PLTR" data-val="0.240" data-t1="RIVN" data-t2="PLTR" style="background:rgb(198,136,136); color:#1a1a1a;" title="RIVN vs PLTR: 0.240">0.24</div>
+<div class="corr-cell " data-row="RIVN" data-col="HOOD" data-val="0.435" data-t1="RIVN" data-t2="HOOD" style="background:rgb(212,101,101); color:#1a1a1a;" title="RIVN vs HOOD: 0.435">0.43</div>
+<div class="corr-cell " data-row="RIVN" data-col="AFRM" data-val="0.242" data-t1="RIVN" data-t2="AFRM" style="background:rgb(198,136,136); color:#1a1a1a;" title="RIVN vs AFRM: 0.242">0.24</div>
+<div class="corr-cell " data-row="RIVN" data-col="TSLA" data-val="0.291" data-t1="RIVN" data-t2="TSLA" style="background:rgb(201,127,127); color:#1a1a1a;" title="RIVN vs TSLA: 0.291">0.29</div>
+<div class="corr-cell " data-row="RIVN" data-col="RDDT" data-val="0.243" data-t1="RIVN" data-t2="RDDT" style="background:rgb(198,136,136); color:#1a1a1a;" title="RIVN vs RDDT: 0.243">0.24</div>
+<div class="corr-cell " data-row="RIVN" data-col="APP" data-val="0.311" data-t1="RIVN" data-t2="APP" style="background:rgb(203,123,123); color:#1a1a1a;" title="RIVN vs APP: 0.311">0.31</div>
+<div class="corr-cell " data-row="RIVN" data-col="SNAP" data-val="0.216" data-t1="RIVN" data-t2="SNAP" style="background:rgb(196,141,141); color:#1a1a1a;" title="RIVN vs SNAP: 0.216">0.22</div>
+<div class="corr-cell corr-diag" data-row="RIVN" data-col="RIVN" data-val="1.000" data-t1="RIVN" data-t2="RIVN" style="background:#d5d0c8; color:#888;" title="RIVN vs RIVN: 1.000">1.00</div>
+<div class="corr-cell " data-row="RIVN" data-col="NVDA" data-val="0.136" data-t1="RIVN" data-t2="NVDA" style="background:rgb(190,155,155); color:#1a1a1a;" title="RIVN vs NVDA: 0.136">0.14</div>
+<div class="corr-cell corr-label row-label" data-ticker="NVDA" style="background:#f5f0e8; font-weight:700; font-size:9px; text-align:right; padding-right:6px;">NVDA</div>
+<div class="corr-cell " data-row="NVDA" data-col="SMCI" data-val="0.379" data-t1="NVDA" data-t2="SMCI" style="background:rgb(208,111,111); color:#1a1a1a;" title="NVDA vs SMCI: 0.379">0.38</div>
+<div class="corr-cell " data-row="NVDA" data-col="GME" data-val="0.163" data-t1="NVDA" data-t2="GME" style="background:rgb(192,150,150); color:#1a1a1a;" title="NVDA vs GME: 0.163">0.16</div>
+<div class="corr-cell " data-row="NVDA" data-col="WOLF" data-val="0.281" data-t1="NVDA" data-t2="WOLF" style="background:rgb(201,129,129); color:#1a1a1a;" title="NVDA vs WOLF: 0.281">0.28</div>
+<div class="corr-cell " data-row="NVDA" data-col="HIMS" data-val="0.270" data-t1="NVDA" data-t2="HIMS" style="background:rgb(200,131,131); color:#1a1a1a;" title="NVDA vs HIMS: 0.270">0.27</div>
+<div class="corr-cell " data-row="NVDA" data-col="COIN" data-val="0.406" data-t1="NVDA" data-t2="COIN" style="background:rgb(210,106,106); color:#1a1a1a;" title="NVDA vs COIN: 0.406">0.41</div>
+<div class="corr-cell " data-row="NVDA" data-col="RIOT" data-val="0.539" data-t1="NVDA" data-t2="RIOT" style="background:rgb(220,83,83); color:#1a1a1a;" title="NVDA vs RIOT: 0.539">0.54</div>
+<div class="corr-cell " data-row="NVDA" data-col="PLTR" data-val="0.279" data-t1="NVDA" data-t2="PLTR" style="background:rgb(200,129,129); color:#1a1a1a;" title="NVDA vs PLTR: 0.279">0.28</div>
+<div class="corr-cell " data-row="NVDA" data-col="HOOD" data-val="0.519" data-t1="NVDA" data-t2="HOOD" style="background:rgb(218,86,86); color:#1a1a1a;" title="NVDA vs HOOD: 0.519">0.52</div>
+<div class="corr-cell " data-row="NVDA" data-col="AFRM" data-val="0.097" data-t1="NVDA" data-t2="AFRM" style="background:rgb(187,162,162); color:#1a1a1a;" title="NVDA vs AFRM: 0.097">0.10</div>
+<div class="corr-cell " data-row="NVDA" data-col="TSLA" data-val="0.569" data-t1="NVDA" data-t2="TSLA" style="background:rgb(222,77,77); color:#1a1a1a;" title="NVDA vs TSLA: 0.569">0.57</div>
+<div class="corr-cell " data-row="NVDA" data-col="RDDT" data-val="0.106" data-t1="NVDA" data-t2="RDDT" style="background:rgb(187,160,160); color:#1a1a1a;" title="NVDA vs RDDT: 0.106">0.11</div>
+<div class="corr-cell " data-row="NVDA" data-col="APP" data-val="0.304" data-t1="NVDA" data-t2="APP" style="background:rgb(202,125,125); color:#1a1a1a;" title="NVDA vs APP: 0.304">0.30</div>
+<div class="corr-cell " data-row="NVDA" data-col="SNAP" data-val="0.364" data-t1="NVDA" data-t2="SNAP" style="background:rgb(207,114,114); color:#1a1a1a;" title="NVDA vs SNAP: 0.364">0.36</div>
+<div class="corr-cell " data-row="NVDA" data-col="RIVN" data-val="0.136" data-t1="NVDA" data-t2="RIVN" style="background:rgb(190,155,155); color:#1a1a1a;" title="NVDA vs RIVN: 0.136">0.14</div>
+<div class="corr-cell corr-diag" data-row="NVDA" data-col="NVDA" data-val="1.000" data-t1="NVDA" data-t2="NVDA" style="background:#d5d0c8; color:#888;" title="NVDA vs NVDA: 1.000">1.00</div>
+
+    </div>
+    <div class="legend">
+      <span>-1.0</span>
+      <div class="legend-bar"></div>
+      <span>+1.0</span>
+      <span style="margin-left:16px;">Blue = negative &bull; White = neutral &bull; Red = positive</span>
+    </div>
+  </div>
+
+  <h2 class="section-title">High Correlation Pairs (|r| &gt; 0.50)</h2>
+  <table class="data-table">
+    <thead><tr><th>Ticker A</th><th>Ticker B</th><th>Correlation</th><th>Direction</th></tr></thead>
+    <tbody><tr><td>COIN</td><td>HOOD</td><td style="font-weight:700; color:#c0392b;">+0.860</td><td>Positive</td></tr>
+<tr><td>RIOT</td><td>HOOD</td><td style="font-weight:700; color:#c0392b;">+0.680</td><td>Positive</td></tr>
+<tr><td>COIN</td><td>RIOT</td><td style="font-weight:700; color:#c0392b;">+0.648</td><td>Positive</td></tr>
+<tr><td>PLTR</td><td>APP</td><td style="font-weight:700; color:#c0392b;">+0.612</td><td>Positive</td></tr>
+<tr><td>HOOD</td><td>SNAP</td><td style="font-weight:700; color:#c0392b;">+0.582</td><td>Positive</td></tr>
+<tr><td>TSLA</td><td>NVDA</td><td style="font-weight:700; color:#c0392b;">+0.569</td><td>Positive</td></tr>
+<tr><td>HOOD</td><td>TSLA</td><td style="font-weight:700; color:#c0392b;">+0.559</td><td>Positive</td></tr>
+<tr><td>PLTR</td><td>HOOD</td><td style="font-weight:700; color:#c0392b;">+0.558</td><td>Positive</td></tr>
+<tr><td>HOOD</td><td>APP</td><td style="font-weight:700; color:#c0392b;">+0.546</td><td>Positive</td></tr>
+<tr><td>COIN</td><td>SNAP</td><td style="font-weight:700; color:#c0392b;">+0.542</td><td>Positive</td></tr>
+<tr><td>RIOT</td><td>NVDA</td><td style="font-weight:700; color:#c0392b;">+0.539</td><td>Positive</td></tr>
+<tr><td>COIN</td><td>PLTR</td><td style="font-weight:700; color:#c0392b;">+0.523</td><td>Positive</td></tr>
+<tr><td>HOOD</td><td>NVDA</td><td style="font-weight:700; color:#c0392b;">+0.519</td><td>Positive</td></tr>
+<tr><td>RDDT</td><td>SNAP</td><td style="font-weight:700; color:#c0392b;">+0.519</td><td>Positive</td></tr>
+</tbody>
+  </table>
+
+  <h2 class="section-title">Best Diversifiers (|r| &lt; 0.15)</h2>
+  <table class="data-table">
+    <thead><tr><th>Ticker A</th><th>Ticker B</th><th>Correlation</th></tr></thead>
+    <tbody><tr><td>SMCI</td><td>RDDT</td><td style="font-weight:700;">-0.013</td></tr>
+<tr><td>GME</td><td>APP</td><td style="font-weight:700;">+0.037</td></tr>
+<tr><td>SMCI</td><td>APP</td><td style="font-weight:700;">+0.050</td></tr>
+<tr><td>GME</td><td>PLTR</td><td style="font-weight:700;">+0.074</td></tr>
+<tr><td>AFRM</td><td>NVDA</td><td style="font-weight:700;">+0.097</td></tr>
+<tr><td>GME</td><td>RIOT</td><td style="font-weight:700;">+0.098</td></tr>
+<tr><td>HIMS</td><td>TSLA</td><td style="font-weight:700;">+0.098</td></tr>
+<tr><td>RDDT</td><td>NVDA</td><td style="font-weight:700;">+0.106</td></tr>
+<tr><td>HIMS</td><td>APP</td><td style="font-weight:700;">+0.108</td></tr>
+<tr><td>SMCI</td><td>PLTR</td><td style="font-weight:700;">+0.108</td></tr>
+<tr><td>GME</td><td>HOOD</td><td style="font-weight:700;">+0.109</td></tr>
+<tr><td>GME</td><td>RIVN</td><td style="font-weight:700;">+0.112</td></tr>
+<tr><td>GME</td><td>RDDT</td><td style="font-weight:700;">+0.114</td></tr>
+<tr><td>GME</td><td>WOLF</td><td style="font-weight:700;">+0.118</td></tr>
+<tr><td>RIVN</td><td>NVDA</td><td style="font-weight:700;">+0.136</td></tr>
+</tbody>
+  </table>
+
+  <h2 class="section-title">Cluster Detection (&gt;0.50 Threshold)</h2>
+  <div class="cluster-row">
+<div class="cluster-card"><div class="cluster-title">Cluster 1</div><div class="cluster-tickers">COIN &bull; RIOT &bull; PLTR &bull; HOOD &bull; SNAP</div><div class="cluster-corr">Avg intra-cluster corr: <strong>0.565</strong></div></div>
+<div class="cluster-card"><div class="cluster-title">Cluster 2</div><div class="cluster-tickers">TSLA &bull; NVDA</div><div class="cluster-corr">Avg intra-cluster corr: <strong>0.569</strong></div></div>
+
+  </div>
+
+  <h2 class="section-title">Portfolio Implications</h2>
+  <div class="implications">
+    <h3>Concentration Risk</h3>
+    <ul>
+      <li><strong>Correlated clusters move together.</strong> Holding multiple names from the same cluster
+          amplifies drawdowns &mdash; a sector-wide selloff hits all positions simultaneously.</li>
+      <li><strong>High correlation pairs (|r| &gt; 0.50)</strong> should not both be held at full size.
+          If SMCI and another tech name correlate at 0.70, the effective position is ~1.7x
+          a single name in a correlated move.</li>
+      <li><strong>Diversifier pairs (|r| &lt; 0.15)</strong> are the best portfolio offsets.
+          Combining one meme/social play with a low-corr name reduces portfolio-level volatility
+          without sacrificing expected return.</li>
+      <li><strong>Rule of thumb:</strong> if average pairwise correlation exceeds 0.40, the portfolio
+          behaves like a concentrated bet on a single factor (retail sentiment). Trim correlated
+          positions or add hedges.</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    DNSD Capital Research &bull; Correlation data from 60-day daily returns &bull; %Y-%m-%d %H:%M ET
+  </div>
+</div>
+
+<script>
+(function() {
+  const cells = document.querySelectorAll('.corr-cell:not(.corr-label)');
+  let activeRow = null, activeCol = null;
+
+  cells.forEach(cell => {
+    cell.addEventListener('click', function() {
+      const t1 = this.dataset.t1;
+      const t2 = this.dataset.t2;
+      if (!t1 || !t2) return;
+
+      // Toggle off if same cell clicked
+      if (activeRow === t1 && activeCol === t2) {
+        clearHighlight();
+        return;
+      }
+
+      activeRow = t1;
+      activeCol = t2;
+
+      // Dim all, highlight row + col
+      const allCells = document.querySelectorAll('.corr-cell');
+      allCells.forEach(c => {
+        c.classList.remove('highlighted', 'dimmed');
+        const r = c.dataset.row || c.dataset.ticker;
+        const co = c.dataset.col || c.dataset.ticker;
+        if (r === t1 || r === t2 || co === t1 || co === t2) {
+          c.classList.add('highlighted');
+        } else if (!c.classList.contains('corr-label')) {
+          c.classList.add('dimmed');
+        }
+      });
+    });
+  });
+
+  function clearHighlight() {
+    activeRow = null;
+    activeCol = null;
+    document.querySelectorAll('.corr-cell').forEach(c => {
+      c.classList.remove('highlighted', 'dimmed');
+    });
+  }
+
+  // Click on empty space to clear
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.corr-grid')) {
+      clearHighlight();
+    }
+  });
+})();
+</script>
+</body>
+</html>
