@@ -4,18 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DNSD Capital — Ticker Correlation Matrix</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #f5f0e8;
-  --cream-dark: #e8e0d0;
+  --cream: #fafaf8;
+  --cream-dark: #f0ede8;
   --ink: #1a1a1a;
   --ink-light: #555;
-  --accent: #8b0000;
-  --accent-blue: #1a3a5c;
-  --border: #c8bfa8;
-  --mono: 'SFMono-Regular', 'Cascadia Code', 'Consolas', monospace;
-  --serif: 'Georgia', 'Times New Roman', serif;
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --accent: #0a3d7c;
+  --accent-blue: #0a3d7c;
+  --border: #e0ddd8;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', 'Cascadia Code', 'Consolas', monospace;
+  --serif: 'Playfair Display', 'Georgia', serif;
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -296,7 +297,7 @@ table.data-table tr:hover { background: #faf7f0; }
   <p style="font-size:12px; color:#888; margin-bottom:10px;">Click a cell to highlight its row and column. Click again to clear.</p>
   <div class="heatmap-wrap">
     <div class="corr-grid" id="corrGrid">
-<div class="corr-cell corr-label" style="background:#f5f0e8;"></div>
+<div class="corr-cell corr-label" style="background:#fafaf8;"></div>
 <div class="corr-cell corr-label col-label" data-ticker="SMCI" style="background:#f5f0e8; font-weight:700; font-size:9px;">SMCI</div>
 <div class="corr-cell corr-label col-label" data-ticker="GME" style="background:#f5f0e8; font-weight:700; font-size:9px;">GME</div>
 <div class="corr-cell corr-label col-label" data-ticker="WOLF" style="background:#f5f0e8; font-weight:700; font-size:9px;">WOLF</div>
