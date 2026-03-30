@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DNSD Capital &mdash; Strategy Platform</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a3d7c'/><text x='16' y='23' font-size='18' font-weight='bold' fill='white' text-anchor='middle' font-family='serif'>D</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -311,6 +312,80 @@
   }
   .cta-btn:active { transform: scale(0.98); }
 
+  /* RS Formula */
+  .formula-box {
+    background: var(--white); border: 1px solid var(--rule);
+    border-radius: 4px; padding: 32px 28px; margin-bottom: 56px;
+  }
+  .formula-equation {
+    font-family: var(--mono); font-size: 13px; color: var(--ink2);
+    text-align: center; margin-bottom: 24px; line-height: 1.8;
+    letter-spacing: 0.5px;
+  }
+  .formula-equation strong { color: var(--navy); font-weight: 700; }
+  .formula-bars {
+    display: flex; gap: 6px; align-items: flex-end; height: 100px;
+    margin-bottom: 16px;
+  }
+  .formula-bar-wrap {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .formula-bar {
+    width: 100%; border-radius: 3px 3px 0 0;
+    transition: height 1s ease;
+  }
+  .formula-bar-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .formula-bar-pct {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    color: var(--navy);
+  }
+  .formula-modifiers {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rule);
+  }
+  .formula-mod {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    padding: 4px 10px; background: var(--cream-dark); border-radius: 3px;
+  }
+  .formula-mod span { font-weight: 600; color: var(--navy); }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 40px; margin-bottom: 56px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+    width: 2px; background: var(--rule);
+  }
+  .tl-item {
+    position: relative; padding: 0 0 32px 0;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -33px; top: 4px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--navy); background: var(--white);
+  }
+  .tl-dot.active { background: var(--profit); border-color: var(--profit); }
+  .tl-dot.complete { background: var(--navy); border-color: var(--navy); }
+  .tl-date {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    color: var(--dim); letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .tl-title {
+    font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px;
+  }
+  .tl-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .tl-badge {
+    display: inline-block; font-family: var(--mono); font-size: 10px;
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 2px; margin-top: 6px;
+  }
+  .tl-badge.pass { color: var(--profit); background: var(--profit-light); }
+  .tl-badge.active-badge { color: var(--navy); background: rgba(10, 61, 124, 0.08); }
+  .tl-badge.future { color: var(--dim); background: var(--cream-dark); }
+
   .disclaimer {
     text-align: center; padding: 24px 24px 12px;
     font-size: 10px; color: var(--dim); letter-spacing: 0.3px;
@@ -504,21 +579,38 @@
   /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     .hero h1 { font-size: 36px; letter-spacing: 5px; }
-    .overview-points { grid-template-columns: 1fr; }
+    .hero { padding: 60px 24px 48px; }
+    .features-grid { grid-template-columns: 1fr; }
     .perf-grid { grid-template-columns: repeat(2, 1fr); }
     .arch-grid { grid-template-columns: repeat(2, 1fr); }
     .card-grid { grid-template-columns: repeat(2, 1fr); }
     .home-masthead h1 { font-size: 28px; }
+    .pipeline { gap: 0; }
+    .pipe-step { min-width: 80px; padding: 12px 8px; }
+    .pipe-arrow { font-size: 14px; }
+    .pipe-icon { width: 40px; height: 40px; }
+    .pipe-icon svg { width: 18px; height: 18px; }
+    .headline-bar { flex-wrap: wrap; }
+    .hl-metric { min-width: 100px; padding: 14px 16px; }
+    .hl-metric-value { font-size: 18px; }
+    .formula-bars { height: 70px; }
+    .timeline { padding-left: 32px; }
   }
   @media (max-width: 480px) {
     .hero h1 { font-size: 26px; letter-spacing: 3px; }
+    .hero { padding: 48px 20px 40px; }
     .perf-grid { grid-template-columns: 1fr 1fr; }
     .perf-value { font-size: 22px; }
     .arch-grid { grid-template-columns: 1fr 1fr; }
     .card-grid { grid-template-columns: 1fr; }
     .home-footer { flex-direction: column; gap: 12px; }
     .signout-link { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 12px; }
-    .live-strip { gap: 12px; }
+    .live-strip { gap: 12px; font-size: 11px; }
+    .pipeline { flex-direction: column; align-items: center; }
+    .pipe-arrow { transform: rotate(90deg); margin: 4px 0; }
+    .headline-bar { flex-direction: column; }
+    .hl-metric { border-right: none; border-bottom: 1px solid var(--rule); }
+    .hl-metric:last-child { border-bottom: none; }
   }
 </style>
 </head>
@@ -704,6 +796,84 @@
       </div>
     </div>
 
+    <!-- RS Score Formula -->
+    <div class="reveal">
+      <div class="section-head">RS Composite Score</div>
+      <div class="formula-box">
+        <div class="formula-equation">
+          <strong>RS</strong> = <strong>SV</strong>&times;0.35 + <strong>TQ</strong>&times;0.20 + <strong>SL</strong>&times;0.15 + <strong>VC</strong>&times;0.15 + <strong>SA</strong>&times;0.15
+        </div>
+        <div class="formula-bars">
+          <div class="formula-bar-wrap">
+            <div class="formula-bar" data-height="100" style="height:0;background:var(--navy)"></div>
+            <div class="formula-bar-pct">35%</div>
+            <div class="formula-bar-label">SV</div>
+          </div>
+          <div class="formula-bar-wrap">
+            <div class="formula-bar" data-height="57" style="height:0;background:var(--navy-light)"></div>
+            <div class="formula-bar-pct">20%</div>
+            <div class="formula-bar-label">TQ</div>
+          </div>
+          <div class="formula-bar-wrap">
+            <div class="formula-bar" data-height="43" style="height:0;background:var(--gold)"></div>
+            <div class="formula-bar-pct">15%</div>
+            <div class="formula-bar-label">SL</div>
+          </div>
+          <div class="formula-bar-wrap">
+            <div class="formula-bar" data-height="43" style="height:0;background:var(--profit)"></div>
+            <div class="formula-bar-pct">15%</div>
+            <div class="formula-bar-label">VC</div>
+          </div>
+          <div class="formula-bar-wrap">
+            <div class="formula-bar" data-height="43" style="height:0;background:var(--loss)"></div>
+            <div class="formula-bar-pct">15%</div>
+            <div class="formula-bar-label">SA</div>
+          </div>
+        </div>
+        <div class="formula-modifiers">
+          <div class="formula-mod"><span>+3</span> GT convergence</div>
+          <div class="formula-mod"><span>+5</span> block trade</div>
+          <div class="formula-mod"><span>&times;0.88</span> sector dampener</div>
+          <div class="formula-mod"><span>&times;0.70</span> macro dampener</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Track Record Timeline -->
+    <div class="reveal">
+      <div class="section-head">Track Record</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot complete"></div>
+          <div class="tl-date">FEB 2026</div>
+          <div class="tl-title">Phase 1 &mdash; Backtesting</div>
+          <div class="tl-desc">56 trades across 30 tickers. Validated 67.9% WR, 1.69&times; W/L, Sharpe 7.21.</div>
+          <span class="tl-badge pass">GATE PASSED</span>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot complete"></div>
+          <div class="tl-date">MAR 2026</div>
+          <div class="tl-title">Phase 2 &mdash; Shadow Mode</div>
+          <div class="tl-desc">57 paper trades in live shadow mode. 68.4% WR, 1.81&times; W/L, max DD -7.6%.</div>
+          <span class="tl-badge pass">GATE PASSED</span>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-date">MAR 2026 &mdash; PRESENT</div>
+          <div class="tl-title">Phase 3 &mdash; Paper Trading Live</div>
+          <div class="tl-desc">59 trades and counting. 66.1% WR, +135.5% total P&amp;L. All 220+ daemons active.</div>
+          <span class="tl-badge active-badge">ACTIVE</span>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">TARGET: Q2 2026</div>
+          <div class="tl-title">Phase 4 &mdash; Live Execution</div>
+          <div class="tl-desc">Alpaca live orders. Requires Phase 3 WR &ge; 55% over &ge; 50 trades. 7/7 hard gates passed.</div>
+          <span class="tl-badge future">PENDING</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Live Status -->
     <div class="live-strip">
       <span class="ls-title">Live System</span>
@@ -743,7 +913,7 @@
   </div>
 
   <div class="landing-footer">
-    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-03-30 16:30 ET
+    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-03-30 16:35 ET
   </div>
 </div>
 
@@ -808,7 +978,7 @@
   </div>
 
   <div class="home-footer">
-    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-30 16:30 ET</span>
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-30 16:35 ET</span>
     <a class="signout-link" id="signout-btn">Sign Out</a>
   </div>
 </div>
@@ -827,6 +997,50 @@
   } else {
     revealEls.forEach(function(el) { el.classList.add('visible'); });
   }
+
+  // Animated number counters for headline bar
+  function animateValue(el, end, duration, suffix) {
+    var start = 0, startTime = null;
+    var isNeg = end < 0; if (isNeg) end = Math.abs(end);
+    var hasDecimal = String(end).indexOf('.') !== -1;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var pct = Math.min((ts - startTime) / duration, 1);
+      var val = pct * end;
+      var display = hasDecimal ? val.toFixed(1) : Math.floor(val);
+      el.textContent = (isNeg ? '-' : (suffix === '%' && !isNeg ? '+' : '')) + display + (suffix || '');
+      if (pct < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counterObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var el = e.target;
+        var text = el.textContent.trim();
+        var num = parseFloat(text.replace(/[^0-9.\-]/g, ''));
+        var suffix = text.replace(/[0-9.\-+]/g, '');
+        if (!isNaN(num)) animateValue(el, num, 1200, suffix);
+        counterObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.hl-metric-value').forEach(function(el) { counterObs.observe(el); });
+
+  // Formula bar animation
+  var barObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.formula-bar').forEach(function(bar) {
+          var h = bar.getAttribute('data-height');
+          setTimeout(function() { bar.style.height = h + '%'; }, 100);
+        });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  var fb = document.querySelector('.formula-bars');
+  if (fb) barObs.observe(fb);
 
   var HASH = '9614c69e0f50a4fe4e662302690d0a459a5f51effb18ff18b2e771cfc0ec2f0b';
   var AUTH_KEY = 'dnsd_auth';
