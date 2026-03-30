@@ -3,243 +3,626 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DNSD Capital &mdash; Strategy Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>DNSD Capital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --navy: #0a3d7c;
+    --navy-dark: #063058;
+    --cream: #fafaf8;
+    --cream-dark: #f5f3ef;
+    --rule: #e0ddd8;
+    --rule-heavy: #c5c0b8;
+    --ink: #1a1a1a;
+    --ink2: #3d3d3d;
+    --muted: #888888;
+    --dim: #aaaaaa;
+    --profit: #0a6e38;
+    --loss: #b91c1c;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #fafaf8;
-    color: #2c2c2c;
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
     line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== LOGIN SCREEN ===== */
+  #login-screen {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    background: var(--cream);
+    position: relative;
   }
 
-  /* --- MASTHEAD --- */
-  .masthead {
+  .login-container {
+    width: 100%;
+    max-width: 440px;
     text-align: center;
-    padding: 56px 24px 40px;
-    border-bottom: 3px double #0a3d7c;
-    background: #fafaf8;
   }
-  .masthead-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
+
+  /* Decorative top ornament */
+  .login-ornament {
+    width: 60px;
+    height: 1px;
+    background: var(--navy);
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .login-ornament::before,
+  .login-ornament::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+  }
+  .login-ornament::before {
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .login-ornament::after {
+    top: 5px;
+    width: 40px;
+    height: 1px;
+  }
+
+  .login-masthead {
+    margin-bottom: 8px;
+  }
+  .login-masthead-label {
+    font-family: var(--sans);
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 6px;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    color: #888;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .login-masthead h1 {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--navy);
+    line-height: 1.1;
     margin-bottom: 12px;
   }
-  .masthead h1 {
-    font-family: 'Playfair Display', serif;
+  .login-masthead .tagline {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .login-rule {
+    width: 100%;
+    height: 0;
+    border-top: 3px double var(--navy);
+    margin: 32px 0;
+  }
+
+  .login-form {
+    margin: 0 auto;
+    max-width: 340px;
+  }
+
+  .login-field-label {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+
+  .login-input-wrap {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+  }
+  .login-input::placeholder {
+    color: var(--dim);
+    font-style: italic;
+  }
+  .login-input:focus {
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(10, 61, 124, 0.08);
+  }
+  .login-input.error {
+    border-color: var(--loss);
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.08);
+    animation: shake 0.5s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 50%, 90% { transform: translateX(-4px); }
+    30%, 70% { transform: translateX(4px); }
+  }
+
+  .login-error-msg {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--loss);
+    margin-bottom: 16px;
+    min-height: 18px;
+    letter-spacing: 0.5px;
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--navy);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .login-btn:hover {
+    background: var(--navy-dark);
+  }
+  .login-btn:active {
+    transform: scale(0.98);
+  }
+  .login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .login-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* ===== HOME SCREEN ===== */
+  #home-screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  #home-screen.active {
+    display: flex;
+  }
+
+  /* Masthead */
+  .home-masthead {
+    text-align: center;
+    padding: 48px 24px 36px;
+    border-bottom: 3px double var(--navy);
+    background: var(--cream);
+  }
+  .home-masthead-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .home-masthead h1 {
+    font-family: var(--serif);
     font-size: 42px;
     font-weight: 900;
     letter-spacing: 6px;
     text-transform: uppercase;
-    color: #0a3d7c;
+    color: var(--navy);
     margin-bottom: 8px;
   }
-  .masthead .subtitle {
-    font-family: 'Inter', sans-serif;
+  .home-masthead .date-line {
+    font-family: var(--serif);
     font-size: 15px;
     font-weight: 400;
-    letter-spacing: 2px;
-    color: #666;
-    text-transform: uppercase;
+    font-style: italic;
+    color: var(--ink2);
+    letter-spacing: 0.5px;
   }
-  .masthead .rule {
-    width: 80px;
-    height: 2px;
-    background: #0a3d7c;
-    margin: 20px auto 0;
+  .home-masthead .edition {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 8px;
   }
 
-  /* --- CARD GRID --- */
-  .grid-container {
-    max-width: 960px;
+  /* Ticker strip */
+  .ticker-strip {
+    background: #fff;
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink2);
+  }
+  .ticker-strip .ts-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ticker-strip .ts-label {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .ticker-strip .ts-value {
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .ts-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+  .ts-dot.green { background: var(--profit); }
+  .ts-dot.yellow { background: #b8860b; }
+  .ts-dot.red { background: var(--loss); }
+
+  /* Category sections */
+  .home-content {
+    max-width: 1020px;
     margin: 0 auto;
     padding: 40px 24px 32px;
+    flex: 1;
   }
+  .cat-section {
+    margin-bottom: 36px;
+  }
+  .cat-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 16px;
+  }
+
+  /* Card grid */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 18px;
   }
   .nav-card {
     display: block;
     text-decoration: none;
     color: inherit;
     background: #fff;
-    border: 1px solid #e0ddd8;
-    border-radius: 4px;
-    transition: box-shadow 0.2s, transform 0.15s;
+    border: 1px solid var(--rule);
+    border-left: 3px solid transparent;
+    border-radius: 2px;
+    transition: box-shadow 0.2s, transform 0.15s, border-left-color 0.2s;
     overflow: hidden;
   }
   .nav-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
     transform: translateY(-2px);
+    border-left-color: var(--navy);
   }
   .card-inner {
-    padding: 24px 22px 20px;
+    padding: 22px 20px 18px;
     position: relative;
-    min-height: 140px;
+    min-height: 130px;
     display: flex;
     flex-direction: column;
   }
   .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
+    font-family: var(--serif);
+    font-size: 17px;
     font-weight: 700;
-    color: #0a3d7c;
+    color: var(--navy);
     margin-bottom: 8px;
     line-height: 1.3;
   }
   .card-desc {
-    font-size: 13px;
-    color: #666;
+    font-size: 12.5px;
+    color: var(--muted);
     line-height: 1.55;
     flex: 1;
   }
   .card-arrow {
     position: absolute;
-    bottom: 16px;
-    right: 18px;
+    bottom: 14px;
+    right: 16px;
     font-size: 18px;
-    color: #0a3d7c;
-    opacity: 0.4;
-    transition: opacity 0.2s;
+    color: var(--navy);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
   }
-  .nav-card:hover .card-arrow { opacity: 1; }
+  .nav-card:hover .card-arrow {
+    opacity: 0.6;
+    transform: translateX(2px);
+  }
 
-  /* --- STATUS BAR --- */
-  .status-bar {
-    max-width: 960px;
-    margin: 0 auto 40px;
-    padding: 0 24px;
-  }
-  .status-inner {
-    background: #fff;
-    border: 1px solid #e0ddd8;
-    border-radius: 4px;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .status-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #888;
-  }
-  .status-items {
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .status-item {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: #555;
-  }
-  .status-item strong {
-    color: #0a3d7c;
-    font-weight: 600;
-  }
-  .status-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    margin-right: 4px;
-    vertical-align: middle;
-  }
-  .status-dot.green { background: #0a6e38; }
-  .status-dot.yellow { background: #b8860b; }
-  .status-dot.red { background: #b91c1c; }
-
-  /* --- FOOTER --- */
-  .footer {
+  /* Home footer */
+  .home-footer {
     margin-top: auto;
     text-align: center;
-    padding: 24px;
-    border-top: 1px solid #e0ddd8;
-    font-size: 11px;
-    color: #999;
+    padding: 20px 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 10px;
+    color: var(--dim);
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
   }
-  .footer strong {
-    color: #666;
+  .home-footer strong {
+    color: var(--muted);
     font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .signout-link {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    border-left: 1px solid var(--rule);
+    padding-left: 24px;
+  }
+  .signout-link:hover {
+    color: var(--loss);
   }
 
-  /* --- RESPONSIVE --- */
+  /* Responsive */
   @media (max-width: 768px) {
     .card-grid { grid-template-columns: repeat(2, 1fr); }
-    .masthead h1 { font-size: 28px; letter-spacing: 4px; }
+    .login-masthead h1 { font-size: 32px; letter-spacing: 5px; }
+    .home-masthead h1 { font-size: 28px; letter-spacing: 4px; }
+    .ticker-strip { gap: 16px; }
   }
   @media (max-width: 480px) {
     .card-grid { grid-template-columns: 1fr; }
-    .masthead h1 { font-size: 22px; }
-    .status-items { gap: 12px; }
+    .login-masthead h1 { font-size: 24px; letter-spacing: 3px; }
+    .home-masthead h1 { font-size: 22px; }
+    .ticker-strip { gap: 10px; font-size: 11px; }
+    .home-footer { flex-direction: column; gap: 12px; }
+    .signout-link { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 12px; }
   }
 </style>
 </head>
 <body>
 
-<!-- MASTHEAD -->
-<div class="masthead">
-  <div class="masthead-label">Proprietary Research</div>
-  <h1>DNSD Capital</h1>
-  <div class="subtitle">Retail Sentiment Momentum Strategy Platform</div>
-  <div class="rule"></div>
-</div>
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+  <div class="login-container">
+    <div class="login-ornament"></div>
 
-<!-- CARD GRID -->
-<div class="grid-container">
-  <div class="card-grid">
-<a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard</h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="index.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Earnings Tracker</h3><p class="card-desc">Pre-earnings sentiment analysis with 10-factor scoring and actionable recommendations.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="report.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Full Report</h3><p class="card-desc">29-section institutional-grade market report with factor attribution and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="brief.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Executive Brief</h3><p class="card-desc">One-page strategy summary designed for quick daily review and decision support.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="monte_carlo.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Monte Carlo</h3><p class="card-desc">10,000-simulation forward projections with confidence intervals and risk scenarios.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="replay.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Replay</h3><p class="card-desc">Visual playback of historical trades with tick-level entry and exit reconstruction.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="narratives.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal</h3><p class="card-desc">AI-generated narratives for every paper trade with factor decomposition analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="position_calc.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Position Calculator</h3><p class="card-desc">Interactive Kelly-based position sizing tool with regime and correlation adjustments.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="correlation.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Correlation Matrix</h3><p class="card-desc">15x15 interactive heatmap with cluster detection and diversification analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="compare.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Strategy Comparison</h3><p class="card-desc">Benchmark analysis vs SPY, QQQ, and 60/40 with rolling Sharpe and capture ratios.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="picks.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Stock Picks</h3><p class="card-desc">Top 10 recommendations with full profiles, price charts, and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-  </div>
-</div>
+    <div class="login-masthead">
+      <div class="login-masthead-label">Proprietary Research</div>
+      <h1>DNSD Capital</h1>
+      <div class="tagline">Strategy &amp; Intelligence Platform</div>
+    </div>
 
-<!-- SYSTEM STATUS -->
-<div class="status-bar">
-  <div class="status-inner">
-    <span class="status-title">System Status</span>
-    <div class="status-items">
-      <span class="status-item"><span class="status-dot green"></span> Regime: <strong>NORMAL</strong></span>
-      <span class="status-item">VIX: <strong>30.2</strong></span>
-      <span class="status-item">Dampener: <strong>1.00</strong></span>
-      <span class="status-item">Signals Today: <strong>23</strong></span>
-      <span class="status-item">Daily P&amp;L: <strong style="color:#0a6e38">+0.0%</strong></span>
-      <span class="status-item">Phase: <strong>3</strong></span>
+    <div class="login-rule"></div>
+
+    <div class="login-form">
+      <div class="login-field-label">Authorized Personnel Only</div>
+      <div class="login-input-wrap">
+        <input type="password" id="pwd-input" class="login-input" placeholder="Enter access code" autocomplete="off" autofocus>
+      </div>
+      <div class="login-error-msg" id="error-msg"></div>
+      <button id="login-btn" class="login-btn">Access Platform</button>
+    </div>
+
+    <div class="login-footer">
+      Proprietary &amp; Confidential &mdash; DNSD Capital
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-  <strong>PROPRIETARY &amp; CONFIDENTIAL</strong> &mdash; DNSD Capital &bull; Generated %Y-%m-%d %H:%M ET
+<!-- ===== HOME SCREEN ===== -->
+<div id="home-screen">
+
+  <div class="home-masthead">
+    <div class="home-masthead-label">Proprietary Research</div>
+    <h1>DNSD Capital</h1>
+    <div class="date-line">Monday, March 30, 2026</div>
+    <div class="edition">Retail Sentiment Momentum Strategy</div>
+  </div>
+
+  <div class="ticker-strip">
+    <div class="ts-item">
+      <span class="ts-label">Regime</span>
+      <span class="ts-dot green"></span>
+      <span class="ts-value">NORMAL</span>
+    </div>
+    <div class="ts-item">
+      <span class="ts-label">VIX</span>
+      <span class="ts-value">30.2</span>
+    </div>
+    <div class="ts-item">
+      <span class="ts-label">Dampener</span>
+      <span class="ts-value">1.00</span>
+    </div>
+    <div class="ts-item">
+      <span class="ts-label">Signals</span>
+      <span class="ts-value">23</span>
+    </div>
+    <div class="ts-item">
+      <span class="ts-label">Daily P&amp;L</span>
+      <span class="ts-value" style="color:#0a6e38">+0.0%</span>
+    </div>
+    <div class="ts-item">
+      <span class="ts-label">Phase</span>
+      <span class="ts-value">3</span>
+    </div>
+  </div>
+
+  <div class="home-content">
+<div class="cat-section"><div class="cat-label">TRADING</div><div class="card-grid">
+<a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard</h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="position_calc.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Position Calculator</h3><p class="card-desc">Interactive Kelly-based position sizing tool with regime and correlation adjustments.</p><span class="card-arrow">&rarr;</span></div></a>
+</div></div>
+<div class="cat-section"><div class="cat-label">ANALYTICS</div><div class="card-grid">
+<a href="report.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Full Report</h3><p class="card-desc">29-section institutional-grade market report with factor attribution and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="monte_carlo.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Monte Carlo</h3><p class="card-desc">10,000-simulation forward projections with confidence intervals and risk scenarios.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="compare.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Strategy Comparison</h3><p class="card-desc">Benchmark analysis vs SPY, QQQ, and 60/40 with rolling Sharpe and capture ratios.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="correlation.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Correlation Matrix</h3><p class="card-desc">15x15 interactive heatmap with cluster detection and diversification analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+</div></div>
+<div class="cat-section"><div class="cat-label">RESEARCH</div><div class="card-grid">
+<a href="brief.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Executive Brief</h3><p class="card-desc">One-page strategy summary designed for quick daily review and decision support.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="index.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Earnings Tracker</h3><p class="card-desc">Pre-earnings sentiment analysis with 10-factor scoring and actionable recommendations.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="picks.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Stock Picks</h3><p class="card-desc">Top 10 recommendations with full profiles, price charts, and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="replay.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Replay</h3><p class="card-desc">Visual playback of historical trades with tick-level entry and exit reconstruction.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="narratives.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal</h3><p class="card-desc">AI-generated narratives for every paper trade with factor decomposition analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+</div></div>
+  </div>
+
+  <div class="home-footer">
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-30 15:59 ET</span>
+    <a class="signout-link" id="signout-btn">Sign Out</a>
+  </div>
+
 </div>
+
+<script>
+(function() {
+  var HASH = '9614c69e0f50a4fe4e662302690d0a459a5f51effb18ff18b2e771cfc0ec2f0b';
+  var AUTH_KEY = 'dnsd_auth';
+
+  // Check existing auth
+  if (localStorage.getItem(AUTH_KEY)) {
+    showHome();
+  }
+
+  // SHA-256 helper
+  async function sha256(msg) {
+    var enc = new TextEncoder().encode(msg);
+    var buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(function(b) {
+      return b.toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  // Show home, hide login
+  function showHome() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('home-screen').classList.add('active');
+  }
+
+  // Login handler
+  async function handleLogin() {
+    var pwd = document.getElementById('pwd-input').value;
+    var btn = document.getElementById('login-btn');
+    var errEl = document.getElementById('error-msg');
+    var input = document.getElementById('pwd-input');
+
+    if (!pwd) {
+      errEl.textContent = '';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'VERIFYING...';
+
+    var hash = await sha256(pwd);
+
+    if (hash === HASH) {
+      localStorage.setItem(AUTH_KEY, 'dnsd_' + Date.now());
+      errEl.textContent = '';
+      input.classList.remove('error');
+      showHome();
+    } else {
+      errEl.textContent = 'Invalid access code';
+      input.classList.add('error');
+      input.value = '';
+      input.focus();
+      setTimeout(function() { input.classList.remove('error'); }, 600);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'ACCESS PLATFORM';
+  }
+
+  // Enter key
+  document.getElementById('pwd-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleLogin();
+  });
+
+  // Button click
+  document.getElementById('login-btn').addEventListener('click', handleLogin);
+
+  // Sign out
+  document.getElementById('signout-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem(AUTH_KEY);
+    document.getElementById('home-screen').classList.remove('active');
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('error-msg').textContent = '';
+    document.getElementById('pwd-input').focus();
+  });
+})();
+</script>
 
 </body>
 </html>
