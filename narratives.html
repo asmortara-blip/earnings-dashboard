@@ -269,7 +269,7 @@
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stat-item">
-    <div class="stat-value">58</div>
+    <div class="stat-value">59</div>
     <div class="stat-label">Total Trades</div>
   </div>
   <div class="stat-item">
@@ -277,28 +277,59 @@
     <div class="stat-label">Winners</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value red">19</div>
+    <div class="stat-value red">20</div>
     <div class="stat-label">Losers</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value">67.2%</div>
+    <div class="stat-value">66.1%</div>
     <div class="stat-label">Win Rate</div>
   </div>
   <div class="stat-item">
-    <div class="stat-value" style="color:#0a6e38">+136.0%</div>
+    <div class="stat-value" style="color:#0a6e38">+135.5%</div>
     <div class="stat-label">Cumulative P&amp;L</div>
   </div>
 </div>
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-  <button class="filter-btn active" onclick="filterCards('all', this)">All (58)</button>
+  <button class="filter-btn active" onclick="filterCards('all', this)">All (59)</button>
   <button class="filter-btn" onclick="filterCards('win', this)">Winners (39)</button>
-  <button class="filter-btn" onclick="filterCards('loss', this)">Losers (19)</button>
+  <button class="filter-btn" onclick="filterCards('loss', this)">Losers (20)</button>
 </div>
 
 <!-- CARDS -->
 <div class="cards-container" id="cards-container">
+
+        <div class="trade-card" data-result="loss">
+            <div class="card-accent" style="background:#b91c1c"></div>
+            <div class="card-body">
+                <div class="card-header">
+                    <div>
+                        <span class="trade-num">Trade #59</span>
+                        <span class="trade-date">%B %d, %Y at %I:%M %p</span>
+                    </div>
+                    <span class="result-badge" style="background:#b91c1c">LOSS</span>
+                </div>
+                <div class="card-title-row">
+                    <span class="ticker-name">CELH</span>
+                    <span class="trigger-badge">Meme Community</span>
+                    <span class="dir-badge dir-long">LONG</span>
+                    <span class="score-badge">RS 64</span>
+                </div>
+                <p class="narrative">CELH caught a meme community wave and entered long at $34.60 with RS 64 (MEDIUM). Short Amplifier (SA) led the composite at 100, reflecting elevated short squeeze potential. The position drifted against the entry over 1.9 hours, closing at $34.45 for a modest -0.45% loss. The loss underscores the importance of multi-factor confirmation beyond the initial meme_community catalyst.</p>
+                <div class="card-bottom">
+                    <div class="factor-bars"><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span style="width:24px;font-size:11px;color:#666;font-weight:600">SV</span><div style="flex:1;background:#e8e0d4;height:8px;border-radius:4px;overflow:hidden"><div style="width:75%;height:100%;background:#3d6b8e;border-radius:4px"></div></div><span style="font-size:11px;color:#666;width:28px;text-align:right">75</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span style="width:24px;font-size:11px;color:#666;font-weight:600">TQ</span><div style="flex:1;background:#e8e0d4;height:8px;border-radius:4px;overflow:hidden"><div style="width:80%;height:100%;background:#3d6b8e;border-radius:4px"></div></div><span style="font-size:11px;color:#666;width:28px;text-align:right">80</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span style="width:24px;font-size:11px;color:#666;font-weight:600">SL</span><div style="flex:1;background:#e8e0d4;height:8px;border-radius:4px;overflow:hidden"><div style="width:50%;height:100%;background:#8a7a6a;border-radius:4px"></div></div><span style="font-size:11px;color:#666;width:28px;text-align:right">50</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span style="width:24px;font-size:11px;color:#666;font-weight:600">VC</span><div style="flex:1;background:#e8e0d4;height:8px;border-radius:4px;overflow:hidden"><div style="width:0%;height:100%;background:#8a7a6a;border-radius:4px"></div></div><span style="font-size:11px;color:#666;width:28px;text-align:right">0</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span style="width:24px;font-size:11px;color:#666;font-weight:600">SA</span><div style="flex:1;background:#e8e0d4;height:8px;border-radius:4px;overflow:hidden"><div style="width:100%;height:100%;background:#3d6b8e;border-radius:4px"></div></div><span style="font-size:11px;color:#666;width:28px;text-align:right">100</span></div></div>
+                    <div class="pnl-block">
+                        <div class="pnl-value" style="color:#b91c1c">-0.45%</div>
+                        <div class="pnl-label">P&amp;L</div>
+                    </div>
+                </div>
+                <div class="cumulative" style="color:#0a6e38">
+                    Cumulative P&amp;L: +135.54%
+                </div>
+            </div>
+        </div>
+        
 
         <div class="trade-card" data-result="loss">
             <div class="card-accent" style="background:#b91c1c"></div>
