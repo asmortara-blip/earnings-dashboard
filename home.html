@@ -3,18 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DNSD Capital</title>
+<title>DNSD Capital &mdash; Strategy Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --navy: #0a3d7c;
     --navy-dark: #063058;
+    --navy-light: #1a5dac;
     --cream: #fafaf8;
     --cream-dark: #f5f3ef;
+    --white: #ffffff;
     --rule: #e0ddd8;
     --rule-heavy: #c5c0b8;
     --ink: #1a1a1a;
@@ -22,7 +24,10 @@
     --muted: #888888;
     --dim: #aaaaaa;
     --profit: #0a6e38;
+    --profit-light: #e8f5ee;
     --loss: #b91c1c;
+    --loss-light: #fef2f2;
+    --gold: #92702a;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
     --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
@@ -37,484 +42,569 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ===== LOGIN SCREEN ===== */
-  #login-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    background: var(--cream);
-    position: relative;
-  }
+  /* ===== SCREEN TRANSITIONS ===== */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+  .screen-fade-in { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  .login-container {
-    width: 100%;
-    max-width: 440px;
+  /* ===== LANDING SCREEN ===== */
+
+  /* Hero */
+  .hero {
     text-align: center;
+    padding: 64px 24px 48px;
+    background: var(--cream);
+    border-bottom: 3px double var(--navy);
+  }
+  .hero-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: 56px; font-weight: 900;
+    letter-spacing: 8px; text-transform: uppercase; color: var(--navy);
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .hero .tagline {
+    font-family: var(--serif); font-size: 18px; font-weight: 400;
+    font-style: italic; color: var(--ink2); margin-bottom: 8px;
+  }
+  .hero .date-line {
+    font-size: 12px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim); margin-top: 12px;
   }
 
-  /* Decorative top ornament */
-  .login-ornament {
-    width: 60px;
-    height: 1px;
-    background: var(--navy);
-    margin: 0 auto 32px;
-    position: relative;
-  }
-  .login-ornament::before,
-  .login-ornament::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--navy);
-  }
-  .login-ornament::before {
-    top: -3px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-  .login-ornament::after {
-    top: 5px;
-    width: 40px;
-    height: 1px;
+  /* Content container */
+  .landing-content {
+    max-width: 900px; margin: 0 auto; padding: 48px 24px;
   }
 
-  .login-masthead {
+  /* Section headers */
+  .section-head {
+    font-family: var(--sans); font-size: 9px; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--muted);
+    padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+    margin-bottom: 24px;
+  }
+
+  /* Strategy overview */
+  .overview-text {
+    font-family: var(--serif); font-size: 18px; font-weight: 400;
+    line-height: 1.7; color: var(--ink2); margin-bottom: 28px;
+    max-width: 720px;
+  }
+  .overview-points {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-bottom: 48px;
+  }
+  .overview-point {
+    background: var(--white); border: 1px solid var(--rule);
+    border-top: 2px solid var(--navy); border-radius: 2px;
+    padding: 20px;
+  }
+  .overview-point h4 {
+    font-family: var(--sans); font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--navy);
     margin-bottom: 8px;
   }
-  .login-masthead-label {
-    font-family: var(--sans);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-  }
-  .login-masthead h1 {
-    font-family: var(--serif);
-    font-size: 48px;
-    font-weight: 900;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    color: var(--navy);
-    line-height: 1.1;
-    margin-bottom: 12px;
-  }
-  .login-masthead .tagline {
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
+  .overview-point p {
+    font-size: 13px; color: var(--muted); line-height: 1.5;
   }
 
-  .login-rule {
-    width: 100%;
-    height: 0;
-    border-top: 3px double var(--navy);
-    margin: 32px 0;
+  /* Performance metrics */
+  .perf-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin-bottom: 48px;
+  }
+  .perf-card {
+    background: var(--white); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 20px 16px; text-align: center;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .perf-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-1px);
+  }
+  .perf-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  }
+  .perf-value {
+    font-family: var(--mono); font-size: 28px; font-weight: 600;
+    color: var(--navy); line-height: 1.2;
+  }
+  .perf-value.profit { color: var(--profit); }
+  .perf-value.loss { color: var(--loss); }
+  .perf-sub {
+    font-family: var(--mono); font-size: 11px; color: var(--dim);
+    margin-top: 4px;
   }
 
-  .login-form {
-    margin: 0 auto;
-    max-width: 340px;
-  }
-
-  .login-field-label {
-    font-family: var(--sans);
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: 12px;
-  }
-
-  .login-input-wrap {
-    position: relative;
+  /* Architecture section */
+  .arch-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
     margin-bottom: 20px;
   }
+  .arch-card {
+    background: var(--white); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 24px 16px; text-align: center;
+  }
+  .arch-number {
+    font-family: var(--mono); font-size: 36px; font-weight: 600;
+    color: var(--navy); line-height: 1;
+  }
+  .arch-label {
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    margin-top: 8px; line-height: 1.4;
+  }
+  .phase-badge {
+    display: inline-block; padding: 6px 16px; margin-top: 24px;
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--profit); background: var(--profit-light);
+    border: 1px solid rgba(10, 110, 56, 0.2); border-radius: 2px;
+  }
 
+  /* Live status strip */
+  .live-strip {
+    background: var(--white); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 14px 20px; margin: 32px 0;
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 12px; color: var(--ink2);
+  }
+  .live-strip .ls-title {
+    font-family: var(--sans); font-size: 9px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--dim);
+  }
+  .live-strip .ls-item { display: flex; align-items: center; gap: 6px; }
+  .live-strip .ls-label {
+    font-weight: 400; color: var(--muted); font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .live-strip .ls-value { font-weight: 600; color: var(--navy); }
+  .ls-dot {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; vertical-align: middle;
+  }
+  .ls-dot.green { background: var(--profit); }
+  .ls-dot.yellow { background: #b8860b; }
+  .ls-dot.red { background: var(--loss); }
+
+  /* CTA */
+  .cta-section {
+    text-align: center; padding: 48px 24px 20px;
+  }
+  .cta-btn {
+    display: inline-block; padding: 18px 48px;
+    font-family: var(--sans); font-size: 13px; font-weight: 700;
+    letter-spacing: 5px; text-transform: uppercase; color: var(--white);
+    background: var(--navy); border: none; border-radius: 2px;
+    cursor: pointer; transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+  .cta-btn:hover {
+    background: var(--navy-dark);
+    box-shadow: 0 6px 24px rgba(10, 61, 124, 0.2);
+  }
+  .cta-btn:active { transform: scale(0.98); }
+
+  /* Disclaimer */
+  .disclaimer {
+    text-align: center; padding: 24px 24px 12px;
+    font-size: 10px; color: var(--dim); letter-spacing: 0.3px;
+    max-width: 600px; margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Landing footer */
+  .landing-footer {
+    margin-top: auto; text-align: center; padding: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 10px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* ===== LOGIN SCREEN ===== */
+  .login-container {
+    width: 100%; max-width: 440px; text-align: center;
+    margin: auto; padding: 40px 24px;
+  }
+  .login-ornament {
+    width: 60px; height: 1px; background: var(--navy);
+    margin: 0 auto 32px; position: relative;
+  }
+  .login-ornament::before, .login-ornament::after {
+    content: ''; position: absolute; left: 50%;
+    transform: translateX(-50%); background: var(--navy);
+  }
+  .login-ornament::before { top: -3px; width: 6px; height: 6px; border-radius: 50%; }
+  .login-ornament::after { top: 5px; width: 40px; height: 1px; }
+
+  .login-masthead { margin-bottom: 8px; }
+  .login-masthead h2 {
+    font-family: var(--serif); font-size: 36px; font-weight: 900;
+    letter-spacing: 6px; text-transform: uppercase; color: var(--navy);
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .login-masthead .tagline {
+    font-size: 13px; font-weight: 400; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .login-rule {
+    width: 100%; height: 0; border-top: 3px double var(--navy); margin: 32px 0;
+  }
+  .login-form { margin: 0 auto; max-width: 340px; }
+  .login-field-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--dim); margin-bottom: 12px;
+  }
   .login-input {
-    width: 100%;
-    padding: 16px 20px;
-    font-family: var(--serif);
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 1px;
-    color: var(--ink);
-    background: #fff;
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    outline: none;
+    width: 100%; padding: 16px 20px; font-family: var(--serif);
+    font-size: 16px; letter-spacing: 1px; color: var(--ink);
+    background: var(--white); border: 1px solid var(--rule);
+    border-radius: 2px; outline: none; text-align: center;
     transition: border-color 0.2s, box-shadow 0.2s;
-    text-align: center;
   }
-  .login-input::placeholder {
-    color: var(--dim);
-    font-style: italic;
-  }
-  .login-input:focus {
-    border-color: var(--navy);
-    box-shadow: 0 0 0 3px rgba(10, 61, 124, 0.08);
-  }
+  .login-input::placeholder { color: var(--dim); font-style: italic; }
+  .login-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(10, 61, 124, 0.08); }
   .login-input.error {
-    border-color: var(--loss);
-    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.08);
+    border-color: var(--loss); box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.08);
     animation: shake 0.5s ease;
   }
-
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     10%, 50%, 90% { transform: translateX(-4px); }
     30%, 70% { transform: translateX(4px); }
   }
-
   .login-error-msg {
-    font-family: var(--sans);
-    font-size: 12px;
-    color: var(--loss);
-    margin-bottom: 16px;
-    min-height: 18px;
-    letter-spacing: 0.5px;
+    font-size: 12px; color: var(--loss); margin: 16px 0;
+    min-height: 18px; letter-spacing: 0.5px;
   }
-
   .login-btn {
-    width: 100%;
-    padding: 14px 24px;
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--navy);
-    border: none;
-    border-radius: 2px;
-    cursor: pointer;
+    width: 100%; padding: 14px 24px; font-family: var(--sans);
+    font-size: 12px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--white); background: var(--navy);
+    border: none; border-radius: 2px; cursor: pointer;
     transition: background 0.2s, transform 0.1s;
   }
-  .login-btn:hover {
-    background: var(--navy-dark);
+  .login-btn:hover { background: var(--navy-dark); }
+  .login-btn:active { transform: scale(0.98); }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .back-link {
+    display: inline-block; margin-top: 28px; font-size: 11px;
+    font-weight: 500; letter-spacing: 1px; color: var(--muted);
+    text-decoration: none; cursor: pointer;
+    transition: color 0.2s;
   }
-  .login-btn:active {
-    transform: scale(0.98);
-  }
-  .login-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
+  .back-link:hover { color: var(--navy); }
   .login-footer {
-    margin-top: 48px;
-    padding-top: 24px;
-    border-top: 1px solid var(--rule);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--dim);
+    margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--rule);
+    font-size: 10px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim);
   }
 
-  /* ===== HOME SCREEN ===== */
-  #home-screen {
-    display: none;
-    min-height: 100vh;
-    flex-direction: column;
-  }
-  #home-screen.active {
-    display: flex;
-  }
-
-  /* Masthead */
+  /* ===== HOME SCREEN (PORTAL) ===== */
   .home-masthead {
-    text-align: center;
-    padding: 48px 24px 36px;
+    text-align: center; padding: 48px 24px 36px;
     border-bottom: 3px double var(--navy);
-    background: var(--cream);
   }
   .home-masthead-label {
-    font-family: var(--sans);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
+    font-size: 10px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
   }
   .home-masthead h1 {
-    font-family: var(--serif);
-    font-size: 42px;
-    font-weight: 900;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    color: var(--navy);
+    font-family: var(--serif); font-size: 42px; font-weight: 900;
+    letter-spacing: 6px; text-transform: uppercase; color: var(--navy);
     margin-bottom: 8px;
   }
   .home-masthead .date-line {
-    font-family: var(--serif);
-    font-size: 15px;
-    font-weight: 400;
-    font-style: italic;
+    font-family: var(--serif); font-size: 15px; font-style: italic;
     color: var(--ink2);
-    letter-spacing: 0.5px;
   }
   .home-masthead .edition {
-    font-family: var(--sans);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-top: 8px;
+    font-size: 10px; font-weight: 600; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--dim); margin-top: 8px;
   }
 
-  /* Ticker strip */
   .ticker-strip {
-    background: #fff;
-    border-bottom: 1px solid var(--rule);
-    padding: 10px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    flex-wrap: wrap;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--ink2);
+    background: var(--white); border-bottom: 1px solid var(--rule);
+    padding: 10px 24px; display: flex; align-items: center;
+    justify-content: center; gap: 28px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 12px; color: var(--ink2);
   }
-  .ticker-strip .ts-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .ticker-strip .ts-item { display: flex; align-items: center; gap: 6px; }
   .ticker-strip .ts-label {
-    font-weight: 400;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-weight: 400; color: var(--muted); font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
   }
-  .ticker-strip .ts-value {
-    font-weight: 600;
-    color: var(--navy);
-  }
+  .ticker-strip .ts-value { font-weight: 600; color: var(--navy); }
   .ts-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    vertical-align: middle;
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; vertical-align: middle;
   }
   .ts-dot.green { background: var(--profit); }
   .ts-dot.yellow { background: #b8860b; }
   .ts-dot.red { background: var(--loss); }
 
-  /* Category sections */
   .home-content {
-    max-width: 1020px;
-    margin: 0 auto;
-    padding: 40px 24px 32px;
-    flex: 1;
+    max-width: 1020px; margin: 0 auto; padding: 40px 24px 32px; flex: 1;
   }
-  .cat-section {
-    margin-bottom: 36px;
-  }
+  .cat-section { margin-bottom: 36px; }
   .cat-label {
-    font-family: var(--sans);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--rule);
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--muted);
+    padding-bottom: 10px; border-bottom: 1px solid var(--rule);
     margin-bottom: 16px;
   }
-
-  /* Card grid */
   .card-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
   }
   .nav-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    background: #fff;
-    border: 1px solid var(--rule);
-    border-left: 3px solid transparent;
-    border-radius: 2px;
+    display: block; text-decoration: none; color: inherit;
+    background: var(--white); border: 1px solid var(--rule);
+    border-left: 3px solid transparent; border-radius: 2px;
     transition: box-shadow 0.2s, transform 0.15s, border-left-color 0.2s;
-    overflow: hidden;
   }
   .nav-card:hover {
-    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
-    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-2px);
     border-left-color: var(--navy);
   }
   .card-inner {
-    padding: 22px 20px 18px;
-    position: relative;
-    min-height: 130px;
-    display: flex;
-    flex-direction: column;
+    padding: 22px 20px 18px; position: relative; min-height: 130px;
+    display: flex; flex-direction: column;
   }
   .card-title {
-    font-family: var(--serif);
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 8px;
-    line-height: 1.3;
+    font-family: var(--serif); font-size: 17px; font-weight: 700;
+    color: var(--navy); margin-bottom: 8px;
   }
-  .card-desc {
-    font-size: 12.5px;
-    color: var(--muted);
-    line-height: 1.55;
-    flex: 1;
-  }
+  .card-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; flex: 1; }
   .card-arrow {
-    position: absolute;
-    bottom: 14px;
-    right: 16px;
-    font-size: 18px;
-    color: var(--navy);
-    opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
+    position: absolute; bottom: 14px; right: 16px; font-size: 18px;
+    color: var(--navy); opacity: 0; transition: opacity 0.2s, transform 0.2s;
   }
-  .nav-card:hover .card-arrow {
-    opacity: 0.6;
-    transform: translateX(2px);
-  }
+  .nav-card:hover .card-arrow { opacity: 0.6; transform: translateX(2px); }
 
-  /* Home footer */
   .home-footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 20px 24px;
-    border-top: 1px solid var(--rule);
-    font-size: 10px;
-    color: var(--dim);
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
+    margin-top: auto; text-align: center; padding: 20px 24px;
+    border-top: 1px solid var(--rule); font-size: 10px; color: var(--dim);
+    display: flex; align-items: center; justify-content: center; gap: 24px;
   }
   .home-footer strong {
-    color: var(--muted);
-    font-weight: 600;
-    letter-spacing: 1.5px;
+    color: var(--muted); font-weight: 600; letter-spacing: 1.5px;
     text-transform: uppercase;
   }
   .signout-link {
-    font-family: var(--sans);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--dim);
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.2s;
-    border-left: 1px solid var(--rule);
-    padding-left: 24px;
+    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--dim); text-decoration: none;
+    cursor: pointer; transition: color 0.2s;
+    border-left: 1px solid var(--rule); padding-left: 24px;
   }
-  .signout-link:hover {
-    color: var(--loss);
-  }
+  .signout-link:hover { color: var(--loss); }
 
-  /* Responsive */
+  /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
+    .hero h1 { font-size: 36px; letter-spacing: 5px; }
+    .overview-points { grid-template-columns: 1fr; }
+    .perf-grid { grid-template-columns: repeat(2, 1fr); }
+    .arch-grid { grid-template-columns: repeat(2, 1fr); }
     .card-grid { grid-template-columns: repeat(2, 1fr); }
-    .login-masthead h1 { font-size: 32px; letter-spacing: 5px; }
-    .home-masthead h1 { font-size: 28px; letter-spacing: 4px; }
-    .ticker-strip { gap: 16px; }
+    .home-masthead h1 { font-size: 28px; }
   }
   @media (max-width: 480px) {
+    .hero h1 { font-size: 26px; letter-spacing: 3px; }
+    .perf-grid { grid-template-columns: 1fr 1fr; }
+    .perf-value { font-size: 22px; }
+    .arch-grid { grid-template-columns: 1fr 1fr; }
     .card-grid { grid-template-columns: 1fr; }
-    .login-masthead h1 { font-size: 24px; letter-spacing: 3px; }
-    .home-masthead h1 { font-size: 22px; }
-    .ticker-strip { gap: 10px; font-size: 11px; }
     .home-footer { flex-direction: column; gap: 12px; }
     .signout-link { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 12px; }
+    .live-strip { gap: 12px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN SCREEN ===== -->
-<div id="login-screen">
+<!-- ==================== SCREEN 1: PUBLIC LANDING ==================== -->
+<div id="landing-screen" class="screen active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Proprietary Research</div>
+    <h1>DNSD Capital</h1>
+    <div class="tagline">Retail Sentiment Momentum Strategy</div>
+    <div class="date-line">Monday, March 30, 2026</div>
+  </div>
+
+  <div class="landing-content">
+
+    <!-- Strategy Overview -->
+    <div class="section-head">Strategy Overview</div>
+    <p class="overview-text">
+      A systematic momentum strategy that detects crowd-driven stocks experiencing
+      sudden spikes in social media attention, then fires short-term long trades with
+      quantitative risk management and regime-aware position sizing.
+    </p>
+
+    <div class="overview-points">
+      <div class="overview-point">
+        <h4>Signal Detection</h4>
+        <p>Multi-source sentiment analysis across Reddit, StockTwits, ApeWisdom, and Google Trends with real-time velocity scoring.</p>
+      </div>
+      <div class="overview-point">
+        <h4>40-Ticker Universe</h4>
+        <p>Curated watchlist of high-retail-interest names including meme stocks, high-SI names, and crypto proxies.</p>
+      </div>
+      <div class="overview-point">
+        <h4>Risk Management</h4>
+        <p>Regime-adaptive position sizing, ATR trailing stops, portfolio heat monitoring, and automated circuit breakers.</p>
+      </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="section-head">Performance Metrics</div>
+    <div class="perf-grid">
+      <div class="perf-card">
+        <div class="perf-label">Win Rate</div>
+        <div class="perf-value profit">66.1%</div>
+        <div class="perf-sub">59 trades</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Win / Loss Ratio</div>
+        <div class="perf-value">1.79&times;</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Sharpe Ratio</div>
+        <div class="perf-value">7.21</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Total P&amp;L</div>
+        <div class="perf-value profit">+135.5%</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Sortino Ratio</div>
+        <div class="perf-value">9.09</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Profit Factor</div>
+        <div class="perf-value">3.49</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Expectancy</div>
+        <div class="perf-value profit">+2.30%</div>
+        <div class="perf-sub">per trade</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-label">Max Drawdown</div>
+        <div class="perf-value loss">-7.6%</div>
+      </div>
+    </div>
+
+    <!-- System Architecture -->
+    <div class="section-head">System Architecture</div>
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="arch-number">220+</div>
+        <div class="arch-label">Autonomous<br>Daemons</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-number">244</div>
+        <div class="arch-label">Intelligence<br>Modules</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-number">8</div>
+        <div class="arch-label">Data<br>Sources</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-number">5</div>
+        <div class="arch-label">RS Score<br>Factors</div>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <span class="phase-badge">Phase 3 &mdash; Paper Trading Live</span>
+    </div>
+
+    <!-- Live Status -->
+    <div class="live-strip">
+      <span class="ls-title">Live System</span>
+      <div class="ls-item">
+        <span class="ls-label">Regime</span>
+        <span class="ls-dot green"></span>
+        <span class="ls-value">NORMAL</span>
+      </div>
+      <div class="ls-item">
+        <span class="ls-label">VIX</span>
+        <span class="ls-value">30.2</span>
+      </div>
+      <div class="ls-item">
+        <span class="ls-label">Dampener</span>
+        <span class="ls-value">1.00</span>
+      </div>
+      <div class="ls-item">
+        <span class="ls-label">Signals</span>
+        <span class="ls-value">23</span>
+      </div>
+      <div class="ls-item">
+        <span class="ls-label">Daily P&amp;L</span>
+        <span class="ls-value" style="color:#0a6e38">+0.0%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <button class="cta-btn" id="cta-login">Access Dashboard</button>
+  </div>
+
+  <div class="disclaimer">
+    Past performance is not indicative of future results. This platform is for
+    research and educational purposes only. Not financial advice.
+  </div>
+
+  <div class="landing-footer">
+    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-03-30 16:17 ET
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2: LOGIN ==================== -->
+<div id="login-screen" class="screen">
   <div class="login-container">
     <div class="login-ornament"></div>
-
     <div class="login-masthead">
-      <div class="login-masthead-label">Proprietary Research</div>
-      <h1>DNSD Capital</h1>
-      <div class="tagline">Strategy &amp; Intelligence Platform</div>
+      <h2>DNSD Capital</h2>
+      <div class="tagline">Dashboard Access</div>
     </div>
-
     <div class="login-rule"></div>
-
     <div class="login-form">
       <div class="login-field-label">Authorized Personnel Only</div>
-      <div class="login-input-wrap">
-        <input type="password" id="pwd-input" class="login-input" placeholder="Enter access code" autocomplete="off" autofocus>
-      </div>
+      <input type="password" id="pwd-input" class="login-input" placeholder="Enter access code" autocomplete="off">
       <div class="login-error-msg" id="error-msg"></div>
       <button id="login-btn" class="login-btn">Access Platform</button>
+      <a class="back-link" id="back-to-landing">&larr; Back to Overview</a>
     </div>
-
     <div class="login-footer">
       Proprietary &amp; Confidential &mdash; DNSD Capital
     </div>
   </div>
 </div>
 
-<!-- ===== HOME SCREEN ===== -->
-<div id="home-screen">
-
+<!-- ==================== SCREEN 3: DASHBOARD PORTAL ==================== -->
+<div id="home-screen" class="screen">
   <div class="home-masthead">
-    <div class="home-masthead-label">Proprietary Research</div>
+    <div class="home-masthead-label">Dashboard Portal</div>
     <h1>DNSD Capital</h1>
     <div class="date-line">Monday, March 30, 2026</div>
     <div class="edition">Retail Sentiment Momentum Strategy</div>
   </div>
 
   <div class="ticker-strip">
-    <div class="ts-item">
-      <span class="ts-label">Regime</span>
-      <span class="ts-dot green"></span>
-      <span class="ts-value">NORMAL</span>
-    </div>
-    <div class="ts-item">
-      <span class="ts-label">VIX</span>
-      <span class="ts-value">30.2</span>
-    </div>
-    <div class="ts-item">
-      <span class="ts-label">Dampener</span>
-      <span class="ts-value">1.00</span>
-    </div>
-    <div class="ts-item">
-      <span class="ts-label">Signals</span>
-      <span class="ts-value">23</span>
-    </div>
-    <div class="ts-item">
-      <span class="ts-label">Daily P&amp;L</span>
-      <span class="ts-value" style="color:#0a6e38">+0.0%</span>
-    </div>
-    <div class="ts-item">
-      <span class="ts-label">Phase</span>
-      <span class="ts-value">3</span>
-    </div>
+    <div class="ts-item"><span class="ts-label">Regime</span><span class="ts-dot green"></span><span class="ts-value">NORMAL</span></div>
+    <div class="ts-item"><span class="ts-label">VIX</span><span class="ts-value">30.2</span></div>
+    <div class="ts-item"><span class="ts-label">Dampener</span><span class="ts-value">1.00</span></div>
+    <div class="ts-item"><span class="ts-label">Signals</span><span class="ts-value">23</span></div>
+    <div class="ts-item"><span class="ts-label">Daily P&amp;L</span><span class="ts-value" style="color:#0a6e38">+0.0%</span></div>
+    <div class="ts-item"><span class="ts-label">Phase</span><span class="ts-value">3</span></div>
   </div>
 
   <div class="home-content">
@@ -538,10 +628,9 @@
   </div>
 
   <div class="home-footer">
-    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-30 16:14 ET</span>
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-30 16:17 ET</span>
     <a class="signout-link" id="signout-btn">Sign Out</a>
   </div>
-
 </div>
 
 <script>
@@ -549,9 +638,18 @@
   var HASH = '9614c69e0f50a4fe4e662302690d0a459a5f51effb18ff18b2e771cfc0ec2f0b';
   var AUTH_KEY = 'dnsd_auth';
 
-  // Check existing auth
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById(id);
+    el.classList.add('active', 'screen-fade-in');
+    window.scrollTo(0, 0);
+    // Remove animation class after it plays
+    setTimeout(function() { el.classList.remove('screen-fade-in'); }, 500);
+  }
+
+  // Check existing auth — skip straight to portal
   if (localStorage.getItem(AUTH_KEY)) {
-    showHome();
+    showScreen('home-screen');
   }
 
   // SHA-256 helper
@@ -563,11 +661,17 @@
     }).join('');
   }
 
-  // Show home, hide login
-  function showHome() {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('home-screen').classList.add('active');
-  }
+  // CTA → show login
+  document.getElementById('cta-login').addEventListener('click', function() {
+    showScreen('login-screen');
+    setTimeout(function() { document.getElementById('pwd-input').focus(); }, 100);
+  });
+
+  // Back to landing
+  document.getElementById('back-to-landing').addEventListener('click', function(e) {
+    e.preventDefault();
+    showScreen('landing-screen');
+  });
 
   // Login handler
   async function handleLogin() {
@@ -575,22 +679,17 @@
     var btn = document.getElementById('login-btn');
     var errEl = document.getElementById('error-msg');
     var input = document.getElementById('pwd-input');
-
-    if (!pwd) {
-      errEl.textContent = '';
-      return;
-    }
+    if (!pwd) return;
 
     btn.disabled = true;
     btn.textContent = 'VERIFYING...';
 
     var hash = await sha256(pwd);
-
     if (hash === HASH) {
       localStorage.setItem(AUTH_KEY, 'dnsd_' + Date.now());
       errEl.textContent = '';
       input.classList.remove('error');
-      showHome();
+      showScreen('home-screen');
     } else {
       errEl.textContent = 'Invalid access code';
       input.classList.add('error');
@@ -598,28 +697,22 @@
       input.focus();
       setTimeout(function() { input.classList.remove('error'); }, 600);
     }
-
     btn.disabled = false;
     btn.textContent = 'ACCESS PLATFORM';
   }
 
-  // Enter key
   document.getElementById('pwd-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') handleLogin();
   });
-
-  // Button click
   document.getElementById('login-btn').addEventListener('click', handleLogin);
 
-  // Sign out
+  // Sign out → back to landing
   document.getElementById('signout-btn').addEventListener('click', function(e) {
     e.preventDefault();
     localStorage.removeItem(AUTH_KEY);
-    document.getElementById('home-screen').classList.remove('active');
-    document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('pwd-input').value = '';
     document.getElementById('error-msg').textContent = '';
-    document.getElementById('pwd-input').focus();
+    showScreen('landing-screen');
   });
 })();
 </script>
