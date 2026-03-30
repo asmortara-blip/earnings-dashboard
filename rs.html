@@ -729,6 +729,13 @@ select.form-input { cursor: pointer; }
   thead th, tbody td { padding: 6px 8px; }
   .flow-grid { grid-template-columns: repeat(2, 1fr); }
   .rich-heatmap { font-size: 9px; }
+  .ticker-tape { left: 0; height: 24px; }
+  .has-tape .header { left: 0; top: 24px; }
+  .has-tape .main { padding-top: 72px; }
+  .footer-bar { left: 0; }
+  .market-pulse { flex-wrap: wrap; }
+  .pulse-item { min-width: 120px; }
+  .gauges-row { gap: 12px; }
 }
 
 /* Correlation matrix */
@@ -979,7 +986,8 @@ select.form-input { cursor: pointer; }
 }
 </style>
 </head>
-<body>
+<body class="has-tape has-footer">
+<div class="ticker-tape"><div class="ticker-tape-track"><span class="tape-item"><span class="tape-ticker">ACHR</span><span class="tape-val ">RES 60</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">AFRM</span><span class="tape-val ">RES 54</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 67%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">AMC</span><span class="tape-val ">RES 79</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 48%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">APP</span><span class="tape-val ">RES 48</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 50%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">ASTS</span><span class="tape-val ">RES 59</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 48%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">BBAI</span><span class="tape-val ">RES 55</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 31%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">BITF</span><span class="tape-val ">RES 63</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 39%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">CELH</span><span class="tape-val ">RES 55</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 49%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">CLSK</span><span class="tape-val ">RES 66</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 61%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">COIN</span><span class="tape-val ">RES 61</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 48%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">CVNA</span><span class="tape-val ">RES 65</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 85%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">DJT</span><span class="tape-val ">RES 67</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 63%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">DKNG</span><span class="tape-val ">RES 62</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 52%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">FCEL</span><span class="tape-val ">RES 58</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 54%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">GME</span><span class="tape-val ">RES 79</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 65%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">GPRO</span><span class="tape-val ">RES 65</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 54%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">HIMS</span><span class="tape-val ">RES 70</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 45%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">HOOD</span><span class="tape-val ">RES 56</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 38%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">IONQ</span><span class="tape-val ">RES 58</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 57%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">LCID</span><span class="tape-val ">RES 64</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 67%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">LUNR</span><span class="tape-val ">RES 62</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 30%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">MARA</span><span class="tape-val ">RES 72</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 66%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">MSTR</span><span class="tape-val ">RES 63</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 36%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">NIO</span><span class="tape-val ">RES 60</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 50%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">NKTR</span><span class="tape-val ">RES 56</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 40%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">NVDA</span><span class="tape-val ">RES 46</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">OPEN</span><span class="tape-val ">RES 69</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 46%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">PLTR</span><span class="tape-val ">RES 55</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 42%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RDDT</span><span class="tape-val ">RES 60</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 41%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RIOT</span><span class="tape-val ">RES 68</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 45%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RIVN</span><span class="tape-val ">RES 57</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 54%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RKLB</span><span class="tape-val ">RES 54</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 42%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RKT</span><span class="tape-val ">RES 49</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SMCI</span><span class="tape-val ">RES 65</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 43%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SNAP</span><span class="tape-val ">RES 50</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SOFI</span><span class="tape-val ">RES 52</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 37%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SOUN</span><span class="tape-val ">RES 69</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 53%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">TSLA</span><span class="tape-val ">RES 61</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 39%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">UPST</span><span class="tape-val ">RES 62</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 47%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">WOLF</span><span class="tape-val ">RES 52</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 62%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">ACHR</span><span class="tape-val ">RES 60</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">AFRM</span><span class="tape-val ">RES 54</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 67%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">AMC</span><span class="tape-val ">RES 79</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 48%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">APP</span><span class="tape-val ">RES 48</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 50%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">ASTS</span><span class="tape-val ">RES 59</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 48%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">BBAI</span><span class="tape-val ">RES 55</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 31%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">BITF</span><span class="tape-val ">RES 63</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 39%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">CELH</span><span class="tape-val ">RES 55</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 49%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">CLSK</span><span class="tape-val ">RES 66</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 61%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">COIN</span><span class="tape-val ">RES 61</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 48%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">CVNA</span><span class="tape-val ">RES 65</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 85%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">DJT</span><span class="tape-val ">RES 67</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 63%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">DKNG</span><span class="tape-val ">RES 62</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 52%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">FCEL</span><span class="tape-val ">RES 58</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 54%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">GME</span><span class="tape-val ">RES 79</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 65%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">GPRO</span><span class="tape-val ">RES 65</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 54%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">HIMS</span><span class="tape-val ">RES 70</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 45%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">HOOD</span><span class="tape-val ">RES 56</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 38%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">IONQ</span><span class="tape-val ">RES 58</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 57%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">LCID</span><span class="tape-val ">RES 64</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 67%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">LUNR</span><span class="tape-val ">RES 62</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 30%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">MARA</span><span class="tape-val ">RES 72</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 66%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">MSTR</span><span class="tape-val ">RES 63</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 36%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">NIO</span><span class="tape-val ">RES 60</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 50%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">NKTR</span><span class="tape-val ">RES 56</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 40%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">NVDA</span><span class="tape-val ">RES 46</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">OPEN</span><span class="tape-val ">RES 69</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 46%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">PLTR</span><span class="tape-val ">RES 55</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 42%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RDDT</span><span class="tape-val ">RES 60</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 41%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RIOT</span><span class="tape-val ">RES 68</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 45%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RIVN</span><span class="tape-val ">RES 57</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 54%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RKLB</span><span class="tape-val ">RES 54</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 42%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">RKT</span><span class="tape-val ">RES 49</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SMCI</span><span class="tape-val ">RES 65</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 43%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SNAP</span><span class="tape-val ">RES 50</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 35%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SOFI</span><span class="tape-val ">RES 52</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 37%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">SOUN</span><span class="tape-val ">RES 69</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 53%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">TSLA</span><span class="tape-val ">RES 61</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 39%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">UPST</span><span class="tape-val ">RES 62</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 47%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tape-item"><span class="tape-ticker">WOLF</span><span class="tape-val ">RES 52</span><span class="tape-val" style="color:rgba(255,255,255,0.4)">SI 62%</span><span class="tape-spark"><span class="sparkline"><svg width="30" height="10" viewBox="0 0 30 10"><polygon points="0,10 0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3 30,10" fill="#6b728022"/><polyline points="0.0,3.3 10.0,9.0 20.0,1.0 30.0,3.3" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span></div></div>
 <div class="app">
   <!-- Sidebar -->
   <nav class="sidebar">
@@ -1031,7 +1039,7 @@ select.form-input { cursor: pointer; }
     </div>
     <div style="padding:12px 16px;border-top:1px solid var(--rule)">
       <div class="text-xs text-muted" style="white-space:nowrap;overflow:hidden">
-        <span class="sidebar-brand-text" style="opacity:0;font-size:10px">Updated 2026-03-30 00:09</span>
+        <span class="sidebar-brand-text" style="opacity:0;font-size:10px">Updated 2026-03-30 00:14</span>
       </div>
     </div>
   </nav>
@@ -1133,6 +1141,9 @@ select.form-input { cursor: pointer; }
         <span>Live</span>
       </div>
     </div>
+    <div class="gauges-row" style="margin-bottom:20px"><div class="gauge-wrap"><div class="gauge-label">Win Rate</div><svg width="80" height="52" viewBox="0 0 80 52"><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--rule)" stroke-width="5" stroke-linecap="round"/><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-dasharray="71.8 35.0" style="transition: stroke-dasharray 1s ease"/></svg><div class="gauge-value" style="color:var(--accent)">67.20</div><div class=gauge-target>Target: 55%+</div></div><div class="gauge-wrap"><div class="gauge-label">Sharpe</div><svg width="80" height="52" viewBox="0 0 80 52"><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--rule)" stroke-width="5" stroke-linecap="round"/><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-dasharray="75.2 31.6" style="transition: stroke-dasharray 1s ease"/></svg><div class="gauge-value" style="color:var(--accent)">7.04</div><div class=gauge-target>Target: 2.0+</div></div><div class="gauge-wrap"><div class="gauge-label">W/L Ratio</div><svg width="80" height="52" viewBox="0 0 80 52"><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--rule)" stroke-width="5" stroke-linecap="round"/><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-dasharray="61.2 45.6" style="transition: stroke-dasharray 1s ease"/></svg><div class="gauge-value" style="color:var(--accent)">1.72</div><div class=gauge-target>Target: 1.5x+</div></div><div class="gauge-wrap"><div class="gauge-label">Profit Factor</div><svg width="80" height="52" viewBox="0 0 80 52"><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--rule)" stroke-width="5" stroke-linecap="round"/><path d="M 6 44 A 34 34 0 0 1 74 44" fill="none" stroke="var(--warn)" stroke-width="5" stroke-linecap="round" stroke-dasharray="36.5 70.3" style="transition: stroke-dasharray 1s ease"/></svg><div class="gauge-value" style="color:var(--warn)">1.71</div><div class=gauge-target>Target: 2.0+</div></div></div>
+    <div class="market-pulse"><div class="pulse-item"><span class="pulse-sym">VIX</span><span class="pulse-price text-loss">31.1</span></div><div class="pulse-item"><span class="pulse-sym">SPY</span><span class="pulse-chg text-profit">+0.00%</span></div><div class="pulse-item"><span class="pulse-sym">QQQ</span><span class="pulse-chg text-profit">+0.00%</span><div class="pulse-mini-bar"><div class="pulse-mini-fill" style="width:0%;background:var(--profit)"></div></div></div><div class="pulse-item"><span class="pulse-sym">BITO</span><span class="pulse-chg text-profit">+0.00%</span><div class="pulse-mini-bar"><div class="pulse-mini-fill" style="width:0%;background:var(--profit)"></div></div></div><div class="pulse-item"><span class="pulse-sym">XRT</span><span class="pulse-chg text-profit">+0.00%</span><div class="pulse-mini-bar"><div class="pulse-mini-fill" style="width:0%;background:var(--profit)"></div></div></div><div class="pulse-item"><span class="pulse-sym">XBI</span><span class="pulse-chg text-profit">+0.00%</span><div class="pulse-mini-bar"><div class="pulse-mini-fill" style="width:0%;background:var(--profit)"></div></div></div><div class="pulse-item"><span class="pulse-sym">DAMP</span><span class="pulse-chg text-profit">1.00x</span></div></div>
+    <div class="heat-gauge"><span class="heat-gauge-label">Portfolio Heat</span><div class="heat-gauge-track"><div class="heat-gauge-zones"><div class="heat-zone"></div><div class="heat-zone"></div><div class="heat-zone"></div><div class="heat-zone"></div></div><div class="heat-gauge-fill" style="width:0%;background:var(--profit)"></div></div><span class="heat-gauge-value text-profit">COOL</span><span class="heat-gauge-cap">0.0% used | 0% free</span></div>
     
     <div class="metrics-grid">
       <div class="metric-card highlight tip" data-tip="Paper trading win rate across all completed trades">
@@ -1176,7 +1187,7 @@ select.form-input { cursor: pointer; }
     </div>
     <div class="grid-3 gap-lg mb-md">
       <div><div class="card mb-md"><div class="card-header">Open Positions</div><div class="empty-state">No open positions</div></div></div>
-      <div><div class="card mb-md"><div class="card-header">Session Timeline</div><div class="timeline" style="padding:12px 12px 12px 28px"><div class="tl-event tl-signal"><span class="tl-time">04:39</span> <span class="tl-desc"><strong>HIMS</strong> | RS 79.4 | {'trigger': 'analyst_upgrade_bold', 'window': 'W2', 'sv': 91</span></div><div class="tl-event tl-signal"><span class="tl-time">04:40</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">04:46</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">04:52</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">04:54</span> <span class="tl-desc"><strong>HIMS</strong> | RS 79.4 | {'trigger': 'analyst_upgrade_bold', 'window': 'W2', 'sv': 91</span></div><div class="tl-event tl-signal"><span class="tl-time">04:58</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">05:04</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">05:09</span> <span class="tl-desc"><strong>HIMS</strong> | RS 79.4 | {'trigger': 'analyst_upgrade_bold', 'window': 'W2', 'sv': 91</span></div></div></div><div class="card mb-md"><div class="card-header">Sector Pulse</div><div class="sector-bar-wrap" style="padding:12px"><div class="sector-bar-row"><span class="sector-bar-label">XRT</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XBI</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLF</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">BITO</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLK</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">KWEB</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLY</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLE</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div></div></div></div>
+      <div><div class="card mb-md"><div class="card-header">Session Timeline</div><div class="timeline" style="padding:12px 12px 12px 28px"><div class="tl-event tl-signal"><span class="tl-time">04:39</span> <span class="tl-desc"><strong>HIMS</strong> | RS 79.4 | {'trigger': 'analyst_upgrade_bold', 'window': 'W2', 'sv': 91</span></div><div class="tl-event tl-signal"><span class="tl-time">04:40</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">04:46</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">04:52</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">04:54</span> <span class="tl-desc"><strong>HIMS</strong> | RS 79.4 | {'trigger': 'analyst_upgrade_bold', 'window': 'W2', 'sv': 91</span></div><div class="tl-event tl-signal"><span class="tl-time">04:58</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">05:04</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div><div class="tl-event tl-signal"><span class="tl-time">05:09</span> <span class="tl-desc"><strong>HIMS</strong> | RS 79.4 | {'trigger': 'analyst_upgrade_bold', 'window': 'W2', 'sv': 91</span></div><div class="tl-event tl-signal"><span class="tl-time">05:10</span> <span class="tl-desc"><strong>GME</strong> | RS 72.0</span></div></div></div><div class="card mb-md"><div class="card-header">Sector Pulse</div><div class="sector-bar-wrap" style="padding:12px"><div class="sector-bar-row"><span class="sector-bar-label">XRT</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XBI</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLF</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">BITO</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLK</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">KWEB</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLY</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div><div class="sector-bar-row"><span class="sector-bar-label">XLE</span><div class="sector-bar-track"><div class="sector-bar-fill" style="width:0%;background:var(--profit)"></div></div><span class="sector-bar-val text-profit">+0.00%</span><span class="sector-bar-damp">1.00x</span></div></div></div></div>
       <div>
     <div class="card mb-md">
       <div class="card-header"><span class="live-feed-dot"></span>Recent Signals</div>
@@ -3871,7 +3882,7 @@ select.form-input { cursor: pointer; }
         </div>
     
     <div class="card mb-md">
-      <div class="card-header">Daemon Health (27/401 running)</div>
+      <div class="card-header">Daemon Health (26/401 running)</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;max-height:400px;overflow-y:auto">
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -4107,7 +4118,7 @@ select.form-input { cursor: pointer; }
         </div>
         <div class="health-pill">
           <div class="health-dot running"></div>
-          <div><div class="font-bold text-xs">dashboard</div><div class="text-xs text-muted">pid 2225</div></div>
+          <div><div class="font-bold text-xs">dashboard</div><div class="text-xs text-muted">pid 3203</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -5218,8 +5229,8 @@ select.form-input { cursor: pointer; }
           <div><div class="font-bold text-xs">strategy-advisor</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
-          <div class="health-dot running"></div>
-          <div><div class="font-bold text-xs">strategy-optimizer</div><div class="text-xs text-muted">pid 99604</div></div>
+          <div class="health-dot stopped"></div>
+          <div><div class="font-bold text-xs">strategy-optimizer</div><div class="text-xs text-muted">stopped</div></div>
         </div>
         <div class="health-pill">
           <div class="health-dot stopped"></div>
@@ -5490,12 +5501,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">after_hours</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">alert_escalator_sent</div>
-              <div class="font-mono text-xs text-muted">10m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5510,7 +5521,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">alpha_capture</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">9m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5530,12 +5541,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">apewisdom_cache</div>
-              <div class="font-mono text-xs text-muted">10m</div>
+              <div class="font-mono text-xs text-muted">15m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">attribution_report</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5565,7 +5576,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">candidate_lifecycle</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">9m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5573,9 +5584,9 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot yellow"></div>
+              <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">candidate_ranking</div>
-              <div class="font-mono text-xs text-muted">14m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5595,7 +5606,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">catalyst_expiry</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5615,22 +5626,22 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">composite_intelligence</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">consensus</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">conviction</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">conviction_momentum</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5645,7 +5656,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">correlation_matrix</div>
-              <div class="font-mono text-xs text-muted">868m</div>
+              <div class="font-mono text-xs text-muted">873m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5655,7 +5666,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">daily_bias</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5665,17 +5676,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">daily_watchlist</div>
-              <div class="font-mono text-xs text-muted">3820m</div>
+              <div class="font-mono text-xs text-muted">3825m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">daily_watchlist_v2</div>
-              <div class="font-mono text-xs text-muted">3820m</div>
+              <div class="font-mono text-xs text-muted">3825m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">data_quality</div>
-              <div class="font-mono text-xs text-muted">3850m</div>
+              <div class="font-mono text-xs text-muted">3855m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5690,12 +5701,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">discoveries</div>
-              <div class="font-mono text-xs text-muted">3490m</div>
+              <div class="font-mono text-xs text-muted">3495m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">discovery_history</div>
-              <div class="font-mono text-xs text-muted">3490m</div>
+              <div class="font-mono text-xs text-muted">3495m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5725,17 +5736,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">earnings_cache</div>
-              <div class="font-mono text-xs text-muted">5287m</div>
+              <div class="font-mono text-xs text-muted">5292m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">earnings_calendar</div>
-              <div class="font-mono text-xs text-muted">3850m</div>
+              <div class="font-mono text-xs text-muted">3855m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">earnings_drift</div>
-              <div class="font-mono text-xs text-muted">3310m</div>
+              <div class="font-mono text-xs text-muted">3315m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5750,7 +5761,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">entry_checklist</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5765,7 +5776,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">entry_window</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5775,7 +5786,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">exec_timing_v2</div>
-              <div class="font-mono text-xs text-muted">3434m</div>
+              <div class="font-mono text-xs text-muted">3439m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5785,7 +5796,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">execution_tracker</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">6m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5795,7 +5806,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">exit_optimizer</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5805,12 +5816,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">false_signals</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">feature_store</div>
-              <div class="font-mono text-xs text-muted">3m</div>
+              <div class="font-mono text-xs text-muted">8m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5835,7 +5846,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">freq_optimization</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5845,7 +5856,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">gamma_squeeze</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5855,7 +5866,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">gap_momentum</div>
-              <div class="font-mono text-xs text-muted">3506m</div>
+              <div class="font-mono text-xs text-muted">3512m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5870,7 +5881,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">health_report</div>
-              <div class="font-mono text-xs text-muted">3820m</div>
+              <div class="font-mono text-xs text-muted">3825m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5895,7 +5906,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_flow</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5905,7 +5916,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_momentum</div>
-              <div class="font-mono text-xs text-muted">3468m</div>
+              <div class="font-mono text-xs text-muted">3473m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5930,7 +5941,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">intraday_score</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5945,7 +5956,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">liquidity_events</div>
-              <div class="font-mono text-xs text-muted">3431m</div>
+              <div class="font-mono text-xs text-muted">3436m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5955,7 +5966,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">live_pnl</div>
-              <div class="font-mono text-xs text-muted">3425m</div>
+              <div class="font-mono text-xs text-muted">3430m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5965,7 +5976,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">live_state</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -5988,14 +5999,14 @@ select.form-input { cursor: pointer; }
               <div class="font-mono text-xs text-muted">3m</div>
             </div>
             <div class="intel-chip">
-              <div class="intel-dot green"></div>
+              <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">ml_pipeline</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">10m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">9m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6010,12 +6021,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum_divergence</div>
-              <div class="font-mono text-xs text-muted">3400m</div>
+              <div class="font-mono text-xs text-muted">3405m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum_exhaustion</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6035,7 +6046,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">momentum_scanner_v2</div>
-              <div class="font-mono text-xs text-muted">3432m</div>
+              <div class="font-mono text-xs text-muted">3437m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6055,7 +6066,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">news_impact</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6080,7 +6091,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">options_activity</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6105,7 +6116,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">overnight_risk</div>
-              <div class="font-mono text-xs text-muted">3381m</div>
+              <div class="font-mono text-xs text-muted">3386m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6120,12 +6131,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">pattern_success</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">pm_gap_scores</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6135,12 +6146,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">portfolio_rebalance</div>
-              <div class="font-mono text-xs text-muted">3730m</div>
+              <div class="font-mono text-xs text-muted">3735m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">position_age</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6165,7 +6176,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">position_monitor</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6185,7 +6196,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">premarket_brief_v2</div>
-              <div class="font-mono text-xs text-muted">3800m</div>
+              <div class="font-mono text-xs text-muted">3805m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6225,17 +6236,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_calendar</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_playbook</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_predictor</div>
-              <div class="font-mono text-xs text-muted">2m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6255,7 +6266,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">regime_transition_score</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6270,7 +6281,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">replay_baseline</div>
-              <div class="font-mono text-xs text-muted">1411m</div>
+              <div class="font-mono text-xs text-muted">1416m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6280,17 +6291,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">risk_state</div>
-              <div class="font-mono text-xs text-muted">3420m</div>
+              <div class="font-mono text-xs text-muted">3425m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">scanner_dashboard</div>
-              <div class="font-mono text-xs text-muted">3805m</div>
+              <div class="font-mono text-xs text-muted">3810m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">score_acceleration</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6300,12 +6311,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">score_history</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">6m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">score_momentum</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6315,27 +6326,27 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">score_trends</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">6m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_history</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_leaders</div>
-              <div class="font-mono text-xs text-muted">3400m</div>
+              <div class="font-mono text-xs text-muted">3405m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_momentum</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sector_pulse</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6365,37 +6376,37 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260326</div>
-              <div class="font-mono text-xs text-muted">4391m</div>
+              <div class="font-mono text-xs text-muted">4396m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260327</div>
-              <div class="font-mono text-xs text-muted">2955m</div>
+              <div class="font-mono text-xs text-muted">2960m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260328</div>
-              <div class="font-mono text-xs text-muted">1518m</div>
+              <div class="font-mono text-xs text-muted">1523m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260329</div>
-              <div class="font-mono text-xs text-muted">98m</div>
+              <div class="font-mono text-xs text-muted">103m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_journal_20260330</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_profile</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">session_summary</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6405,12 +6416,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">si_momentum</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">2m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">si_velocity</div>
-              <div class="font-mono text-xs text-muted">102m</div>
+              <div class="font-mono text-xs text-muted">108m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6425,22 +6436,22 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_attribution</div>
-              <div class="font-mono text-xs text-muted">407m</div>
+              <div class="font-mono text-xs text-muted">412m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_clusters</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_correlator</div>
-              <div class="font-mono text-xs text-muted">15m</div>
+              <div class="font-mono text-xs text-muted">20m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_digest</div>
-              <div class="font-mono text-xs text-muted">3325m</div>
+              <div class="font-mono text-xs text-muted">3330m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6450,7 +6461,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_heatmap</div>
-              <div class="font-mono text-xs text-muted">3325m</div>
+              <div class="font-mono text-xs text-muted">3330m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6475,7 +6486,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">signal_replay</div>
-              <div class="font-mono text-xs text-muted">3873m</div>
+              <div class="font-mono text-xs text-muted">3878m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6495,7 +6506,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">social_acceleration</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6535,7 +6546,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">stress_test</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6545,7 +6556,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">sympathy_cascade</div>
-              <div class="font-mono text-xs text-muted">1m</div>
+              <div class="font-mono text-xs text-muted">2m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6555,7 +6566,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">tape_heartbeat</div>
-              <div class="font-mono text-xs text-muted">0m</div>
+              <div class="font-mono text-xs text-muted">1m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6570,12 +6581,12 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">ticker_sentiment</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">time_weighted_score</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6590,7 +6601,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">trade_sequence</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6600,7 +6611,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot yellow"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">trigger_confidence</div>
-              <div class="font-mono text-xs text-muted">16m</div>
+              <div class="font-mono text-xs text-muted">21m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6610,7 +6621,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">trigger_velocity</div>
-              <div class="font-mono text-xs text-muted">5m</div>
+              <div class="font-mono text-xs text-muted">4m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6640,7 +6651,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">volume_profile_intraday</div>
-              <div class="font-mono text-xs text-muted">3431m</div>
+              <div class="font-mono text-xs text-muted">3436m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6660,7 +6671,7 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">watchlist_builder</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">9m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6675,17 +6686,17 @@ select.form-input { cursor: pointer; }
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">weekly_report</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">5m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot red"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">weekly_review</div>
-              <div class="font-mono text-xs text-muted">1680m</div>
+              <div class="font-mono text-xs text-muted">1685m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
               <div class="text-xs" style="flex:1;overflow:hidden;text-overflow:ellipsis">weekly_stats</div>
-              <div class="font-mono text-xs text-muted">4m</div>
+              <div class="font-mono text-xs text-muted">0m</div>
             </div>
             <div class="intel-chip">
               <div class="intel-dot green"></div>
@@ -6753,6 +6764,7 @@ select.form-input { cursor: pointer; }
 <script id="chart-bt-pnl-data" type="application/json">{"labels": ["2023-01-26", "2023-02-14", "2023-05-18", "2023-06-06", "2023-06-07", "2023-06-13", "2023-07-26", "2023-10-24", "2023-11-02", "2023-11-08", "2024-02-16", "2024-05-03", "2024-05-08", "2024-05-15", "2024-05-20", "2024-06-07", "2024-06-10", "2024-06-25", "2024-07-24", "2024-08-05", "2024-08-30", "2024-09-11", "2024-10-03", "2024-10-31", "2024-11-05", "2024-11-05", "2024-11-06", "2024-11-06", "2024-11-11", "2024-11-11"], "data": [-0.47, 1.8, 7.89, 5.29, 3.94, 0.9, 0.55, 1.66, -0.24, 1.53, -2.46, -5.65, -5.16, 6.02, 16.08, 38.55, 36.67, 41.83, 40.13, 36.03, 35.15, 36.84, 41.71, 46.1, 52.49, 54.06, 58.44, 64.25, 69.84, 75.24]}</script>
 <script id="chart-streak-data" type="application/json">{"labels": ["2023-01-26", "2023-02-14", "2023-04-24", "2023-05-03", "2023-05-25", "2023-07-05", "2023-07-26", "2023-08-09", "2023-11-02", "2023-11-08", "2023-11-09", "2023-11-09", "2024-01-22", "2024-02-01", "2024-02-16", "2024-04-19", "2024-05-03", "2024-05-08", "2024-06-10", "2024-06-25", "2024-07-24", "2024-08-07", "2024-08-30", "2024-09-11", "2024-10-30", "2024-10-31", "2026-03-17"], "data": [-1, 2, -1, 2, -5, 1, -1, 4, -1, 1, -1, 2, -1, 2, -1, 3, -1, 4, -1, 1, -2, 3, -1, 3, -1, 11, -1], "colors": ["rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)", "rgba(10,110,56,0.7)", "rgba(185,28,28,0.7)"]}</script>
 
+<div class="footer-bar"><span class="fb-item"><span class="fb-dot err"></span>Services 0/401</span><span class="fb-item"><span class="fb-dot err"></span>CLOSED</span><span class="fb-item"><span class="fb-dot ok"></span>NORMAL</span><span class="fb-item">VIX 31.1</span><span class="fb-item">Damp 1.00x</span><span class="fb-spacer"></span><span class="fb-item">DNSD RS Monitor v3.0</span><span class="fb-item">00:14:55 ET</span></div>
 <script>
 
 'use strict';
