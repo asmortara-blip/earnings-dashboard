@@ -247,9 +247,31 @@
     .pnl-block { text-align: left; }
     .pnl-value { font-size: 24px; }
   }
+  [data-theme="dark"] { --bg: #0a0e17; --surface: #111827; --paper: #1a2035; --rule: #2a3352; --ink: #e5e7eb; --muted: #6b7280; --dim: #4b5563; }
+  [data-theme="dark"] body { background: #0a0e17; color: #e5e7eb; }
+  [data-theme="dark"] .header, [data-theme="dark"] nav, [data-theme="dark"] .nav-bar { background: #060a14; border-color: #2a3352; }
+  [data-theme="dark"] .trade-card, [data-theme="dark"] .card, [data-theme="dark"] .metric, [data-theme="dark"] table,
+  [data-theme="dark"] .profile-card, [data-theme="dark"] .section, [data-theme="dark"] details,
+  [data-theme="dark"] select, [data-theme="dark"] input { background: #1a2035; color: #e5e7eb; border-color: #2a3352; }
+  [data-theme="dark"] .metrics-bar, [data-theme="dark"] .stats-bar { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .masthead { background: #0a0e17; border-color: #4a8af4; }
+  [data-theme="dark"] .masthead .subtitle { color: #6b7280; }
+  [data-theme="dark"] .filter-bar { background: #0a0e17; }
+  [data-theme="dark"] .filter-btn { color: #4a8af4; border-color: #4a8af4; }
+  [data-theme="dark"] .filter-btn.active { background: #4a8af4; color: #fff; }
+  [data-theme="dark"] .narrative { color: #d1d5db; }
+  [data-theme="dark"] .cumulative { border-color: #2a3352; }
+  [data-theme="dark"] th { background: #111827; color: #9ca3af; }
+  [data-theme="dark"] td { border-color: #2a3352; }
+  [data-theme="dark"] .badge-win { background: rgba(52,211,153,0.15); color: #34d399; }
+  [data-theme="dark"] .badge-loss { background: rgba(248,113,113,0.15); color: #f87171; }
+  [data-theme="dark"] a { color: #4a8af4; }
+  [data-theme="dark"] .nav-bar a { color: #4a8af4; }
+  @media print { nav, .nav-bar, .breadcrumb, button, .filter-bar { display: none !important; } body { background: #fff; color: #000; } }
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 
 <!-- NAV BAR -->
 <div class="nav-bar">
@@ -260,8 +282,10 @@
   </div>
   <div class="nav-links">
     <a href="javascript:void(0)" onclick="window.print()">Download as PDF</a>
+    <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid #0a3d7c;color:#0a3d7c;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">&#x1F313;</button>
   </div>
 </div>
+<div style="padding:4px 32px;font-size:11px;color:#888;background:var(--surface,#f5f3ef);border-bottom:1px solid var(--rule,#e0ddd8)"><a href="home.html" style="color:#888;text-decoration:none">Home</a> &rsaquo; <span>Trade Narratives</span></div>
 
 <!-- MASTHEAD -->
 <div class="masthead">

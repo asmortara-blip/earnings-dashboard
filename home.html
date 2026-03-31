@@ -612,9 +612,35 @@
     .hl-metric { border-right: none; border-bottom: 1px solid var(--rule); }
     .hl-metric:last-child { border-bottom: none; }
   }
+
+  /* Dark Mode */
+  [data-theme="dark"] {
+    --cream: #0a0e17; --cream-dark: #111827; --white: #1a2035;
+    --rule: #2a3352; --rule-heavy: #3d4f7a;
+    --ink: #e5e7eb; --ink2: #9ca3af; --muted: #6b7280; --dim: #4b5563;
+    --profit: #34d399; --profit-light: rgba(52,211,153,0.12);
+    --loss: #f87171; --loss-light: rgba(248,113,113,0.12);
+    --gold: #fbbf24; --gold-light: rgba(251,191,36,0.12);
+  }
+  [data-theme="dark"] .hero { background: linear-gradient(135deg, #020612 0%, #0a1628 50%, #041020 100%); }
+  [data-theme="dark"] .login-box { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .login-input { background: #111827; border-color: #2a3352; color: #e5e7eb; }
+  [data-theme="dark"] .nav-card { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .nav-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.3); border-left-color: #4a8af4; }
+  [data-theme="dark"] .card-title { color: #4a8af4; }
+  [data-theme="dark"] .metric { background: #1a2035; }
+  [data-theme="dark"] .metrics-bar, [data-theme="dark"] .headline-bar { background: #2a3352; }
+  [data-theme="dark"] .ticker-strip { background: #111827; border-color: #2a3352; }
+  [data-theme="dark"] .home-footer { border-color: #2a3352; }
+  [data-theme="dark"] .cat-label { color: #6b7280; border-color: #2a3352; }
+  [data-theme="dark"] .perf-card { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .perf-card .val { color: #e5e7eb; }
+  [data-theme="dark"] a { color: #4a8af4; }
+  @media print { nav, .ticker-strip, button, .home-footer { display: none !important; } body { background: #fff !important; color: #000 !important; } }
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 
 <!-- ==================== SCREEN 1: PUBLIC LANDING ==================== -->
 <div id="landing-screen" class="screen">
@@ -913,7 +939,7 @@
   </div>
 
   <div class="landing-footer">
-    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-03-31 11:22 ET
+    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-03-31 11:33 ET
   </div>
 </div>
 
@@ -955,33 +981,35 @@
     <div class="ts-item"><span class="ts-label">Signals</span><span class="ts-value">6</span></div>
     <div class="ts-item"><span class="ts-label">Daily P&amp;L</span><span class="ts-value" style="color:#0a6e38">+0.0%</span></div>
     <div class="ts-item"><span class="ts-label">Phase</span><span class="ts-value">3</span></div>
+    <div class="ts-item" id="home-market-clock" style="margin-left:auto"></div>
   </div>
 
   <div class="home-content">
 <div class="cat-section"><div class="cat-label">TRADING</div><div class="card-grid">
-<a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard</h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="position_calc.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Position Calculator</h3><p class="card-desc">Interactive Kelly-based position sizing tool with regime and correlation adjustments.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="trade_journal.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal</h3><p class="card-desc">Full trade log with filters, P&L breakdown, and entry/exit context for all 62 paper trades.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="position_calc.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Position Calculator </h3><p class="card-desc">Interactive Kelly-based position sizing tool with regime and correlation adjustments.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="trade_journal.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Full trade log with filters, P&L breakdown, and entry/exit context for all 62 paper trades.</p><span class="card-arrow">&rarr;</span></div></a>
 </div></div>
 <div class="cat-section"><div class="cat-label">ANALYTICS</div><div class="card-grid">
-<a href="report.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Full Report</h3><p class="card-desc">29-section institutional-grade market report with factor attribution and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="monte_carlo.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Monte Carlo</h3><p class="card-desc">10,000-simulation forward projections with confidence intervals and risk scenarios.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="compare.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Strategy Comparison</h3><p class="card-desc">Benchmark analysis vs SPY, QQQ, and 60/40 with rolling Sharpe and capture ratios.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="correlation.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Correlation Matrix</h3><p class="card-desc">15x15 interactive heatmap with cluster detection and diversification analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="commodities.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Commodities</h3><p class="card-desc">Oil, gold, BTC, VIX futures with cross-asset correlations, term structure, and RS impact analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="supply_chain.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Supply Chain</h3><p class="card-desc">Shipping stocks, freight rates, transport ETFs, and supply chain health scoring as macro indicators.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="report.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Full Report </h3><p class="card-desc">29-section institutional-grade market report with factor attribution and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="monte_carlo.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Monte Carlo </h3><p class="card-desc">10,000-simulation forward projections with confidence intervals and risk scenarios.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="compare.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Strategy Comparison </h3><p class="card-desc">Benchmark analysis vs SPY, QQQ, and 60/40 with rolling Sharpe and capture ratios.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="correlation.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Correlation Matrix </h3><p class="card-desc">15x15 interactive heatmap with cluster detection and diversification analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="commodities.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Commodities </h3><p class="card-desc">Oil, gold, BTC, VIX futures with cross-asset correlations, term structure, and RS impact analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="supply_chain.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Supply Chain </h3><p class="card-desc">Shipping stocks, freight rates, transport ETFs, and supply chain health scoring as macro indicators.</p><span class="card-arrow">&rarr;</span></div></a>
 </div></div>
 <div class="cat-section"><div class="cat-label">RESEARCH</div><div class="card-grid">
-<a href="brief.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Executive Brief</h3><p class="card-desc">One-page strategy summary designed for quick daily review and decision support.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="index.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Earnings Tracker</h3><p class="card-desc">Pre-earnings sentiment analysis with 10-factor scoring and actionable recommendations.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="picks.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Stock Picks</h3><p class="card-desc">Top 10 recommendations with full profiles, price charts, and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="replay.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Replay</h3><p class="card-desc">Visual playback of historical trades with tick-level entry and exit reconstruction.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="narratives.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Narratives</h3><p class="card-desc">AI-generated narratives for every paper trade with factor decomposition analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="brief.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Executive Brief </h3><p class="card-desc">One-page strategy summary designed for quick daily review and decision support.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="index.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Earnings Tracker </h3><p class="card-desc">Pre-earnings sentiment analysis with 10-factor scoring and actionable recommendations.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="picks.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Stock Picks <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Top 10 recommendations with full profiles, price charts, and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="replay.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Replay </h3><p class="card-desc">Visual playback of historical trades with tick-level entry and exit reconstruction.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="narratives.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Narratives </h3><p class="card-desc">AI-generated narratives for every paper trade with factor decomposition analysis.</p><span class="card-arrow">&rarr;</span></div></a>
 </div></div>
   </div>
 
   <div class="home-footer">
-    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-31 11:22 ET</span>
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-03-31 11:33 ET</span>
+    <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid var(--rule);color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px" title="Toggle dark mode">&#127763;</button>
     <a class="signout-link" id="signout-btn">Sign Out</a>
   </div>
 </div>
@@ -1124,6 +1152,58 @@
     document.getElementById('error-msg').textContent = '';
     showScreen('login-screen');
     setTimeout(function() { document.getElementById('pwd-input').focus(); }, 100);
+  });
+
+  // Market status clock
+  var mclk = document.getElementById('home-market-clock');
+  if (mclk) {
+    function updateClock() {
+      var now = new Date();
+      var etStr = now.toLocaleString('en-US', {timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit'});
+      var et = new Date(now.toLocaleString('en-US', {timeZone: 'America/New_York'}));
+      var h = et.getHours(), m = et.getMinutes(), mins = h * 60 + m;
+      var dow = et.getDay(), isWeekday = dow >= 1 && dow <= 5;
+      var status = 'CLOSED', color = '#999';
+      if (isWeekday) {
+        if (mins >= 240 && mins < 570) { status = 'PRE-MARKET'; color = '#f59e0b'; }
+        else if (mins >= 570 && mins < 960) { status = 'OPEN'; color = '#10b981'; }
+        else if (mins >= 960 && mins < 1200) { status = 'AFTER-HOURS'; color = '#8b5cf6'; }
+      } else { status = 'WEEKEND'; }
+      mclk.innerHTML = '<span class="ts-label">' + etStr + ' ET</span>'
+        + '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + color + ';margin:0 4px"></span>'
+        + '<span class="ts-value" style="color:' + color + '">' + status + '</span>';
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+  }
+
+  // Split-screen compare: Shift+click two cards
+  var compareFirst = null;
+  document.querySelectorAll('.nav-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      if (!e.shiftKey) { compareFirst = null; return; }
+      e.preventDefault();
+      var url = card.getAttribute('href');
+      if (!compareFirst) {
+        compareFirst = url;
+        card.style.outline = '3px solid var(--navy)';
+        card.style.outlineOffset = '-3px';
+      } else {
+        // Open split view
+        document.querySelectorAll('.nav-card').forEach(function(c) { c.style.outline = ''; c.style.outlineOffset = ''; });
+        var overlay = document.createElement('div');
+        overlay.id = 'split-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:900;background:var(--cream,#fafaf8);display:flex;flex-direction:column';
+        overlay.innerHTML = '<div style="background:var(--navy,#0a3d7c);padding:8px 24px;display:flex;align-items:center;justify-content:space-between">'
+          + '<span style="color:#fff;font-size:14px;font-weight:700;letter-spacing:2px">SPLIT VIEW</span>'
+          + '<button onclick="document.getElementById(\'split-overlay\').remove()" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px">Exit Split</button></div>'
+          + '<div style="display:flex;flex:1;gap:2px;padding:2px">'
+          + '<iframe src="' + compareFirst + '" style="flex:1;border:none;border-radius:4px"></iframe>'
+          + '<iframe src="' + url + '" style="flex:1;border:none;border-radius:4px"></iframe></div>';
+        document.body.appendChild(overlay);
+        compareFirst = null;
+      }
+    });
   });
 })();
 </script>

@@ -559,12 +559,24 @@
   }
   .footer strong { color: #666; font-weight: 600; }
 
+  /* --- DARK MODE --- */
+  [data-theme="dark"] body { background: #0a0e17; color: #e5e7eb; }
+  [data-theme="dark"] .header, [data-theme="dark"] nav, [data-theme="dark"] .nav-bar, [data-theme="dark"] .masthead { background: #060a14; }
+  [data-theme="dark"] .card, [data-theme="dark"] .section, [data-theme="dark"] .metric-card, [data-theme="dark"] details,
+  [data-theme="dark"] .page, [data-theme="dark"] table, [data-theme="dark"] .page-wrap,
+  [data-theme="dark"] select, [data-theme="dark"] input { background: #1a2035; color: #e5e7eb; border-color: #2a3352; }
+  [data-theme="dark"] .metric-box, [data-theme="dark"] .chart-wrap, [data-theme="dark"] .metric-grid > div { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] th { background: #111827; color: #9ca3af; }
+  [data-theme="dark"] td { border-color: #2a3352; }
+  [data-theme="dark"] a { color: #4a8af4; }
+  [data-theme="dark"] .download-bar, [data-theme="dark"] .nav-links { background: #111827; }
+
   /* --- PRINT --- */
   @media print {
-    .top-nav { display: none; }
+    nav, .nav-bar, .top-nav, .download-bar, .breadcrumb, button { display: none !important; }
+    body { background: #fff !important; color: #000 !important; }
     .profile-card { page-break-inside: avoid; page-break-before: auto; }
     .profile-card:nth-child(n+2) { page-break-before: always; }
-    body { background: #fff; }
     .masthead { padding: 24px; }
   }
 
@@ -580,6 +592,7 @@
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 
 <!-- NAV BAR -->
 <div class="top-nav">
@@ -592,8 +605,10 @@
     <span class="conf-badge">Confidential</span>
     <button class="btn-generate" onclick="generatePicks()">Generate New Report</button>
     <a href="javascript:window.print()" class="pdf-btn">Download as PDF</a>
+    <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">&#127763;</button>
   </div>
 </div>
+<div class="breadcrumb" style="padding:4px 32px;font-size:11px;color:#888;background:#f5f3ef;border-bottom:1px solid #e0ddd8"><a href="home.html" style="color:#888;text-decoration:none">Home</a> &rsaquo; <span>Stock Picks</span></div>
 
 <!-- MASTHEAD -->
 <div class="masthead">
@@ -601,7 +616,7 @@
   <h1>Top 10 Stock Recommendations</h1>
   <div class="subtitle">DNSD Capital &bull; Retail Sentiment Strategy</div>
   <div class="rule"></div>
-  <div class="date-line">2026-03-31 11:21 ET</div>
+  <div class="date-line">2026-03-31 11:32 ET</div>
 </div>
 
 <!-- EXECUTIVE SUMMARY -->
@@ -1445,6 +1460,50 @@
     <h2 class="section-heading">Historical Recommendations</h2>
 
 <details class="hist-entry" open>
+  <summary class="hist-date-header">2026-03-31 11:32</summary>
+  <table class="hist-table">
+    <thead>
+      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
+    </thead>
+    <tbody>
+<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>86.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +12.1%</td></tr>
+<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
+<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
+<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
+<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
+    </tbody>
+  </table>
+  
+</details>
+
+<details class="hist-entry">
+  <summary class="hist-date-header">2026-03-31 11:28</summary>
+  <table class="hist-table">
+    <thead>
+      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
+    </thead>
+    <tbody>
+<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>86.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +12.1%</td></tr>
+<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
+<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
+<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
+<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
+<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
+<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
+    </tbody>
+  </table>
+  
+</details>
+
+<details class="hist-entry">
   <summary class="hist-date-header">2026-03-31 11:21</summary>
   <table class="hist-table">
     <thead>
@@ -1619,50 +1678,6 @@
   </table>
   
 </details>
-
-<details class="hist-entry">
-  <summary class="hist-date-header">2026-03-31 07:56</summary>
-  <table class="hist-table">
-    <thead>
-      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
-    </thead>
-    <tbody>
-<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>86.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +12.1%</td></tr>
-<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
-<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
-<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
-<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
-<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
-<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
-<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
-<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
-<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
-    </tbody>
-  </table>
-  
-</details>
-
-<details class="hist-entry">
-  <summary class="hist-date-header">2026-03-31 07:48</summary>
-  <table class="hist-table">
-    <thead>
-      <tr><th style="text-align:center">Rank</th><th>Ticker</th><th>Score</th><th>Reasoning</th></tr>
-    </thead>
-    <tbody>
-<tr><td class='mono' style='text-align:center'>1</td><td class='ticker-cell'>HIMS</td><td class='mono'>86.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +12.1%</td></tr>
-<tr><td class='mono' style='text-align:center'>2</td><td class='ticker-cell'>RIOT</td><td class='mono'>77.0</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +3.0%</td></tr>
-<tr><td class='mono' style='text-align:center'>3</td><td class='ticker-cell'>RIVN</td><td class='mono'>74.9</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +5.2%</td></tr>
-<tr><td class='mono' style='text-align:center'>4</td><td class='ticker-cell'>APP</td><td class='mono'>72.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; exceptional avg +4.6%</td></tr>
-<tr><td class='mono' style='text-align:center'>5</td><td class='ticker-cell'>WOLF</td><td class='mono'>71.6</td><td style='font-size:12px;color:#555'>strong WR 100%; high squeeze potential; positive avg +1.6%</td></tr>
-<tr><td class='mono' style='text-align:center'>6</td><td class='ticker-cell'>PLTR</td><td class='mono'>65.3</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
-<tr><td class='mono' style='text-align:center'>7</td><td class='ticker-cell'>HOOD</td><td class='mono'>64.9</td><td style='font-size:12px;color:#555'>solid WR 75%; high squeeze potential; positive avg +2.0%</td></tr>
-<tr><td class='mono' style='text-align:center'>8</td><td class='ticker-cell'>SMCI</td><td class='mono'>63.7</td><td style='font-size:12px;color:#555'>solid WR 64%; high squeeze potential; positive avg +1.4%</td></tr>
-<tr><td class='mono' style='text-align:center'>9</td><td class='ticker-cell'>GME</td><td class='mono'>63.4</td><td style='font-size:12px;color:#555'>high squeeze potential; exceptional avg +3.8%; high resonance 79</td></tr>
-<tr><td class='mono' style='text-align:center'>10</td><td class='ticker-cell'>COIN</td><td class='mono'>61.1</td><td style='font-size:12px;color:#555'>solid WR 60%; high squeeze potential; positive avg +0.9%</td></tr>
-    </tbody>
-  </table>
-  
-</details>
   </div>
 
   <!-- METHODOLOGY -->
@@ -1710,7 +1725,7 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <strong>PROPRIETARY &amp; CONFIDENTIAL</strong> &mdash; DNSD Capital &bull; Generated 2026-03-31 11:21 ET
+  <strong>PROPRIETARY &amp; CONFIDENTIAL</strong> &mdash; DNSD Capital &bull; Generated 2026-03-31 11:32 ET
 </div>
 
 <!-- CHART INITIALIZATION -->
