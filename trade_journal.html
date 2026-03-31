@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital — Trade Journal</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>if(!localStorage.getItem('dnsd_auth'))location.href='home.html';</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:100vh}
+.header{background:linear-gradient(135deg,#0a3d7c 0%,#0d4f9e 100%);color:#fff;padding:32px 40px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.header h1{font-family:'Playfair Display',serif;font-size:28px;letter-spacing:-0.5px}
+.header .date{font-size:13px;opacity:0.7;font-family:'JetBrains Mono',monospace}
+.metrics-bar{display:flex;gap:2px;background:#e5e7eb;padding:2px;margin:0 40px;border-radius:10px;
+  position:relative;top:-18px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.metric{flex:1;background:#fff;padding:16px 12px;text-align:center;border-radius:8px}
+.metric:first-child{border-radius:8px 0 0 8px}
+.metric:last-child{border-radius:0 8px 8px 0}
+.metric .val{font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.metric .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-top:2px}
+.val-green{color:#10b981} .val-red{color:#ef4444} .val-navy{color:#0a3d7c}
+.controls{display:flex;gap:12px;padding:8px 40px 16px;flex-wrap:wrap;align-items:center}
+.controls select,.controls input{padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;
+  font-size:13px;font-family:'Inter',sans-serif;background:#fff}
+.controls select:focus,.controls input:focus{outline:none;border-color:#0a3d7c}
+.controls label{font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;padding:0 40px 40px}
+.trade-card{background:#fff;border-radius:10px;padding:20px;border:1px solid #e5e7eb;
+  transition:box-shadow .15s,transform .15s}
+.trade-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.07);transform:translateY(-2px)}
+.card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.card-ticker{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#0a3d7c}
+.badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.badge-win{background:#d1fae5;color:#065f46} .badge-loss{background:#fee2e2;color:#991b1b}
+.badge-dir{background:#e0e7ff;color:#3730a3} .badge-window{background:#f3f4f6;color:#374151}
+.card-pnl{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;margin:4px 0 12px}
+.card-meta{display:grid;gap:4px}
+.meta-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;
+  border-bottom:1px solid #f3f4f6}
+.meta-label{color:#94a3b8;font-weight:500}
+.trigger-tag{background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px;font-size:11px}
+.rs-val{font-family:'JetBrains Mono',monospace;font-weight:700;color:#0a3d7c}
+.conf-tag{font-size:11px;color:#64748b}
+.factor-bars{margin-top:12px;display:grid;gap:5px}
+.factor{display:flex;align-items:center;gap:6px}
+.factor-lbl{font-size:10px;font-weight:700;width:22px;color:#64748b;font-family:'JetBrains Mono',monospace}
+.bar-bg{flex:1;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .3s}
+.factor-val{font-size:10px;width:24px;text-align:right;font-family:'JetBrains Mono',monospace;color:#64748b}
+.empty{text-align:center;padding:80px 40px;color:#94a3b8;font-size:16px}
+.count-label{font-size:13px;color:#94a3b8;padding:0 40px 8px;font-family:'JetBrains Mono',monospace}
+@media(max-width:640px){
+  .header,.metrics-bar,.controls,.grid{padding-left:16px;padding-right:16px}
+  .grid{grid-template-columns:1fr}
+  .metrics-bar{flex-wrap:wrap} .metric{min-width:80px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div><h1>DNSD CAPITAL &mdash; Trade Journal</h1>
+  <div style="font-size:13px;opacity:0.8;margin-top:4px">Paper Trading Log &middot; Phase 3</div></div>
+  <div class="date">March 30, 2026 23:47</div>
+</div>
+
+<div class="metrics-bar">
+  <div class="metric"><div class="val val-navy">62</div><div class="lbl">Trades</div></div>
+  <div class="metric"><div class="val val-green">66.1%</div><div class="lbl">Win Rate</div></div>
+  <div class="metric"><div class="val val-green">+5.62%</div><div class="lbl">Avg Win</div></div>
+  <div class="metric"><div class="val val-red">-2.86%</div><div class="lbl">Avg Loss</div></div>
+  <div class="metric"><div class="val val-navy">1.97x</div><div class="lbl">W/L Ratio</div></div>
+  <div class="metric"><div class="val val-green">+170.6%</div><div class="lbl">Total P&amp;L</div></div>
+</div>
+
+<div class="controls">
+  <div><label>Ticker</label><br>
+    <select id="fTicker" onchange="applyFilters()"><option value="">All</option><option value="AFRM">AFRM</option><option value="APP">APP</option><option value="CELH">CELH</option><option value="COIN">COIN</option><option value="GME">GME</option><option value="HIMS">HIMS</option><option value="HOOD">HOOD</option><option value="NIO">NIO</option><option value="NVDA">NVDA</option><option value="PLTR">PLTR</option><option value="RDDT">RDDT</option><option value="RIOT">RIOT</option><option value="RIVN">RIVN</option><option value="SMCI">SMCI</option><option value="SNAP">SNAP</option><option value="TSLA">TSLA</option><option value="WOLF">WOLF</option></select></div>
+  <div><label>Trigger</label><br>
+    <select id="fTrigger" onchange="applyFilters()"><option value="">All</option><option value="analyst_downgrade">Analyst Downgrade</option><option value="analyst_upgrade_bold">Analyst Upgrade Bold</option><option value="influencer_post_high">Influencer Post High</option><option value="meme_community">Meme Community</option><option value="partnership_announcement">Partnership Announcement</option><option value="press_release_positive">Press Release Positive</option></select></div>
+  <div><label>Result</label><br>
+    <select id="fResult" onchange="applyFilters()"><option value="">All</option>
+      <option value="win">Wins</option><option value="loss">Losses</option></select></div>
+  <div><label>Search</label><br>
+    <input id="fSearch" placeholder="ticker or trigger..." oninput="applyFilters()"></div>
+</div>
+
+<div class="count-label" id="countLabel">Showing 62 trades</div>
+<div class="grid" id="grid">
+
+    <div class="trade-card" data-ticker="CELH" data-trigger="meme_community"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">CELH</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">pre_market</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-0.45%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 30 09:30 @ $34.60</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 30 11:26 @ $34.45</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 56m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">64</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time_exit</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#3b82f6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#10b981"></div></div><span class="factor-val">0</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="NIO" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">NIO</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">pre_market</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-5.67%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 20 09:30 @ $5.85</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 30 18:24 @ $5.51</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>248h 54m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">60</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop_loss</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#10b981"></div></div><span class="factor-val">0</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="analyst_downgrade"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">late_morning</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+20.40%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 20 09:30 @ $23.57</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 30 18:24 @ $18.76</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>248h 54m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Downgrade</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">60</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>partial_profit</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#3b82f6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:81.6%;background:#ef4444"></div></div><span class="factor-val">82</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="analyst_downgrade"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">late_morning</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+20.32%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 20 09:30 @ $23.57</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 30 18:24 @ $18.78</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>248h 54m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Downgrade</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">60</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>power_hour</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#3b82f6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:81.6%;background:#ef4444"></div></div><span class="factor-val">82</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RDDT" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">RDDT</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">late_morning</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-5.50%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 17 10:41 @ $147.22</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 25 22:12 @ $139.13</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>203h 31m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">62</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop_loss</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:93.0%;background:#3b82f6"></div></div><span class="factor-val">93</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#8b5cf6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:0%;background:#10b981"></div></div><span class="factor-val">0</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="analyst_upgrade_bold"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">late_morning</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+17.34%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 11 09:30 @ $22.89</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 11 13:53 @ $26.86</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>4h 23m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Upgrade Bold</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">68</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>shutdown</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RIOT" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RIOT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+2.17%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Dec 12 09:45 @ $12.58</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Dec 12 11:00 @ $12.85</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">102</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="COIN" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">COIN</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+5.59%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 11 09:45 @ $301.79</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 11 11:00 @ $318.64</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">82</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+5.40%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 11 09:45 @ $26.99</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 11 11:00 @ $28.45</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">80</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:40.0%;background:#3b82f6"></div></div><span class="factor-val">40</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RIOT" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RIOT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.76%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 11 09:45 @ $14.56</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 11 11:00 @ $14.82</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">75</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="WOLF" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">WOLF</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+0.19%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 07 09:45 @ $10.53</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 07 11:00 @ $10.51</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">76</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="COIN" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">COIN</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+4.38%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 06 09:45 @ $225.47</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 06 11:00 @ $235.35</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">91</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HOOD" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HOOD</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+5.81%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 06 09:45 @ $27.34</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 06 11:00 @ $28.93</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">81</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+6.39%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 05 09:45 @ $20.58</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 05 11:00 @ $21.89</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">84</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="PLTR" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">PLTR</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.57%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 05 09:45 @ $49.73</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 05 11:00 @ $50.51</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">77</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HOOD" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HOOD</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+4.39%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 31 09:45 @ $24.70</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 31 11:00 @ $23.62</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">68</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="meme_community"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-7.00%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 30 09:45 @ $33.87</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 30 10:02 @ $36.24</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>17m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">95</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+4.87%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 03 09:45 @ $17.10</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 03 11:00 @ $16.26</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">98</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+0.22%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 01 09:45 @ $41.81</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 01 11:00 @ $41.72</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">93</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.69%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Sep 11 09:45 @ $20.14</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Sep 11 11:00 @ $19.80</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">96</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-0.88%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 30 09:45 @ $22.08</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 30 11:00 @ $21.89</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">78</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="AFRM" data-trigger="meme_community"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">AFRM</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+7.67%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 29 09:45 @ $39.10</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 29 11:00 @ $42.10</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">77</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+7.37%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 28 09:45 @ $449.44</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 28 11:00 @ $416.33</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">85</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+3.72%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 07 09:45 @ $532.73</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 07 11:00 @ $512.92</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">81</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HOOD" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">HOOD</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-4.10%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 05 09:45 @ $15.00</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 05 11:00 @ $15.62</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">89</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="TSLA" data-trigger="analyst_upgrade_bold"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">TSLA</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-1.70%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jul 24 09:45 @ $220.06</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jul 24 10:00 @ $216.30</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Upgrade Bold</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">78</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:15.0%;background:#ef4444"></div></div><span class="factor-val">15</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RIVN" data-trigger="partnership_announcement"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RIVN</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+5.16%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 25 09:45 @ $11.15</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 25 11:00 @ $11.72</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Partnership Announcement</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">67</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="NVDA" data-trigger="meme_community"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">NVDA</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-1.88%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 10 09:45 @ $119.65</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 10 11:00 @ $121.90</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">74</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:15.0%;background:#ef4444"></div></div><span class="factor-val">15</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="influencer_post_high"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+22.47%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 07 09:45 @ $45.19</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 07 11:00 @ $35.03</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Influencer Post High</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">122</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="influencer_post_high"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+10.06%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 20 09:45 @ $17.20</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 20 11:00 @ $18.92</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Influencer Post High</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">89</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+11.18%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 15 09:45 @ $37.73</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 15 11:00 @ $33.51</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">113</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RDDT" data-trigger="analyst_upgrade_bold"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RDDT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+0.49%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 08 09:45 @ $51.34</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 08 11:00 @ $51.59</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Upgrade Bold</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">83</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="influencer_post_high"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-3.19%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 03 09:45 @ $12.70</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 03 10:00 @ $13.11</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Influencer Post High</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">97</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="WOLF" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">WOLF</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+3.02%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 02 09:45 @ $22.16</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 02 11:00 @ $21.49</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">70</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RIOT" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RIOT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+3.07%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Apr 22 09:45 @ $9.78</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Apr 22 11:00 @ $10.09</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">67</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:40.0%;background:#3b82f6"></div></div><span class="factor-val">40</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+7.30%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Apr 19 09:45 @ $860.00</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Apr 19 11:00 @ $797.20</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">67</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="COIN" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">COIN</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-3.99%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Feb 16 09:45 @ $190.26</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Feb 16 10:00 @ $182.67</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">90</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="APP" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">APP</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+0.05%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Feb 15 09:45 @ $57.03</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Feb 15 11:00 @ $57.06</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">70</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:15.0%;background:#ef4444"></div></div><span class="factor-val">15</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="WOLF" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">WOLF</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.86%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Feb 01 09:45 @ $30.35</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Feb 01 11:00 @ $29.78</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">69</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-6.15%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jan 22 09:45 @ $444.92</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jan 22 10:30 @ $417.55</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>45m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">67</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="analyst_upgrade_bold"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+7.16%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jan 19 09:45 @ $376.23</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jan 19 11:00 @ $403.16</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Upgrade Bold</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">75</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="AFRM" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">AFRM</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-1.91%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 09 09:45 @ $26.64</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 09 11:00 @ $26.13</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">76</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="APP" data-trigger="meme_community"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">APP</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+9.11%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 09 09:45 @ $38.03</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 09 11:00 @ $41.50</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">70</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:15.0%;background:#ef4444"></div></div><span class="factor-val">15</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HOOD" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HOOD</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.77%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 08 09:45 @ $8.48</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 08 11:00 @ $8.33</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">70</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="PLTR" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">PLTR</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-1.90%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Nov 02 09:45 @ $17.90</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Nov 02 11:00 @ $17.56</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">86</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="WOLF" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">WOLF</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+2.38%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 31 09:45 @ $34.20</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 31 11:00 @ $35.02</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">71</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="COIN" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">COIN</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.11%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 24 09:45 @ $86.59</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 24 11:00 @ $87.55</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">83</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="WOLF" data-trigger="influencer_post_high"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">WOLF</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+0.69%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 17 09:45 @ $43.67</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 17 11:00 @ $43.37</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Influencer Post High</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">79</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+4.84%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Aug 09 09:45 @ $279.49</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Aug 09 11:00 @ $265.95</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">91</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SNAP" data-trigger="meme_community"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">SNAP</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-0.35%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jul 26 09:45 @ $10.07</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jul 26 11:00 @ $10.10</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">74</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="WOLF" data-trigger="meme_community"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">WOLF</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+1.40%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jul 05 09:45 @ $64.51</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jul 05 11:00 @ $65.41</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">82</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-3.04%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 13 09:45 @ $26.30</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 13 10:24 @ $25.50</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>39m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">104</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="AFRM" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">AFRM</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-2.81%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 07 09:45 @ $18.49</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 07 11:00 @ $17.97</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">72</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="GME" data-trigger="meme_community"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">GME</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-1.35%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 07 09:45 @ $25.56</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 07 11:00 @ $25.22</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">82</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#ef4444"></div></div><span class="factor-val">85</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="COIN" data-trigger="meme_community"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">COIN</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-2.60%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jun 06 09:45 @ $49.25</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jun 06 11:00 @ $50.53</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">96</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-4.66%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 25 09:45 @ $204.53</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 25 10:12 @ $195.00</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>27m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">96</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#10b981"></div></div><span class="factor-val">100</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="PLTR" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">PLTR</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+6.09%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 18 09:45 @ $10.76</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 18 11:00 @ $11.42</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">78</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="meme_community"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+2.93%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 03 09:45 @ $125.31</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 03 11:00 @ $128.98</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">86</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="SMCI" data-trigger="press_release_positive"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">SMCI</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-0.42%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Apr 24 09:45 @ $101.18</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Apr 24 11:00 @ $101.61</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">71</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:55.0%;background:#3b82f6"></div></div><span class="factor-val">55</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#10b981"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RIOT" data-trigger="press_release_positive"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RIOT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+4.94%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Mar 17 09:45 @ $7.29</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Mar 17 11:00 @ $7.65</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Press Release Positive</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">91</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:#8b5cf6"></div></div><span class="factor-val">75</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:60.0%;background:#ef4444"></div></div><span class="factor-val">60</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="PLTR" data-trigger="meme_community"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">PLTR</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+2.27%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Feb 14 09:45 @ $8.50</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Feb 14 11:00 @ $8.69</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Meme Community</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">78</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:35.0%;background:#ef4444"></div></div><span class="factor-val">35</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="TSLA" data-trigger="analyst_upgrade_bold"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">TSLA</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">W1</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-0.47%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Jan 26 09:45 @ $157.30</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Jan 26 11:00 @ $156.56</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>1h 15m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Analyst Upgrade Bold</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">77</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:70.0%;background:#3b82f6"></div></div><span class="factor-val">70</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#10b981"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:15.0%;background:#ef4444"></div></div><span class="factor-val">15</span></div>
+      </div>
+    </div>
+</div>
+
+<script>
+function applyFilters(){
+  const ticker=document.getElementById('fTicker').value.toLowerCase();
+  const trigger=document.getElementById('fTrigger').value.toLowerCase();
+  const result=document.getElementById('fResult').value;
+  const search=document.getElementById('fSearch').value.toLowerCase();
+  let shown=0;
+  document.querySelectorAll('.trade-card').forEach(c=>{
+    const t=c.dataset.ticker.toLowerCase();
+    const tr=c.dataset.trigger.toLowerCase();
+    const r=c.dataset.result;
+    const text=(t+' '+tr).toLowerCase();
+    const vis=(!ticker||t===ticker)&&(!trigger||tr===trigger)&&(!result||r===result)&&(!search||text.includes(search));
+    c.style.display=vis?'':'none';
+    if(vis)shown++;
+  });
+  document.getElementById('countLabel').textContent='Showing '+shown+' trades';
+}
+</script>
+</body>
+</html>
