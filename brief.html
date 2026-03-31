@@ -329,6 +329,21 @@ body {
 [data-theme="dark"] td { border-color: #2a3352; }
 [data-theme="dark"] a { color: #4a8af4; }
 [data-theme="dark"] .download-bar, [data-theme="dark"] .nav-links { background: #111827; }
+[data-theme="dark"] .bullet-label { color: #cbd5e1; }
+[data-theme="dark"] .bullet-chart { background: #334155; }
+[data-theme="dark"] .bullet-range-good { background: rgba(16,185,129,0.20); }
+[data-theme="dark"] .bullet-measure { background: #60a5fa; }
+[data-theme="dark"] .bullet-marker { background: #e2e8f0; }
+[data-theme="dark"] .bullet-values { color: #64748b; }
+
+/* ===== BULLET CHARTS ===== */
+.bullet-row { margin-bottom: 12px; }
+.bullet-label { font-size: 11px; font-weight: 600; color: #334155; margin-bottom: 2px; }
+.bullet-chart { position: relative; height: 20px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+.bullet-range-good { position: absolute; top: 0; height: 100%; background: rgba(16,185,129,0.15); }
+.bullet-measure { position: absolute; top: 25%; height: 50%; background: #3b82f6; border-radius: 2px; z-index: 2; }
+.bullet-marker { position: absolute; top: 10%; height: 80%; width: 2px; background: #1e293b; z-index: 3; }
+.bullet-values { display: flex; justify-content: space-between; font-size: 9px; color: #94a3b8; margin-top: 2px; }
 
 /* ===== PRINT ===== */
 @media print {
