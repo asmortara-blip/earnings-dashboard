@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DNSD Capital &mdash; Supply Chain &amp; Shipping</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a3d7c'/><text x='16' y='23' font-size='18' font-weight='bold' fill='white' text-anchor='middle' font-family='serif'>D</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>if(!localStorage.getItem('dnsd_auth'))location.href='home.html';</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a3d7c;--cream:#fafaf8;--ink:#1a1a1a;--ink2:#3d3d3d;--muted:#888;--rule:#e0ddd8;
+--profit:#10b981;--loss:#ef4444}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:24px 20px}
+header{text-align:center;margin-bottom:32px;border-bottom:2px solid var(--navy);padding-bottom:16px}
+header h1{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:4px}
+header .ts{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted)}
+h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin:28px 0 14px;
+border-bottom:1px solid var(--rule);padding-bottom:6px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.tile{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px;transition:box-shadow .2s}
+.tile:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.tile-hdr{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:4px}
+.tile-group{text-transform:uppercase;letter-spacing:.5px}
+.tile-tkr{font-family:'JetBrains Mono',monospace}
+.tile-name{font-weight:600;font-size:.95rem;margin-bottom:2px}
+.tile-price{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:700;margin-bottom:4px}
+.tile-chg{display:flex;gap:12px;font-family:'JetBrains Mono',monospace;font-size:.75rem;margin-bottom:6px}
+.tile-spark{display:flex;justify-content:center}
+.health-box{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--rule);
+border-radius:8px;padding:18px 24px;margin-bottom:8px}
+.health-score{font-family:'JetBrains Mono',monospace;font-size:2.2rem;font-weight:700;
+border:3px solid;border-radius:50%;width:72px;height:72px;display:flex;align-items:center;
+justify-content:center;flex-shrink:0}
+.health-badge{color:#fff;font-weight:700;font-size:.85rem;padding:4px 14px;border-radius:20px;
+text-transform:uppercase;letter-spacing:.5px}
+.health-detail{font-size:.9rem;color:var(--ink2)}
+.corr-row{display:flex;align-items:center;gap:12px;margin:6px 0;padding:8px 12px;
+background:#fff;border:1px solid var(--rule);border-radius:6px}
+.corr-pair{font-weight:600;min-width:140px}
+.corr-val{font-family:'JetBrains Mono',monospace;font-size:.85rem;padding:4px 10px;
+border-radius:4px;color:#fff;font-weight:600}
+.impact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.impact-card{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px}
+.impact-card b{color:var(--navy)}
+.impact-card .arrow{font-size:1.1rem;margin:0 4px}
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:16px}
+.chart-box{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px}
+canvas{width:100%!important;height:220px!important}
+a.back{display:inline-block;margin-top:20px;color:var(--navy);text-decoration:none;font-size:.85rem}
+a.back:hover{text-decoration:underline}
+@media(max-width:600px){.tiles{grid-template-columns:1fr 1fr}.charts-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>DNSD CAPITAL &mdash; Supply Chain &amp; Shipping Monitor</h1>
+  <div class="ts">Generated 2026-03-31 00:05 ET</div>
+</header>
+
+<h2>Market Overview</h2>
+<div class="tiles"><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">Shipping</span><span class="tile-tkr">ZIM</span></div>
+  <div class="tile-name">ZIM Integrated</div>
+  <div class="tile-price">N/A</div>
+  <div class="tile-chg">
+    <span style="color:#10b981">1D: +0.00%</span>
+    <span style="color:#10b981">5D: +0.00%</span>
+  </div>
+  <div class="tile-spark"></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">Shipping</span><span class="tile-tkr">GOGL</span></div>
+  <div class="tile-name">Golden Ocean</div>
+  <div class="tile-price">N/A</div>
+  <div class="tile-chg">
+    <span style="color:#10b981">1D: +0.00%</span>
+    <span style="color:#10b981">5D: +0.00%</span>
+  </div>
+  <div class="tile-spark"></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">Shipping</span><span class="tile-tkr">DAC</span></div>
+  <div class="tile-name">Danaos Corp</div>
+  <div class="tile-price">$109.79</div>
+  <div class="tile-chg">
+    <span style="color:#ef4444">1D: -0.86%</span>
+    <span style="color:#ef4444">5D: -3.77%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,2.4 4.2,7.6 8.4,13.4 12.6,16.4 16.8,10.2 21.1,8.8 25.3,6.8 29.5,18.9 33.7,24.0 37.9,14.3 42.1,12.3 46.3,5.8 50.5,6.0 54.7,11.6 58.9,5.3 63.2,0.0 67.4,7.7 71.6,9.9 75.8,14.2 80.0,16.7" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">Shipping</span><span class="tile-tkr">SBLK</span></div>
+  <div class="tile-name">Star Bulk</div>
+  <div class="tile-price">$22.00</div>
+  <div class="tile-chg">
+    <span style="color:#ef4444">1D: -1.12%</span>
+    <span style="color:#ef4444">5D: -3.59%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,3.7 8.4,9.7 12.6,15.3 16.8,12.7 21.1,12.2 25.3,15.2 29.5,22.1 33.7,24.0 37.9,21.7 42.1,21.7 46.3,18.2 50.5,18.7 54.7,21.1 58.9,18.1 63.2,14.7 67.4,17.9 71.6,20.0 75.8,21.5 80.0,23.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">Logistics</span><span class="tile-tkr">FDX</span></div>
+  <div class="tile-name">FedEx</div>
+  <div class="tile-price">$341.76</div>
+  <div class="tile-chg">
+    <span style="color:#ef4444">1D: -0.64%</span>
+    <span style="color:#ef4444">5D: -3.94%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.9 4.2,0.0 8.4,6.3 12.6,14.6 16.8,12.6 21.1,13.6 25.3,12.4 29.5,17.3 33.7,18.2 37.9,17.8 42.1,16.4 46.3,19.3 50.5,15.6 54.7,13.9 58.9,15.7 63.2,13.3 67.4,14.7 71.6,19.4 75.8,22.7 80.0,24.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">Logistics</span><span class="tile-tkr">UPS</span></div>
+  <div class="tile-name">UPS</div>
+  <div class="tile-price">$94.95</div>
+  <div class="tile-chg">
+    <span style="color:#10b981">1D: +0.16%</span>
+    <span style="color:#ef4444">5D: -2.78%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,3.6 8.4,11.9 12.6,14.2 16.8,17.3 21.1,16.0 25.3,16.2 29.5,20.0 33.7,20.9 37.9,20.6 42.1,20.1 46.3,21.3 50.5,21.7 54.7,22.6 58.9,20.3 63.2,19.3 67.4,19.4 71.6,20.5 75.8,24.0 80.0,23.8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">ETF</span><span class="tile-tkr">BDRY</span></div>
+  <div class="tile-name">Breakwave Dry Bulk</div>
+  <div class="tile-price">$9.94</div>
+  <div class="tile-chg">
+    <span style="color:#10b981">1D: +0.10%</span>
+    <span style="color:#ef4444">5D: -0.50%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,5.2 8.4,8.7 12.6,18.1 16.8,19.9 21.1,20.2 25.3,16.0 29.5,18.7 33.7,17.9 37.9,16.3 42.1,18.4 46.3,16.0 50.5,22.0 54.7,22.1 58.9,22.3 63.2,24.0 67.4,22.2 71.6,22.2 75.8,22.8 80.0,22.8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">ETF</span><span class="tile-tkr">IYT</span></div>
+  <div class="tile-name">iShares Transport</div>
+  <div class="tile-price">$72.18</div>
+  <div class="tile-chg">
+    <span style="color:#ef4444">1D: -0.43%</span>
+    <span style="color:#ef4444">5D: -2.64%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,0.0 8.4,6.9 12.6,13.5 16.8,12.7 21.1,15.1 25.3,15.3 29.5,22.0 33.7,21.8 37.9,19.7 42.1,16.3 46.3,19.1 50.5,19.6 54.7,21.6 58.9,18.9 63.2,19.1 67.4,17.3 71.6,20.0 75.8,23.2 80.0,24.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div><div class="tile">
+  <div class="tile-hdr"><span class="tile-group">ETF</span><span class="tile-tkr">XLI</span></div>
+  <div class="tile-name">Industrials SPDR</div>
+  <div class="tile-price">$156.61</div>
+  <div class="tile-chg">
+    <span style="color:#ef4444">1D: -1.63%</span>
+    <span style="color:#ef4444">5D: -3.95%</span>
+  </div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.7 4.2,0.0 8.4,4.8 12.6,7.5 16.8,6.2 21.1,7.4 25.3,8.0 29.5,13.3 33.7,14.0 37.9,12.3 42.1,11.7 46.3,13.4 50.5,14.8 54.7,17.7 58.9,16.0 63.2,14.8 67.4,13.5 71.6,18.2 75.8,20.8 80.0,24.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+</div></div>
+
+<h2>Shipping Health Index</h2>
+<p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Composite of shipping stock 5D change, BDRY trend, and IYT vs SPY relative strength</p>
+<div class="health-box">
+  <div class="health-score" style="border-color:#ef4444">35.7</div>
+  <div class="health-badge" style="background:#ef4444">STRESSED</div>
+  <div class="health-detail">
+    <div>Shipping Avg 5D: <b style="color:#ef4444">-3.68%</b></div>
+  </div>
+</div>
+
+<h2>Freight Rate Proxy (BDRY &mdash; BDI)</h2>
+<p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Breakwave Dry Bulk Shipping ETF tracks the Baltic Dry Index (BDI), a leading indicator of global trade activity</p>
+
+<h2>Cross-Asset Impact (30-Day Correlation)</h2>
+<p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">How shipping/transport indicators correlate with macro benchmarks</p>
+<div class="corr-row"><span class="corr-pair">IYT vs SPY</span><span class="corr-val" style="background:rgba(16,185,129,0.88)">+0.88</span></div><div class="corr-row"><span class="corr-pair">BDRY vs ^VIX</span><span class="corr-val" style="background:rgba(239,68,68,0.81)">-0.81</span></div>
+
+<h2>RS Strategy Impact</h2>
+<div class="impact-grid">
+  <div class="impact-card"><b>Shipping Weakness</b><span class="arrow">&rarr;</span>Supply Chain Disruption<br>
+    <small>Falling shipping rates signal demand slowdown or port congestion. Disruption risk raises input costs, pressures margins, and elevates inflation expectations.</small></div>
+  <div class="impact-card"><b>Inflation Risk</b><span class="arrow">&rarr;</span>VIX Spike<br>
+    <small>Supply chain stress feeds into CPI/PPI prints. Inflation surprises drive rate-hike fears, pushing VIX higher and triggering the RS macro dampener (0.70x when VIX &gt;28).</small></div>
+  <div class="impact-card"><b>Shipping Strength</b><span class="arrow">&rarr;</span>Risk-On Macro<br>
+    <small>Rising freight rates and strong transports signal healthy global trade. Risk-on environment is favorable for meme/momentum names in the RS universe.</small></div>
+  <div class="impact-card"><b>IYT vs SPY</b><span class="arrow">&rarr;</span>Leading Indicator<br>
+    <small>Transport outperformance vs SPY historically leads broader market. IYT weakness diverging from SPY is an early warning of macro deterioration.</small></div>
+</div>
+
+<h2>3-Month Price Charts</h2>
+<div class="charts-grid"><div class="chart-box"><canvas id="chart_1"></canvas></div><div class="chart-box"><canvas id="chart_2"></canvas></div><div class="chart-box"><canvas id="chart_3"></canvas></div></div>
+
+<a class="back" href="home.html">&larr; Back to Strategy Platform</a>
+</div>
+<script>
+new Chart(document.getElementById('chart_1'),{type:'line',data:{
+labels:["Dec 31", "Jan 02", "Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30"],
+datasets:[{label:'Dry Bulk ETF (3M)',data:[8.77, 8.46, 8.72, 8.81, 8.79, 9.14, 8.85, 8.73, 8.72, 9.04, 9.48, 9.8, 10.24, 10.07, 10.0, 10.36, 10.98, 11.26, 11.01, 11.48, 11.53, 11.2, 10.55, 10.85, 10.71, 10.65, 10.95, 11.18, 11.44, 11.3, 11.49, 11.68, 11.76, 11.66, 11.73, 11.77, 11.87, 11.68, 11.91, 12.07, 12.22, 12.5, 11.91, 11.52, 10.46, 10.26, 10.23, 10.7, 10.4, 10.49, 10.67, 10.43, 10.7, 10.02, 10.01, 9.99, 9.8, 10.0, 10.0, 9.93, 9.94],
+borderColor:'#6366f1',backgroundColor:'#6366f122',fill:true,
+pointRadius:0,borderWidth:2,tension:0.3}]},
+options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
+scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
+y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});
+new Chart(document.getElementById('chart_2'),{type:'line',data:{
+labels:["Dec 31", "Jan 02", "Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30"],
+datasets:[{label:'FedEx (3M)',data:[287.69, 291.95, 296.26, 306.69, 306.09, 307.76, 311.1, 310.66, 308.41, 312.28, 311.9, 306.94, 299.81, 305.71, 308.56, 302.98, 303.24, 311.16, 313.38, 318.64, 320.95, 333.95, 352.0, 361.08, 362.49, 367.74, 363.13, 366.46, 365.68, 367.97, 373.21, 373.78, 381.53, 381.59, 386.91, 382.16, 385.0, 381.05, 386.11, 385.44, 385.69, 380.99, 382.54, 371.84, 357.65, 361.1, 359.47, 361.39, 353.13, 351.68, 352.35, 354.66, 349.74, 356.11, 358.85, 355.78, 359.96, 357.52, 349.55, 343.97, 341.76],
+borderColor:'#f59e0b',backgroundColor:'#f59e0b22',fill:true,
+pointRadius:0,borderWidth:2,tension:0.3}]},
+options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
+scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
+y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});
+new Chart(document.getElementById('chart_3'),{type:'line',data:{
+labels:["Dec 31", "Jan 02", "Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30"],
+datasets:[{label:'Transports ETF (3M)',data:[74.24, 75.05, 75.66, 77.57, 76.69, 77.6, 77.71, 77.5, 77.19, 77.02, 78.03, 77.52, 75.74, 77.58, 77.4, 76.59, 76.48, 76.23, 75.5, 76.98, 76.29, 78.55, 79.46, 80.67, 80.37, 81.98, 81.63, 81.82, 81.16, 79.04, 79.62, 80.51, 81.52, 80.75, 82.1, 79.72, 80.49, 80.15, 81.92, 81.49, 81.65, 81.32, 81.31, 78.68, 76.17, 76.47, 75.57, 75.51, 72.95, 73.0, 73.83, 75.1, 74.06, 73.86, 73.08, 74.14, 74.06, 74.72, 73.7, 72.49, 72.18],
+borderColor:'#10b981',backgroundColor:'#10b98122',fill:true,
+pointRadius:0,borderWidth:2,tension:0.3}]},
+options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
+scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
+y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});</script>
+</body>
+</html>
