@@ -45,6 +45,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  :focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+  [data-theme="dark"] :focus-visible { outline-color: #4a8af4; }
+  button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:focus-visible) { outline: none; }
+
   .screen { display: none; min-height: 100vh; flex-direction: column; }
   .screen.active { display: flex; }
   .screen-fade-in { animation: fadeIn 0.4s ease; }
@@ -430,7 +434,7 @@
   }
   .login-form { margin: 0 auto; max-width: 340px; }
   .login-field-label {
-    font-size: 9px; font-weight: 700; letter-spacing: 4px;
+    display: block; font-size: 9px; font-weight: 700; letter-spacing: 4px;
     text-transform: uppercase; color: var(--dim); margin-bottom: 12px;
   }
   .login-input {
@@ -569,9 +573,9 @@
     text-transform: uppercase;
   }
   .signout-link {
-    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 2px;
     text-transform: uppercase; color: var(--dim); text-decoration: none;
-    cursor: pointer; transition: color 0.2s;
+    cursor: pointer; transition: color 0.2s; background: none; border: none;
     border-left: 1px solid var(--rule); padding-left: 24px;
   }
   .signout-link:hover { color: var(--loss); }
@@ -678,6 +682,24 @@
     transition: border-color 0.2s, color 0.2s;
   }
   .theme-toggle:hover { border-color: var(--rule-heavy); color: var(--ink2); }
+  @media (min-width: 1440px) {
+    .landing-content { max-width: 1100px; }
+    .home-content { max-width: 1200px; }
+    .card-grid { grid-template-columns: repeat(4, 1fr); }
+    .perf-grid { gap: 20px; }
+  }
+  @media (max-width: 1024px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .perf-grid { grid-template-columns: repeat(2, 1fr); }
+    .arch-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero h1 { font-size: 48px; letter-spacing: 7px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .reveal { opacity: 1; transform: none; }
+    .screen-fade-in { animation: none; }
+  }
   @media print { nav, .ticker-strip, button, .home-footer, .landing-footer, .theme-toggle { display: none !important; } body { background: #fff !important; color: #000 !important; } .screen { display: block !important; } .hero { background: #0a3d7c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .perf-card, .feature-card, .arch-card { break-inside: avoid; } }
 </style>
 </head>
@@ -702,7 +724,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
     <div class="date-line">Thursday, April 2, 2026</div>
     <div class="hero-rule"></div>
     <!-- Mini equity curve -->
-    <div class="hero-equity">
+    <div class="hero-equity" aria-hidden="true">
       <svg viewBox="0 0 480 80" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="eq-grad" x1="0" y1="0" x2="0" y2="1">
@@ -755,31 +777,31 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
     <!-- Process Pipeline -->
     <div class="reveal pipeline">
       <div class="pipe-step">
-        <div class="pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <div class="pipe-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
         <div class="pipe-label">Detect</div>
         <div class="pipe-sub">8 sources</div>
       </div>
       <div class="pipe-arrow">&rarr;</div>
       <div class="pipe-step">
-        <div class="pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="pipe-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
         <div class="pipe-label">Score</div>
         <div class="pipe-sub">5 factors</div>
       </div>
       <div class="pipe-arrow">&rarr;</div>
       <div class="pipe-step">
-        <div class="pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2v20M2 12l10-10 10 10"/></svg></div>
+        <div class="pipe-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2v20M2 12l10-10 10 10"/></svg></div>
         <div class="pipe-label">Enter</div>
         <div class="pipe-sub">3 tranches</div>
       </div>
       <div class="pipe-arrow">&rarr;</div>
       <div class="pipe-step">
-        <div class="pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="pipe-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div class="pipe-label">Manage</div>
         <div class="pipe-sub">ATR trails</div>
       </div>
       <div class="pipe-arrow">&rarr;</div>
       <div class="pipe-step">
-        <div class="pipe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+        <div class="pipe-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
         <div class="pipe-label">Exit</div>
         <div class="pipe-sub">Regime-aware</div>
       </div>
@@ -788,17 +810,17 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
     <!-- Feature Cards -->
     <div class="reveal features-grid">
       <div class="feature-card">
-        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
         <h4>Multi-Source Signal Detection</h4>
         <p>Real-time sentiment velocity scoring across Reddit, ApeWisdom, StockTwits, Google Trends, options flow, news feeds, and block trades.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
         <h4>40-Ticker Curated Universe</h4>
         <p>High-retail-interest names including meme stocks, high short interest, crypto proxies, and momentum plays. Weekly universe scans for new candidates.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h4>Adaptive Risk Management</h4>
         <p>Kelly-based position sizing, ATR trailing stops, macro regime dampeners, portfolio heat monitoring, and automated circuit breakers.</p>
       </div>
@@ -950,7 +972,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
     </div>
 
     <!-- Live Status -->
-    <div class="live-strip">
+    <div class="live-strip" role="status" aria-label="Live system status">
       <span class="ls-title">Live System</span>
       <div class="ls-item">
         <span class="ls-label">Regime</span>
@@ -979,7 +1001,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
 
   <!-- CTA -->
   <div class="cta-section">
-    <button class="cta-btn" id="cta-login">Access Dashboard</button>
+    <button class="cta-btn" id="cta-login" aria-label="Access the DNSD Capital dashboard">Access Dashboard</button>
   </div>
 
   <div class="disclaimer">
@@ -988,7 +1010,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
   </div>
 
   <div class="landing-footer">
-    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-04-02 01:26 ET
+    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-04-02 01:32 ET
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button>
   </div>
 </div>
@@ -1003,9 +1025,9 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
     </div>
     <div class="login-rule"></div>
     <div class="login-form">
-      <div class="login-field-label">Authorized Personnel Only</div>
-      <input type="password" id="pwd-input" class="login-input" placeholder="Enter access code" autocomplete="off">
-      <div class="login-error-msg" id="error-msg"></div>
+      <label for="pwd-input" class="login-field-label">Authorized Personnel Only</label>
+      <input type="password" id="pwd-input" class="login-input" placeholder="Enter access code" autocomplete="off" aria-required="true">
+      <div class="login-error-msg" id="error-msg" aria-live="polite"></div>
       <button id="login-btn" class="login-btn">Access Platform</button>
       <a class="back-link" id="back-to-landing">About DNSD Capital &rarr;</a>
     </div>
@@ -1025,7 +1047,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
     <div class="edition">Retail Sentiment Momentum Strategy</div>
   </div>
 
-  <div class="ticker-strip">
+  <div class="ticker-strip" role="status" aria-label="Market status">
     <div class="ts-item"><span class="ts-label">Regime</span><span class="ts-dot green"></span><span class="ts-value">NORMAL</span></div>
     <div class="ts-item"><span class="ts-label">VIX</span><span class="ts-value">24.9</span></div>
     <div class="ts-item"><span class="ts-label">Dampener</span><span class="ts-value">1.00</span></div>
@@ -1039,7 +1061,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
 <div class="cat-section"><div class="cat-label">TRADING</div><div class="card-grid">
 <a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px" aria-hidden="true"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
 <a href="position_calc.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Position Calculator </h3><p class="card-desc">Interactive Kelly-based position sizing tool with regime and correlation adjustments.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="trade_journal.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px" aria-hidden="true"><polyline points="0.0,13.7 0.9,13.7 1.8,13.7 2.8,16.0 3.7,13.7 4.6,13.7 5.5,13.7 6.5,11.4 7.4,11.4 8.3,9.1 9.2,9.1 10.2,6.9 11.1,6.9 12.0,6.9 12.9,6.9 13.8,6.9 14.8,9.1 15.7,9.1 16.6,6.9 17.5,6.9 18.5,6.9 19.4,6.9 20.3,6.9 21.2,4.6 22.2,4.6 23.1,6.9 24.0,4.6 24.9,6.9 25.8,9.1 26.8,9.1 27.7,6.9 28.6,6.9 29.5,9.1 30.5,9.1 31.4,9.1 32.3,6.9 33.2,9.1 34.2,6.9 35.1,4.6 36.0,4.6 36.9,4.6 37.8,4.6 38.8,2.3 39.7,2.3 40.6,2.3 41.5,2.3 42.5,0.0 43.4,0.0 44.3,2.3 45.2,4.6 46.2,6.9 47.1,6.9 48.0,6.9" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Full trade log with filters, P&L breakdown, and entry/exit context for all 62 paper trades.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="trade_journal.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px" aria-hidden="true"><polyline points="0.0,13.7 0.9,13.7 1.8,13.7 2.8,16.0 3.7,13.7 4.6,13.7 5.5,13.7 6.5,11.4 7.4,11.4 8.3,9.1 9.2,9.1 10.2,6.9 11.1,6.9 12.0,6.9 12.9,6.9 13.8,6.9 14.8,9.1 15.7,9.1 16.6,6.9 17.5,6.9 18.5,6.9 19.4,6.9 20.3,6.9 21.2,4.6 22.2,4.6 23.1,6.9 24.0,4.6 24.9,6.9 25.8,9.1 26.8,9.1 27.7,6.9 28.6,6.9 29.5,9.1 30.5,9.1 31.4,9.1 32.3,6.9 33.2,9.1 34.2,6.9 35.1,4.6 36.0,4.6 36.9,4.6 37.8,4.6 38.8,2.3 39.7,2.3 40.6,2.3 41.5,2.3 42.5,0.0 43.4,0.0 44.3,2.3 45.2,4.6 46.2,6.9 47.1,6.9 48.0,6.9" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Full trade log with filters, P&L breakdown, and entry/exit context for all paper trades.</p><span class="card-arrow">&rarr;</span></div></a>
 </div></div>
 <div class="cat-section"><div class="cat-label">ANALYTICS</div><div class="card-grid">
 <a href="report.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Full Report </h3><p class="card-desc">29-section institutional-grade market report with factor attribution and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
@@ -1059,13 +1081,18 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
   </div>
 
   <div class="home-footer">
-    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-04-02 01:26 ET</span>
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-04-02 01:32 ET</span>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button>
-    <a class="signout-link" id="signout-btn">Sign Out</a>
+    <button class="signout-link" id="signout-btn" aria-label="Sign out of dashboard">Sign Out</button>
   </div>
 </div>
 
 <script>
+function toggleTheme(){
+  var d=document.documentElement, isDark=d.getAttribute('data-theme')==='dark';
+  if(isDark){d.removeAttribute('data-theme');localStorage.setItem('rs-theme','light');}
+  else{d.setAttribute('data-theme','dark');localStorage.setItem('rs-theme','dark');}
+}
 (function() {
   // Scroll reveal observer
   var revealEls = document.querySelectorAll('.reveal');
@@ -1251,6 +1278,28 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
       }
     });
   });
+
+  // Escape key to dismiss split-view overlay
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      var overlay = document.getElementById('split-overlay');
+      if (overlay) overlay.remove();
+    }
+  });
+
+  // Live data refresh from rs_server.py when available (silent fail on GitHub Pages)
+  (function refreshLiveData() {
+    try {
+      fetch('http://localhost:5001/api/health', {mode:'cors'}).then(function(r) { return r.json(); }).then(function(d) {
+        // Update ticker-strip values if server is reachable
+        var strip = document.querySelector('.ticker-strip');
+        if (!strip || !d) return;
+        var items = strip.querySelectorAll('.ts-value');
+        if (d.regime && items[0]) items[0].textContent = d.regime;
+        if (d.vix && items[1]) items[1].textContent = typeof d.vix === 'number' ? d.vix.toFixed(1) : d.vix;
+      }).catch(function(){});
+    } catch(e) {}
+  })();
 })();
 </script>
 
