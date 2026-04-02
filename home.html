@@ -636,11 +636,60 @@
   [data-theme="dark"] .perf-card { background: #1a2035; border-color: #2a3352; }
   [data-theme="dark"] .perf-card .val { color: #e5e7eb; }
   [data-theme="dark"] a { color: #4a8af4; }
-  @media print { nav, .ticker-strip, button, .home-footer { display: none !important; } body { background: #fff !important; color: #000 !important; } }
+  [data-theme="dark"] .feature-card { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .feature-card::before { background: #4a8af4; }
+  [data-theme="dark"] .feature-icon { background: rgba(74, 138, 244, 0.12); }
+  [data-theme="dark"] .feature-icon svg { color: #4a8af4; }
+  [data-theme="dark"] .arch-card { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .arch-number { color: #4a8af4; }
+  [data-theme="dark"] .phase-badge { color: #34d399; background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.2); }
+  [data-theme="dark"] .phase-dot { background: #34d399; }
+  [data-theme="dark"] .formula-box { background: #1a2035; border-color: #2a3352; }
+  [data-theme="dark"] .formula-mod { background: #111827; }
+  [data-theme="dark"] .formula-mod span { color: #4a8af4; }
+  [data-theme="dark"] .formula-equation strong { color: #4a8af4; }
+  [data-theme="dark"] .formula-bar-pct { color: #4a8af4; }
+  [data-theme="dark"] .timeline::before { background: #2a3352; }
+  [data-theme="dark"] .tl-dot { background: #1a2035; border-color: #4a8af4; }
+  [data-theme="dark"] .tl-dot.active { background: #34d399; border-color: #34d399; }
+  [data-theme="dark"] .tl-dot.complete { background: #4a8af4; border-color: #4a8af4; }
+  [data-theme="dark"] .tl-badge.pass { color: #34d399; background: rgba(52,211,153,0.12); }
+  [data-theme="dark"] .tl-badge.active-badge { color: #4a8af4; background: rgba(74,138,244,0.12); }
+  [data-theme="dark"] .tl-badge.future { color: #6b7280; background: #111827; }
+  [data-theme="dark"] .perf-card.highlight { background: linear-gradient(135deg, rgba(52,211,153,0.05), rgba(52,211,153,0.12)); border-color: rgba(52,211,153,0.2); }
+  [data-theme="dark"] .perf-card.warn-highlight { background: linear-gradient(135deg, rgba(248,113,113,0.05), rgba(248,113,113,0.1)); border-color: rgba(248,113,113,0.15); }
+  [data-theme="dark"] .perf-value { color: #e5e7eb; }
+  [data-theme="dark"] .live-strip { background: #060a14; }
+  [data-theme="dark"] .login-masthead h2 { color: #4a8af4; }
+  [data-theme="dark"] .login-ornament, [data-theme="dark"] .login-ornament::before, [data-theme="dark"] .login-ornament::after { background: #4a8af4; }
+  [data-theme="dark"] .login-rule { border-top-color: #2a3352; }
+  [data-theme="dark"] .home-masthead { border-bottom-color: #2a3352; }
+  [data-theme="dark"] .home-masthead h1 { color: #4a8af4; }
+  [data-theme="dark"] .card-arrow { color: #4a8af4; }
+  [data-theme="dark"] .pipe-icon { background: #4a8af4; }
+  [data-theme="dark"] .pipe-label { color: #4a8af4; }
+  [data-theme="dark"] .cta-btn { background: #4a8af4; }
+  [data-theme="dark"] .cta-btn:hover { background: #3b7ae0; }
+  [data-theme="dark"] .login-btn { background: #4a8af4; }
+  [data-theme="dark"] .login-btn:hover { background: #3b7ae0; }
+  .theme-toggle {
+    background: none; border: 1px solid var(--rule); color: var(--muted);
+    padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--rule-heavy); color: var(--ink2); }
+  @media print { nav, .ticker-strip, button, .home-footer, .landing-footer, .theme-toggle { display: none !important; } body { background: #fff !important; color: #000 !important; } .screen { display: block !important; } .hero { background: #0a3d7c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .perf-card, .feature-card, .arch-card { break-inside: avoid; } }
 </style>
 </head>
 <body>
-<script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<script>
+try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}
+// Route to correct screen before paint to prevent flash
+(function(){try{
+  var s=localStorage.getItem('dnsd_auth')?'home-screen':'login-screen';
+  document.getElementById(s).classList.add('active');
+}catch(e){document.getElementById('login-screen').classList.add('active');}})();
+</script>
 
 <!-- ==================== SCREEN 1: PUBLIC LANDING ==================== -->
 <div id="landing-screen" class="screen">
@@ -939,12 +988,13 @@
   </div>
 
   <div class="landing-footer">
-    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-04-02 01:20 ET
+    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-04-02 01:26 ET
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button>
   </div>
 </div>
 
 <!-- ==================== SCREEN 2: LOGIN ==================== -->
-<div id="login-screen" class="screen active">
+<div id="login-screen" class="screen">
   <div class="login-container">
     <div class="login-ornament"></div>
     <div class="login-masthead">
@@ -961,6 +1011,7 @@
     </div>
     <div class="login-footer">
       Proprietary &amp; Confidential &mdash; DNSD Capital
+      <div style="margin-top:16px"><button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button></div>
     </div>
   </div>
 </div>
@@ -986,9 +1037,9 @@
 
   <div class="home-content">
 <div class="cat-section"><div class="cat-label">TRADING</div><div class="card-grid">
-<a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="rs.html" class="nav-card"><div class="card-inner"><h3 class="card-title">RS Dashboard <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px" aria-hidden="true"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Live trading command center with real-time signals, positions, and P&L tracking.</p><span class="card-arrow">&rarr;</span></div></a>
 <a href="position_calc.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Position Calculator </h3><p class="card-desc">Interactive Kelly-based position sizing tool with regime and correlation adjustments.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="trade_journal.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Full trade log with filters, P&L breakdown, and entry/exit context for all 62 paper trades.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="trade_journal.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Journal <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px" aria-hidden="true"><polyline points="0.0,13.7 0.9,13.7 1.8,13.7 2.8,16.0 3.7,13.7 4.6,13.7 5.5,13.7 6.5,11.4 7.4,11.4 8.3,9.1 9.2,9.1 10.2,6.9 11.1,6.9 12.0,6.9 12.9,6.9 13.8,6.9 14.8,9.1 15.7,9.1 16.6,6.9 17.5,6.9 18.5,6.9 19.4,6.9 20.3,6.9 21.2,4.6 22.2,4.6 23.1,6.9 24.0,4.6 24.9,6.9 25.8,9.1 26.8,9.1 27.7,6.9 28.6,6.9 29.5,9.1 30.5,9.1 31.4,9.1 32.3,6.9 33.2,9.1 34.2,6.9 35.1,4.6 36.0,4.6 36.9,4.6 37.8,4.6 38.8,2.3 39.7,2.3 40.6,2.3 41.5,2.3 42.5,0.0 43.4,0.0 44.3,2.3 45.2,4.6 46.2,6.9 47.1,6.9 48.0,6.9" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Full trade log with filters, P&L breakdown, and entry/exit context for all 62 paper trades.</p><span class="card-arrow">&rarr;</span></div></a>
 </div></div>
 <div class="cat-section"><div class="cat-label">ANALYTICS</div><div class="card-grid">
 <a href="report.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Full Report </h3><p class="card-desc">29-section institutional-grade market report with factor attribution and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
@@ -1001,15 +1052,15 @@
 <div class="cat-section"><div class="cat-label">RESEARCH</div><div class="card-grid">
 <a href="brief.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Executive Brief </h3><p class="card-desc">One-page strategy summary designed for quick daily review and decision support.</p><span class="card-arrow">&rarr;</span></div></a>
 <a href="index.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Earnings Tracker </h3><p class="card-desc">Pre-earnings sentiment analysis with 10-factor scoring and actionable recommendations.</p><span class="card-arrow">&rarr;</span></div></a>
-<a href="picks.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Stock Picks <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px"><polyline points="0.0,16.0 0.8,15.8 1.6,15.3 2.4,15.4 3.1,15.1 3.9,14.5 4.7,15.0 5.5,15.2 6.3,15.5 7.1,15.6 7.9,15.9 8.7,15.7 9.4,15.8 10.2,15.3 11.0,15.3 11.8,15.2 12.6,14.9 13.4,15.1 14.2,14.9 15.0,15.1 15.7,14.3 16.5,13.6 17.3,14.2 18.1,14.0 18.9,14.0 19.7,14.4 20.5,13.7 21.2,13.4 22.0,13.1 22.8,13.4 23.6,13.4 24.4,12.3 25.2,11.4 26.0,9.3 26.8,9.5 27.5,9.0 28.3,9.1 29.1,9.5 29.9,9.2 30.7,8.5 31.5,7.8 32.3,7.8 33.0,7.7 33.8,7.7 34.6,7.2 35.4,7.9 36.2,7.5 37.0,6.9 37.8,6.7 38.6,6.3 39.3,5.8 40.1,5.7 40.9,5.2 41.7,4.7 42.5,4.5 43.3,4.3 44.1,2.7 44.9,3.2 45.6,3.3 46.4,3.8 47.2,1.9 48.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></h3><p class="card-desc">Top 10 recommendations with full profiles, price charts, and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
+<a href="picks.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Stock Picks <svg width="48" height="16" viewBox="0 0 48 16" style="vertical-align:middle;margin-left:8px" aria-hidden="true"><rect x="0.0" y="11.6" width="1.7" height="4.4" rx="0.5" fill="#10b981"/><rect x="2.4" y="12.3" width="1.7" height="3.7" rx="0.5" fill="#10b981"/><rect x="4.8" y="9.9" width="1.7" height="6.1" rx="0.5" fill="#10b981"/><rect x="7.2" y="15.0" width="1.7" height="1.0" rx="0.5" fill="#ef4444"/><rect x="9.6" y="10.2" width="1.7" height="5.8" rx="0.5" fill="#10b981"/><rect x="12.0" y="9.2" width="1.7" height="6.8" rx="0.5" fill="#10b981"/><rect x="14.4" y="11.6" width="1.7" height="4.4" rx="0.5" fill="#10b981"/><rect x="16.8" y="10.2" width="1.7" height="5.8" rx="0.5" fill="#10b981"/><rect x="19.2" y="9.5" width="1.7" height="6.5" rx="0.5" fill="#10b981"/><rect x="21.6" y="12.3" width="1.7" height="3.7" rx="0.5" fill="#10b981"/><rect x="24.0" y="9.6" width="1.7" height="6.4" rx="0.5" fill="#10b981"/><rect x="26.4" y="9.7" width="1.7" height="6.3" rx="0.5" fill="#10b981"/><rect x="28.8" y="11.5" width="1.7" height="4.5" rx="0.5" fill="#10b981"/><rect x="31.2" y="11.3" width="1.7" height="4.7" rx="0.5" fill="#10b981"/><rect x="33.6" y="3.6" width="1.7" height="12.4" rx="0.5" fill="#10b981"/><rect x="36.0" y="15.0" width="1.7" height="1.0" rx="0.5" fill="#ef4444"/><rect x="38.4" y="12.7" width="1.7" height="3.3" rx="0.5" fill="#ef4444"/><rect x="40.8" y="15.0" width="1.7" height="1.0" rx="0.5" fill="#ef4444"/><rect x="43.2" y="2.0" width="1.7" height="14.0" rx="0.5" fill="#10b981"/><rect x="45.6" y="2.0" width="1.7" height="14.0" rx="0.5" fill="#10b981"/></svg></h3><p class="card-desc">Top 10 recommendations with full profiles, price charts, and risk analysis.</p><span class="card-arrow">&rarr;</span></div></a>
 <a href="replay.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Replay </h3><p class="card-desc">Visual playback of historical trades with tick-level entry and exit reconstruction.</p><span class="card-arrow">&rarr;</span></div></a>
 <a href="narratives.html" class="nav-card"><div class="card-inner"><h3 class="card-title">Trade Narratives </h3><p class="card-desc">AI-generated narratives for every paper trade with factor decomposition analysis.</p><span class="card-arrow">&rarr;</span></div></a>
 </div></div>
   </div>
 
   <div class="home-footer">
-    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-04-02 01:20 ET</span>
-    <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid var(--rule);color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px" title="Toggle dark mode">&#127763;</button>
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-04-02 01:26 ET</span>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button>
     <a class="signout-link" id="signout-btn">Sign Out</a>
   </div>
 </div>
@@ -1083,11 +1134,6 @@
     window.scrollTo(0, 0);
     // Remove animation class after it plays
     setTimeout(function() { el.classList.remove('screen-fade-in'); }, 500);
-  }
-
-  // Check existing auth — skip straight to portal
-  if (localStorage.getItem(AUTH_KEY)) {
-    showScreen('home-screen');
   }
 
   // SHA-256 helper
