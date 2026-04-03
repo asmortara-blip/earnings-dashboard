@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital — Sector Heat Map</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a3d7c'/><text x='16' y='23' font-size='18' font-weight='bold' fill='white' text-anchor='middle' font-family='serif'>D</text></svg>">
+<script>if(!localStorage.getItem('dnsd_auth'))location.href='home.html';</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#fafaf8; --surface:#f5f3ef; --card:#fff; --rule:#e0ddd8; --ink:#1a1a2e; --dim:#94a3b8; --accent:#0a3d7c; --profit:#10b981; --loss:#ef4444; --mono:'JetBrains Mono',monospace; --sans:'Inter',sans-serif; }
+[data-theme="dark"] { --bg:#060a14; --surface:#111827; --card:#1a2035; --rule:#2a3352; --ink:#e5e7eb; --dim:#6b7280; --accent:#3b82f6; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); min-height:100vh; }
+.header { background:linear-gradient(135deg,#0a3d7c,#1a5fb4); color:#fff; padding:24px 40px; }
+.header h1 { font-family:'Playfair Display',serif; font-size:28px; }
+nav { background:#060a14; padding:8px 40px; display:flex; gap:16px; align-items:center; }
+nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:11px; font-weight:600; letter-spacing:1px; }
+.breadcrumb { padding:4px 40px; font-size:11px; color:var(--dim); background:var(--surface); border-bottom:1px solid var(--rule); }
+.breadcrumb a { color:var(--dim); text-decoration:none; }
+.summary { display:flex; gap:20px; padding:20px 40px; align-items:center; background:var(--card); border-bottom:1px solid var(--rule); flex-wrap:wrap; }
+.summary-metric { text-align:center; }
+.summary-metric .val { font-size:20px; font-weight:800; font-family:var(--mono); }
+.summary-metric .lbl { font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); }
+.grid { display:flex; flex-wrap:wrap; gap:16px; padding:24px 40px; }
+.footer { padding:16px 40px; text-align:center; font-size:10px; color:var(--dim); border-top:1px solid var(--rule); }
+@media(max-width:640px) { .grid { padding:16px; } .header,.nav,.summary { padding-left:16px; padding-right:16px; } }
+@media print { nav,.breadcrumb { display:none !important; } }
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<nav>
+  <a href="home.html">&larr; HOME</a>
+  <a href="rs.html">RS DASHBOARD</a>
+  <a href="report.html">REPORT</a>
+  <a href="backtest_interactive.html">BACKTESTER</a>
+  <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);padding:3px 8px;border-radius:4px;cursor:pointer;font-size:10px;margin-left:auto">&#x1F313;</button>
+</nav>
+<div class="header">
+  <h1>Sector Heat Map</h1>
+  <div style="font-size:13px;opacity:0.7;margin-top:4px">Real-time sector performance with RS candidate overlay</div>
+</div>
+<div class="breadcrumb"><a href="home.html">Home</a> &rsaquo; Sector Heat Map</div>
+
+<div class="summary">
+  <div class="summary-metric">
+    <div class="val" style="color:#10b981">BULLISH</div>
+    <div class="lbl">Market Breadth</div>
+  </div>
+  <div class="summary-metric">
+    <div class="val" style="color:var(--profit)">+0.00%</div>
+    <div class="lbl">Avg Sector Change</div>
+  </div>
+  <div class="summary-metric">
+    <div class="val" style="color:var(--profit)">11</div>
+    <div class="lbl">Sectors Up</div>
+  </div>
+  <div class="summary-metric">
+    <div class="val" style="color:var(--loss)">0</div>
+    <div class="lbl">Sectors Down</div>
+  </div>
+  <div class="summary-metric">
+    <div class="val" style="color:var(--accent)">36</div>
+    <div class="lbl">RS Candidates</div>
+  </div>
+  <div style="margin-left:auto;font-size:10px;color:var(--dim);font-family:var(--mono)">April 03, 2026 11:05 ET</div>
+</div>
+
+<div class="grid">
+        <div style="flex:3;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #f59e0b">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Communication</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLC</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (3)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">SNAP<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">RDDT<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">DJT<span style="font-size:8px;opacity:0.7">2</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">META</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">GOOGL</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">NFLX</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">DIS</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">CMCSA</span></div>
+          </div>
+        </div>
+        <div style="flex:6;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #8b5cf6">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Consumer Discretionary</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLY</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (6)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">GME<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">AMC<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">RIVN<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">NIO<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">CVNA<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">GPRO<span style="font-size:8px;opacity:0.7">3</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">AMZN</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">TSLA</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">HD</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">MCD</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">NKE</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">SBUX</span></div>
+          </div>
+        </div>
+        <div style="flex:5;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #f97316">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Crypto / Digital</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">BITO</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (5)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">RIOT<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">MARA<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">MSTR<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">BITF<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">CLSK<span style="font-size:8px;opacity:0.7">2</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"></div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #06b6d4">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Energy</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLE</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (0)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="font-size:10px;color:var(--dim)">None</span></div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">XOM</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">CVX</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">COP</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">SLB</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">EOG</span></div>
+          </div>
+        </div>
+        <div style="flex:4;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #10b981">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Financials</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLF</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (4)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">SOFI<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">AFRM<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">HOOD<span style="font-size:8px;opacity:0.7">7</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">COIN<span style="font-size:8px;opacity:0.7">9</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">JPM</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">V</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">MA</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">BAC</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">GS</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">BLK</span></div>
+          </div>
+        </div>
+        <div style="flex:4;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #ef4444">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Healthcare</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLV</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (4)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">HIMS<span style="font-size:8px;opacity:0.7">4</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">WOLF<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">NKTR<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">CELH<span style="font-size:8px;opacity:0.7">1</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">UNH</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">LLY</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">JNJ</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">ABBV</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">PFE</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">MRK</span></div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #64748b">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Industrials</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLI</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (1)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">ACHR<span style="font-size:8px;opacity:0.7">2</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">CAT</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">BA</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">HON</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">UPS</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">RTX</span></div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #84cc16">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Materials</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLB</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (0)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="font-size:10px;color:var(--dim)">None</span></div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">LIN</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">APD</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">SHW</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">FCX</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">NEM</span></div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #a855f7">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Real Estate</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLRE</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (2)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">OPEN<span style="font-size:8px;opacity:0.7">1</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">RKT<span style="font-size:8px;opacity:0.7">3</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">AMT</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">PLD</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">EQIX</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">SPG</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">PSA</span></div>
+          </div>
+        </div>
+        <div style="flex:9;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #3b82f6">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Technology</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLK</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (9)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">PLTR<span style="font-size:8px;opacity:0.7">6</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">SMCI<span style="font-size:8px;opacity:0.7">8</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">APP<span style="font-size:8px;opacity:0.7">5</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">IONQ<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">BBAI<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">SOUN<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">ASTS<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">RKLB<span style="font-size:8px;opacity:0.7">2</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">LUNR<span style="font-size:8px;opacity:0.7">2</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">AAPL</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">MSFT</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">NVDA</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">AVGO</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">ORCL</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">CRM</span></div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:280px;background:rgba(16,185,129,0.05);border:1px solid var(--rule);border-radius:12px;padding:16px;border-left:4px solid #ec4899">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:700;font-size:14px">Utilities</div>
+              <div style="font-size:10px;color:var(--dim);font-family:var(--mono)">XLU</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;font-family:var(--mono);color:#10b981">+0.00%</div>
+              <div style="font-size:10px;color:var(--dim)">dampener: 1.00x</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">RS Candidates (2)</div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">FCEL<span style="font-size:8px;opacity:0.7">3</span></span> <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;background:#6b728022;font-size:10px;font-weight:700;font-family:var(--mono);color:#6b7280;border:1px solid #6b728033">LCID<span style="font-size:8px;opacity:0.7">3</span></span> </div>
+          </div>
+          <div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:4px">S&P 500 Leaders</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:9px;color:var(--dim);font-family:var(--mono)">NEE</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">DUK</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">SO</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">AEP</span> <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">D</span></div>
+          </div>
+        </div></div>
+
+<div class="footer">DNSD Capital — Sector Heat Map — April 03, 2026 11:05 ET — Proprietary & Confidential</div>
+</body>
+</html>

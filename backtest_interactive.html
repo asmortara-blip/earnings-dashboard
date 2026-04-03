@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSD Capital — Interactive Backtester</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a3d7c'/><text x='16' y='23' font-size='18' font-weight='bold' fill='white' text-anchor='middle' font-family='serif'>D</text></svg>">
+<script>if(!localStorage.getItem('dnsd_auth'))location.href='home.html';</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#fafaf8; --surface:#f5f3ef; --card:#fff; --rule:#e0ddd8; --ink:#1a1a2e; --dim:#94a3b8; --accent:#0a3d7c; --profit:#10b981; --loss:#ef4444; --warn:#f59e0b; --mono:'JetBrains Mono',monospace; --sans:'Inter',sans-serif; }
+[data-theme="dark"] { --bg:#060a14; --surface:#111827; --card:#1a2035; --rule:#2a3352; --ink:#e5e7eb; --dim:#6b7280; --accent:#3b82f6; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--sans); background:var(--bg); color:var(--ink); min-height:100vh; }
+.header { background:linear-gradient(135deg,#0a3d7c,#1a5fb4); color:#fff; padding:20px 32px; display:flex; justify-content:space-between; align-items:center; }
+.header h1 { font-family:'Playfair Display',serif; font-size:24px; letter-spacing:1px; }
+nav { background:#060a14; padding:8px 32px; display:flex; gap:16px; align-items:center; }
+nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:11px; font-weight:600; letter-spacing:1px; }
+nav a:hover { color:#fff; }
+.breadcrumb { padding:4px 32px; font-size:11px; color:var(--dim); background:var(--surface); border-bottom:1px solid var(--rule); }
+.breadcrumb a { color:var(--dim); text-decoration:none; }
+.layout { display:grid; grid-template-columns:300px 1fr; gap:0; min-height:calc(100vh - 120px); }
+.sidebar { background:var(--card); border-right:1px solid var(--rule); padding:20px; overflow-y:auto; max-height:calc(100vh - 120px); position:sticky; top:0; }
+.main { padding:24px; overflow-y:auto; }
+.section-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--accent); margin:16px 0 8px; }
+.slider-group { margin-bottom:14px; }
+.slider-label { display:flex; justify-content:space-between; font-size:11px; color:var(--dim); margin-bottom:4px; }
+.slider-label .val { font-family:var(--mono); font-weight:700; color:var(--ink); }
+input[type="range"] { width:100%; height:4px; -webkit-appearance:none; background:var(--rule); border-radius:2px; outline:none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent); cursor:pointer; }
+select { width:100%; padding:6px 8px; border:1px solid var(--rule); border-radius:6px; font-size:11px; font-family:var(--sans); background:var(--card); color:var(--ink); }
+.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.metric { background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:16px; text-align:center; }
+.metric .val { font-size:24px; font-weight:800; font-family:var(--mono); }
+.metric .lbl { font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-top:4px; }
+.chart-card { background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:16px; margin-bottom:16px; }
+.chart-title { font-size:12px; font-weight:700; margin-bottom:12px; display:flex; justify-content:space-between; }
+.trade-table { width:100%; border-collapse:collapse; font-size:11px; }
+.trade-table th { background:var(--surface); padding:8px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--dim); }
+.trade-table td { padding:6px 8px; border-bottom:1px solid var(--rule); font-family:var(--mono); }
+.btn { padding:8px 16px; border:none; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; font-family:var(--sans); }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { filter:brightness(1.1); }
+.reset-btn { background:var(--surface); color:var(--dim); border:1px solid var(--rule); }
+@media(max-width:800px) { .layout { grid-template-columns:1fr; } .sidebar { max-height:none; position:static; } .metrics { grid-template-columns:repeat(2,1fr); } }
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<nav>
+  <a href="home.html">&larr; HOME</a>
+  <a href="rs.html">RS DASHBOARD</a>
+  <a href="report.html">REPORT</a>
+  <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);padding:3px 8px;border-radius:4px;cursor:pointer;font-size:10px;margin-left:auto">&#x1F313;</button>
+</nav>
+<div class="header">
+  <div><h1>Interactive Backtester</h1><div style="font-size:12px;opacity:0.7;margin-top:4px">Adjust parameters and see results in real-time</div></div>
+  <div style="font-size:11px;opacity:0.6;font-family:var(--mono)">61 trades loaded</div>
+</div>
+<div class="breadcrumb"><a href="home.html">Home</a> &rsaquo; Interactive Backtester</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="section-title">Score Threshold</div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Min RS Score</span><span class="val" id="v-score">65</span></div>
+      <input type="range" id="s-score" min="50" max="90" value="65" step="1" oninput="update()">
+    </div>
+
+    <div class="section-title">Risk Management</div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Stop Loss %</span><span class="val" id="v-stop">-5.0%</span></div>
+      <input type="range" id="s-stop" min="2" max="10" value="5" step="0.5" oninput="update()">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Max Hold (min)</span><span class="val" id="v-hold">300</span></div>
+      <input type="range" id="s-hold" min="30" max="500" value="300" step="15" oninput="update()">
+    </div>
+
+    <div class="section-title">Score Weights</div>
+    <div class="slider-group">
+      <div class="slider-label"><span>SV (Sentiment Velocity)</span><span class="val" id="v-sv">35%</span></div>
+      <input type="range" id="s-sv" min="0" max="60" value="35" step="5" oninput="update()">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>TQ (Trigger Quality)</span><span class="val" id="v-tq">20%</span></div>
+      <input type="range" id="s-tq" min="0" max="60" value="20" step="5" oninput="update()">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>SL (Sentiment Level)</span><span class="val" id="v-sl">15%</span></div>
+      <input type="range" id="s-sl" min="0" max="60" value="15" step="5" oninput="update()">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>VC (Volume Confirm)</span><span class="val" id="v-vc">15%</span></div>
+      <input type="range" id="s-vc" min="0" max="60" value="15" step="5" oninput="update()">
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>SA (Short Amplifier)</span><span class="val" id="v-sa">15%</span></div>
+      <input type="range" id="s-sa" min="0" max="60" value="15" step="5" oninput="update()">
+    </div>
+    <div id="weight-warn" style="font-size:10px;color:var(--warn);display:none;margin-top:4px">Weights don't sum to 100%</div>
+
+    <div class="section-title">Filters</div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Direction</span></div>
+      <select id="f-dir" onchange="update()">
+        <option value="both">Both</option><option value="long">Long Only</option><option value="short">Short Only</option>
+      </select>
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Trigger Type</span></div>
+      <select id="f-trigger" onchange="update()">
+        <option value="all">All Triggers</option><option value="analyst_downgrade">Analyst Downgrade</option><option value="analyst_upgrade_bold">Analyst Upgrade Bold</option><option value="influencer_post_high">Influencer Post High</option><option value="meme_community">Meme Community</option><option value="partnership_announcement">Partnership Announcement</option><option value="press_release_positive">Press Release Positive</option>
+      </select>
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span>Ticker</span></div>
+      <select id="f-ticker" onchange="update()">
+        <option value="all">All Tickers</option><option value="AFRM">AFRM</option><option value="APP">APP</option><option value="CELH">CELH</option><option value="COIN">COIN</option><option value="GME">GME</option><option value="HIMS">HIMS</option><option value="HOOD">HOOD</option><option value="NIO">NIO</option><option value="NVDA">NVDA</option><option value="PLTR">PLTR</option><option value="RDDT">RDDT</option><option value="RIOT">RIOT</option><option value="RIVN">RIVN</option><option value="SMCI">SMCI</option><option value="SNAP">SNAP</option><option value="TSLA">TSLA</option><option value="WOLF">WOLF</option>
+      </select>
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="resetDefaults()">Reset Defaults</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="metrics">
+      <div class="metric"><div class="val" id="m-trades" style="color:var(--accent)">0</div><div class="lbl">Trades</div></div>
+      <div class="metric"><div class="val" id="m-wr" style="color:var(--profit)">0%</div><div class="lbl">Win Rate</div></div>
+      <div class="metric"><div class="val" id="m-pnl">0%</div><div class="lbl">Total P&L</div></div>
+      <div class="metric"><div class="val" id="m-sharpe" style="color:var(--accent)">0</div><div class="lbl">Sharpe</div></div>
+    </div>
+    <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+      <div class="metric"><div class="val" id="m-wl">0x</div><div class="lbl">W/L Ratio</div></div>
+      <div class="metric"><div class="val" id="m-dd" style="color:var(--loss)">0%</div><div class="lbl">Max DD</div></div>
+      <div class="metric"><div class="val" id="m-exp">0%</div><div class="lbl">Expectancy</div></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title"><span>Equity Curve</span><span id="equity-label" style="color:var(--dim);font-size:10px"></span></div>
+      <div style="height:280px"><canvas id="chart-equity"></canvas></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="chart-card">
+        <div class="chart-title">P&L Distribution</div>
+        <div style="height:200px"><canvas id="chart-dist"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Per-Ticker Performance</div>
+        <div style="height:200px"><canvas id="chart-ticker"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title"><span>Filtered Trade Log</span><span id="trade-count" style="color:var(--dim);font-size:10px"></span></div>
+      <div style="max-height:400px;overflow-y:auto">
+        <table class="trade-table">
+          <thead><tr><th>Date</th><th>Ticker</th><th>Dir</th><th>RS</th><th>New RS</th><th>P&L</th><th>Hold</th><th>Exit</th></tr></thead>
+          <tbody id="trade-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var ALL_TRADES = [{"sv": 70.0, "tq": 90.0, "sl": 50.0, "vc": 85.0, "sa": 15.0, "rs_score": 76.7, "window": "W1", "trigger_type": "analyst_upgrade_bold", "direction": "long", "pnl_pct": -0.47, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "TSLA", "rvol": 1.47, "date": "2023-01-26", "source": "paper"}, {"sv": 70.0, "tq": 80.0, "sl": 50.0, "vc": 85.0, "sa": 35.0, "rs_score": 78.3, "window": "W1", "trigger_type": "meme_community", "direction": "long", "pnl_pct": 2.27, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "PLTR", "rvol": 8.01, "date": "2023-02-14", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 90.7, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 4.94, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "RIOT", "rvol": 1.04, "date": "2023-03-17", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 70.8, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": -0.42, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 1.97, "date": "2023-04-24", "source": "paper"}, {"sv": 70.0, "tq": 80.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 86.1, "window": "W1", "trigger_type": "meme_community", "direction": "long", "pnl_pct": 2.93, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 8.6, "date": "2023-05-03", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 35.0, "rs_score": 77.5, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 6.09, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "PLTR", "rvol": 4.38, "date": "2023-05-18", "source": "paper"}, {"sv": 95.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 95.7, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -4.66, "hold_minutes": 27.0, "exit_reason": "stop", "ticker": "SMCI", "rvol": 5.34, "date": "2023-05-25", "source": "paper"}, {"sv": 95.0, "tq": 80.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 95.8, "window": "W1", "trigger_type": "meme_community", "direction": "short", "pnl_pct": -2.6, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "COIN", "rvol": 13.72, "date": "2023-06-06", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 35.0, "rs_score": 72.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -2.81, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "AFRM", "rvol": 4.49, "date": "2023-06-07", "source": "paper"}, {"sv": 55.0, "tq": 80.0, "sl": 50.0, "vc": 70.0, "sa": 85.0, "rs_score": 81.9, "window": "W1", "trigger_type": "meme_community", "direction": "long", "pnl_pct": -1.35, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "GME", "rvol": 0.94, "date": "2023-06-07", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 85.0, "rs_score": 103.7, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -3.04, "hold_minutes": 39.0, "exit_reason": "stop", "ticker": "GME", "rvol": 2.84, "date": "2023-06-13", "source": "paper"}, {"sv": 95.0, "tq": 80.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 82.0, "window": "W1", "trigger_type": "meme_community", "direction": "long", "pnl_pct": 1.4, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "WOLF", "rvol": 17.53, "date": "2023-07-05", "source": "paper"}, {"sv": 85.0, "tq": 80.0, "sl": 50.0, "vc": 100.0, "sa": 35.0, "rs_score": 73.9, "window": "W1", "trigger_type": "meme_community", "direction": "short", "pnl_pct": -0.35, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SNAP", "rvol": 5.23, "date": "2023-07-26", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 91.3, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 4.84, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 4.76, "date": "2023-08-09", "source": "paper"}, {"sv": 85.0, "tq": 90.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 78.7, "window": "W1", "trigger_type": "influencer_post_high", "direction": "short", "pnl_pct": 0.69, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "WOLF", "rvol": 13.29, "date": "2023-08-17", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 83.2, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 1.11, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "COIN", "rvol": 3.57, "date": "2023-10-24", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 70.9, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 2.38, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "WOLF", "rvol": 14.03, "date": "2023-10-31", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 35.0, "rs_score": 86.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -1.9, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "PLTR", "rvol": 2.7, "date": "2023-11-02", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 70.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 1.77, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HOOD", "rvol": 6.57, "date": "2023-11-08", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 35.0, "rs_score": 75.8, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -1.91, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "AFRM", "rvol": 3.64, "date": "2023-11-09", "source": "paper"}, {"sv": 70.0, "tq": 80.0, "sl": 50.0, "vc": 85.0, "sa": 15.0, "rs_score": 69.5, "window": "W1", "trigger_type": "meme_community", "direction": "long", "pnl_pct": 9.11, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "APP", "rvol": 21.58, "date": "2023-11-09", "source": "paper"}, {"sv": 55.0, "tq": 90.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 74.6, "window": "W1", "trigger_type": "analyst_upgrade_bold", "direction": "long", "pnl_pct": 7.16, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 9.95, "date": "2024-01-19", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 67.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -6.15, "hold_minutes": 45.0, "exit_reason": "stop", "ticker": "SMCI", "rvol": 7.45, "date": "2024-01-22", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 69.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 1.86, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "WOLF", "rvol": 9.06, "date": "2024-02-01", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 15.0, "rs_score": 70.2, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 0.05, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "APP", "rvol": 10.85, "date": "2024-02-15", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 90.2, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -3.99, "hold_minutes": 15.0, "exit_reason": "stop", "ticker": "COIN", "rvol": 5.41, "date": "2024-02-16", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 67.3, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 7.3, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 1.08, "date": "2024-04-19", "source": "paper"}, {"sv": 40.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 67.2, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 3.07, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "RIOT", "rvol": 2.55, "date": "2024-04-22", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 70.5, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 3.02, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "WOLF", "rvol": 6.93, "date": "2024-05-02", "source": "paper"}, {"sv": 70.0, "tq": 90.0, "sl": 50.0, "vc": 85.0, "sa": 85.0, "rs_score": 97.3, "window": "W1", "trigger_type": "influencer_post_high", "direction": "short", "pnl_pct": -3.19, "hold_minutes": 15.0, "exit_reason": "stop", "ticker": "GME", "rvol": 2.3, "date": "2024-05-03", "source": "paper"}, {"sv": 70.0, "tq": 90.0, "sl": 50.0, "vc": 85.0, "sa": 35.0, "rs_score": 82.9, "window": "W1", "trigger_type": "analyst_upgrade_bold", "direction": "long", "pnl_pct": 0.49, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "RDDT", "rvol": 10.06, "date": "2024-05-08", "source": "paper"}, {"sv": 95.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 85.0, "rs_score": 113.0, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 11.18, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "GME", "rvol": 21.53, "date": "2024-05-15", "source": "paper"}, {"sv": 55.0, "tq": 90.0, "sl": 50.0, "vc": 70.0, "sa": 100.0, "rs_score": 88.9, "window": "W1", "trigger_type": "influencer_post_high", "direction": "long", "pnl_pct": 10.06, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HIMS", "rvol": 15.06, "date": "2024-05-20", "source": "paper"}, {"sv": 85.0, "tq": 90.0, "sl": 50.0, "vc": 100.0, "sa": 85.0, "rs_score": 121.6, "window": "W1", "trigger_type": "influencer_post_high", "direction": "short", "pnl_pct": 22.47, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "GME", "rvol": 12.25, "date": "2024-06-07", "source": "paper"}, {"sv": 95.0, "tq": 80.0, "sl": 50.0, "vc": 100.0, "sa": 15.0, "rs_score": 73.7, "window": "W1", "trigger_type": "meme_community", "direction": "short", "pnl_pct": -1.88, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "NVDA", "rvol": 7.25, "date": "2024-06-10", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 67.1, "window": "W1", "trigger_type": "partnership_announcement", "direction": "long", "pnl_pct": 5.16, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "RIVN", "rvol": 1.87, "date": "2024-06-25", "source": "paper"}, {"sv": 70.0, "tq": 90.0, "sl": 50.0, "vc": 85.0, "sa": 15.0, "rs_score": 77.7, "window": "W1", "trigger_type": "analyst_upgrade_bold", "direction": "long", "pnl_pct": -1.7, "hold_minutes": 15.0, "exit_reason": "stop", "ticker": "TSLA", "rvol": 2.59, "date": "2024-07-24", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 89.4, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": -4.1, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HOOD", "rvol": 7.73, "date": "2024-08-05", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 81.3, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 3.72, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 3.56, "date": "2024-08-07", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 85.4, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 7.37, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 3.86, "date": "2024-08-28", "source": "paper"}, {"sv": 95.0, "tq": 80.0, "sl": 50.0, "vc": 100.0, "sa": 35.0, "rs_score": 77.1, "window": "W1", "trigger_type": "meme_community", "direction": "long", "pnl_pct": 7.67, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "AFRM", "rvol": 20.59, "date": "2024-08-29", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 85.0, "rs_score": 78.5, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -0.88, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "GME", "rvol": 0.56, "date": "2024-08-30", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 85.0, "rs_score": 95.8, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 1.69, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "GME", "rvol": 5.46, "date": "2024-09-11", "source": "paper"}, {"sv": 95.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 93.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 0.22, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "SMCI", "rvol": 3.32, "date": "2024-10-01", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 100.0, "rs_score": 97.5, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 4.87, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HIMS", "rvol": 6.13, "date": "2024-10-03", "source": "paper"}, {"sv": 95.0, "tq": 80.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 94.9, "window": "W1", "trigger_type": "meme_community", "direction": "short", "pnl_pct": -7.0, "hold_minutes": 17.0, "exit_reason": "stop", "ticker": "SMCI", "rvol": 6.93, "date": "2024-10-30", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 68.5, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 4.39, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HOOD", "rvol": 4.29, "date": "2024-10-31", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 100.0, "rs_score": 83.9, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 6.39, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HIMS", "rvol": 4.29, "date": "2024-11-05", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 35.0, "rs_score": 77.0, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 1.57, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "PLTR", "rvol": 7.13, "date": "2024-11-05", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 91.1, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 4.38, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "COIN", "rvol": 4.67, "date": "2024-11-06", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 81.0, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 5.81, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HOOD", "rvol": 2.47, "date": "2024-11-06", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 76.2, "window": "W1", "trigger_type": "press_release_positive", "direction": "short", "pnl_pct": 0.19, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "WOLF", "rvol": 1.8, "date": "2024-11-07", "source": "paper"}, {"sv": 70.0, "tq": 75.0, "sl": 50.0, "vc": 85.0, "sa": 60.0, "rs_score": 81.6, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 5.59, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "COIN", "rvol": 3.19, "date": "2024-11-11", "source": "paper"}, {"sv": 40.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 100.0, "rs_score": 80.0, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 5.4, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "HIMS", "rvol": 5.35, "date": "2024-11-11", "source": "paper"}, {"sv": 55.0, "tq": 75.0, "sl": 50.0, "vc": 70.0, "sa": 60.0, "rs_score": 75.2, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 1.76, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "RIOT", "rvol": 2.82, "date": "2024-11-11", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 100.0, "sa": 60.0, "rs_score": 101.9, "window": "W1", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": 2.17, "hold_minutes": 75.0, "exit_reason": "time", "ticker": "RIOT", "rvol": 1.92, "date": "2024-12-12", "source": "paper"}, {"sv": 85.0, "tq": 80.0, "sl": 50.0, "vc": 25.0, "sa": 100.0, "rs_score": 68.2, "window": "late_morning", "trigger_type": "analyst_upgrade_bold", "direction": "long", "pnl_pct": 17.3438, "hold_minutes": 263.0, "exit_reason": "shutdown", "ticker": "HIMS", "rvol": 1.0, "date": "2026-03-11", "source": "paper"}, {"sv": 93.0, "tq": 85.0, "sl": 50.0, "vc": 30.0, "sa": 100.0, "rs_score": 61.8, "window": "late_morning", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -5.4955, "hold_minutes": 12211.0, "exit_reason": "stop_loss", "ticker": "RDDT", "rvol": 0.76, "date": "2026-03-17", "source": "paper"}, {"sv": 85.0, "tq": 75.0, "sl": 50.0, "vc": 30.0, "sa": 60.0, "rs_score": 60.4, "window": "pre_market", "trigger_type": "press_release_positive", "direction": "long", "pnl_pct": -5.6673, "hold_minutes": 14934.0, "exit_reason": "stop_loss", "ticker": "NIO", "rvol": 1.0, "date": "2026-03-20", "source": "paper"}, {"sv": 75.0, "tq": 75.0, "sl": 50.0, "vc": 25.0, "sa": 81.6, "rs_score": 60.2, "window": "late_morning", "trigger_type": "analyst_downgrade", "direction": "short", "pnl_pct": 20.4016, "hold_minutes": 14934.0, "exit_reason": "partial_profit", "ticker": "HIMS", "rvol": 1.0, "date": "2026-03-20", "source": "paper"}, {"sv": 75.0, "tq": 80.0, "sl": 50.0, "vc": 30.0, "sa": 100.0, "rs_score": 63.6, "window": "pre_market", "trigger_type": "meme_community", "direction": "long", "pnl_pct": -0.4454, "hold_minutes": 116.0, "exit_reason": "time_exit", "ticker": "CELH", "rvol": 1.0, "date": "2026-03-30", "source": "paper"}];
+var equityChart, distChart, tickerChart;
+
+function recalcScore(t, wSV, wTQ, wSL, wVC, wSA) {
+  var total = wSV + wTQ + wSL + wVC + wSA;
+  if (total === 0) return 0;
+  return (t.sv * wSV + t.tq * wTQ + t.sl * wSL + t.vc * wVC + t.sa * wSA) / total;
+}
+
+function update() {
+  var minScore = parseFloat(document.getElementById('s-score').value);
+  var maxStop = -parseFloat(document.getElementById('s-stop').value);
+  var maxHold = parseFloat(document.getElementById('s-hold').value);
+  var wSV = parseFloat(document.getElementById('s-sv').value);
+  var wTQ = parseFloat(document.getElementById('s-tq').value);
+  var wSL = parseFloat(document.getElementById('s-sl').value);
+  var wVC = parseFloat(document.getElementById('s-vc').value);
+  var wSA = parseFloat(document.getElementById('s-sa').value);
+  var dirFilter = document.getElementById('f-dir').value;
+  var trigFilter = document.getElementById('f-trigger').value;
+  var tickFilter = document.getElementById('f-ticker').value;
+
+  // Update labels
+  document.getElementById('v-score').textContent = minScore;
+  document.getElementById('v-stop').textContent = maxStop.toFixed(1) + '%';
+  document.getElementById('v-hold').textContent = maxHold;
+  document.getElementById('v-sv').textContent = wSV + '%';
+  document.getElementById('v-tq').textContent = wTQ + '%';
+  document.getElementById('v-sl').textContent = wSL + '%';
+  document.getElementById('v-vc').textContent = wVC + '%';
+  document.getElementById('v-sa').textContent = wSA + '%';
+
+  // Weight warning
+  var totalW = wSV + wTQ + wSL + wVC + wSA;
+  document.getElementById('weight-warn').style.display = totalW !== 100 ? 'block' : 'none';
+
+  // Filter trades
+  var filtered = ALL_TRADES.filter(function(t) {
+    var newRS = recalcScore(t, wSV, wTQ, wSL, wVC, wSA);
+    if (newRS < minScore) return false;
+    if (t.pnl_pct < maxStop) return false;
+    if (t.hold_minutes > maxHold) return false;
+    if (dirFilter !== 'both' && t.direction !== dirFilter) return false;
+    if (trigFilter !== 'all' && t.trigger_type !== trigFilter) return false;
+    if (tickFilter !== 'all' && t.ticker !== tickFilter) return false;
+    t._newRS = newRS;
+    return true;
+  });
+
+  // Compute metrics
+  var n = filtered.length;
+  var wins = filtered.filter(function(t) { return t.pnl_pct > 0; });
+  var losses = filtered.filter(function(t) { return t.pnl_pct <= 0; });
+  var wr = n > 0 ? (wins.length / n * 100) : 0;
+  var totalPnl = filtered.reduce(function(s, t) { return s + t.pnl_pct; }, 0);
+  var avgWin = wins.length > 0 ? wins.reduce(function(s, t) { return s + t.pnl_pct; }, 0) / wins.length : 0;
+  var avgLoss = losses.length > 0 ? losses.reduce(function(s, t) { return s + t.pnl_pct; }, 0) / losses.length : 0;
+  var wlRatio = avgLoss !== 0 ? Math.abs(avgWin / avgLoss) : 0;
+  var expectancy = n > 0 ? totalPnl / n : 0;
+
+  // Sharpe (simplified)
+  var mean = expectancy;
+  var variance = n > 1 ? filtered.reduce(function(s, t) { return s + Math.pow(t.pnl_pct - mean, 2); }, 0) / (n - 1) : 0;
+  var sharpe = variance > 0 ? (mean / Math.sqrt(variance)) * Math.sqrt(252) : 0;
+
+  // Max DD
+  var equity = [100000];
+  var peak = 100000;
+  var maxDD = 0;
+  filtered.forEach(function(t) {
+    var newVal = equity[equity.length - 1] * (1 + t.pnl_pct / 100);
+    equity.push(newVal);
+    if (newVal > peak) peak = newVal;
+    var dd = (newVal - peak) / peak * 100;
+    if (dd < maxDD) maxDD = dd;
+  });
+
+  // Update metric cards
+  document.getElementById('m-trades').textContent = n;
+  var wrEl = document.getElementById('m-wr');
+  wrEl.textContent = wr.toFixed(1) + '%';
+  wrEl.style.color = wr >= 55 ? 'var(--profit)' : 'var(--loss)';
+  var pnlEl = document.getElementById('m-pnl');
+  pnlEl.textContent = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(1) + '%';
+  pnlEl.style.color = totalPnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+  document.getElementById('m-sharpe').textContent = sharpe.toFixed(2);
+  document.getElementById('m-wl').textContent = wlRatio.toFixed(2) + 'x';
+  document.getElementById('m-dd').textContent = maxDD.toFixed(1) + '%';
+  document.getElementById('m-exp').textContent = (expectancy >= 0 ? '+' : '') + expectancy.toFixed(2) + '%';
+  document.getElementById('equity-label').textContent = '$' + Math.round(equity[equity.length - 1]).toLocaleString();
+  document.getElementById('trade-count').textContent = n + ' trades';
+
+  // Equity chart
+  var eqLabels = equity.map(function(_, i) { return i; });
+  if (equityChart) equityChart.destroy();
+  equityChart = new Chart(document.getElementById('chart-equity'), {
+    type: 'line',
+    data: { labels: eqLabels, datasets: [{ data: equity, borderColor: '#0a3d7c', backgroundColor: 'rgba(10,61,124,0.06)', fill: true, tension: 0.3, pointRadius: 1, borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { y: { ticks: { callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; } } }, x: { display: false } } }
+  });
+
+  // Distribution chart
+  var buckets = [0,0,0,0,0,0,0,0,0];
+  var bucketLabels = ['<-5%','-5 to -3','-3 to -1','-1 to 0','0 to 1','1 to 3','3 to 5','5 to 10','>10%'];
+  filtered.forEach(function(t) {
+    var p = t.pnl_pct;
+    if (p < -5) buckets[0]++;
+    else if (p < -3) buckets[1]++;
+    else if (p < -1) buckets[2]++;
+    else if (p < 0) buckets[3]++;
+    else if (p < 1) buckets[4]++;
+    else if (p < 3) buckets[5]++;
+    else if (p < 5) buckets[6]++;
+    else if (p < 10) buckets[7]++;
+    else buckets[8]++;
+  });
+  var distColors = buckets.map(function(_, i) { return i < 4 ? '#ef4444' : '#10b981'; });
+  if (distChart) distChart.destroy();
+  distChart = new Chart(document.getElementById('chart-dist'), {
+    type: 'bar',
+    data: { labels: bucketLabels, datasets: [{ data: buckets, backgroundColor: distColors, borderRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { y: { ticks: { stepSize: 1 } }, x: { ticks: { font: { size: 9 } } } } }
+  });
+
+  // Ticker chart
+  var tickerMap = {};
+  filtered.forEach(function(t) {
+    if (!tickerMap[t.ticker]) tickerMap[t.ticker] = { total: 0, n: 0 };
+    tickerMap[t.ticker].total += t.pnl_pct;
+    tickerMap[t.ticker].n++;
+  });
+  var tkrEntries = Object.entries(tickerMap).sort(function(a, b) { return b[1].total - a[1].total; }).slice(0, 12);
+  var tkrLabels = tkrEntries.map(function(e) { return e[0]; });
+  var tkrPnl = tkrEntries.map(function(e) { return Math.round(e[1].total * 100) / 100; });
+  var tkrColors = tkrPnl.map(function(v) { return v >= 0 ? '#10b981' : '#ef4444'; });
+  if (tickerChart) tickerChart.destroy();
+  tickerChart = new Chart(document.getElementById('chart-ticker'), {
+    type: 'bar',
+    data: { labels: tkrLabels, datasets: [{ data: tkrPnl, backgroundColor: tkrColors, borderRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } },
+      scales: { x: { ticks: { callback: function(v) { return v + '%'; } } } } }
+  });
+
+  // Trade table
+  var tbody = document.getElementById('trade-body');
+  tbody.innerHTML = filtered.slice(-50).reverse().map(function(t) {
+    var pColor = t.pnl_pct > 0 ? 'var(--profit)' : 'var(--loss)';
+    var newRS = t._newRS || t.rs_score;
+    return '<tr>' +
+      '<td style="color:var(--dim)">' + (t.date || '-') + '</td>' +
+      '<td style="font-weight:700;color:var(--accent)">' + t.ticker + '</td>' +
+      '<td>' + t.direction.toUpperCase() + '</td>' +
+      '<td>' + t.rs_score.toFixed(0) + '</td>' +
+      '<td style="font-weight:700">' + newRS.toFixed(0) + '</td>' +
+      '<td style="color:' + pColor + ';font-weight:700">' + (t.pnl_pct > 0 ? '+' : '') + t.pnl_pct.toFixed(2) + '%</td>' +
+      '<td style="color:var(--dim)">' + Math.round(t.hold_minutes) + 'm</td>' +
+      '<td style="color:var(--dim);font-size:10px">' + t.exit_reason + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+function resetDefaults() {
+  document.getElementById('s-score').value = 65;
+  document.getElementById('s-stop').value = 5;
+  document.getElementById('s-hold').value = 300;
+  document.getElementById('s-sv').value = 35;
+  document.getElementById('s-tq').value = 20;
+  document.getElementById('s-sl').value = 15;
+  document.getElementById('s-vc').value = 15;
+  document.getElementById('s-sa').value = 15;
+  document.getElementById('f-dir').value = 'both';
+  document.getElementById('f-trigger').value = 'all';
+  document.getElementById('f-ticker').value = 'all';
+  update();
+}
+
+// Initial render
+update();
+</script>
+</body>
+</html>
