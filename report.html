@@ -599,7 +599,7 @@ body {
     <div class="confidential">Confidential</div>
     <div class="firm-name">DNSD Capital</div>
     <div class="report-title">Retail Sentiment Momentum Strategy &mdash; Institutional Performance Report</div>
-    <div class="report-date">April 04, 2026 &nbsp;&bull;&nbsp; <span>06:59 PM ET</span> &nbsp;&bull;&nbsp; Q2 2026</div>
+    <div class="report-date">April 04, 2026 &nbsp;&bull;&nbsp; <span>07:01 PM ET</span> &nbsp;&bull;&nbsp; Q2 2026</div>
   </div>
   <hr class="masthead-rule">
 
@@ -631,7 +631,11 @@ body {
     <div class="toc-item"><span class="toc-num">XXIII.</span> <a href="#sec-exit">Exit Reason Breakdown</a></div>
     <div class="toc-item"><span class="toc-num">XXIV.</span> <a href="#sec-corr">Correlation Analysis</a></div>
     <div class="toc-item"><span class="toc-num">XXV.</span> <a href="#sec-alpha">Alpha Decay Analysis</a></div>
-    <div class="toc-item"><span class="toc-num">XXVI.</span> <a href="#sec-conclusions">Conclusions &amp; Outlook</a></div>
+    <div class="toc-item"><span class="toc-num">XXVI.</span> <a href="#sec-monthly-chart">Monthly P&amp;L Chart</a></div>
+    <div class="toc-item"><span class="toc-num">XXVII.</span> <a href="#sec-nn">Neural Network Models</a></div>
+    <div class="toc-item"><span class="toc-num">XXVIII.</span> <a href="#sec-grades">Trade Quality Grades</a></div>
+    <div class="toc-item"><span class="toc-num">XXIX.</span> <a href="#sec-stress">Stress Scenario Analysis</a></div>
+    <div class="toc-item"><span class="toc-num">XXX.</span> <a href="#sec-conclusions">Conclusions &amp; Outlook</a></div>
     <div class="toc-item"><span class="toc-num">XXVII.</span> <a href="#sec-tradelog">Appendix A: Complete Trade Log</a></div>
     <div class="toc-item"><span class="toc-num">XXVIII.</span> <a href="#sec-methodology">Appendix B: Methodology</a></div>
     <div class="toc-item"><span class="toc-num">XXIX.</span> <a href="#sec-glossary">Appendix C: Glossary</a></div>
@@ -1398,10 +1402,105 @@ body {
   <div class="page-break"></div>
 
   <!-- ================================================================== -->
-  <!-- XXVI. CONCLUSIONS & OUTLOOK -->
+  <!-- XXVI. MONTHLY P&L CHART -->
+  <!-- ================================================================== -->
+  <div class="section" id="sec-monthly-chart">
+    <h2 class="section-hdr"><span class="num">XXVI.</span> Monthly P&amp;L Chart</h2>
+    <p class="narrative">Visual representation of monthly returns enables rapid identification of seasonal patterns,
+    drawdown clusters, and performance consistency. Green bars indicate profitable months; red bars indicate losing months.</p>
+    <div class="card">
+      <div class="card-title">Monthly P&amp;L (%)</div>
+      <div style="height:280px;position:relative"><canvas id="monthlyChart" data-labels='["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-10", "2023-11", "2024-01", "2024-02", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2026-03"]' data-pnl='[-0.47, 2.27, 4.94, -0.42, 4.36, -9.8, 1.05, 5.53, 3.49, 7.07, 1.01, -2.08, 10.37, 21.56, 25.75, -1.7, 13.78, 1.69, 2.48, 31.09, 2.17, 46.46]' data-colors='["#c41e1e", "#0a7c42", "#0a7c42", "#c41e1e", "#0a7c42", "#c41e1e", "#0a7c42", "#0a7c42", "#0a7c42", "#0a7c42", "#0a7c42", "#c41e1e", "#0a7c42", "#0a7c42", "#0a7c42", "#c41e1e", "#0a7c42", "#0a7c42", "#0a7c42", "#0a7c42", "#0a7c42", "#0a7c42"]'></canvas></div>
+    </div>
+  </div>
+
+  <hr class="thin-rule">
+
+  <!-- ================================================================== -->
+  <!-- XXVII. NEURAL NETWORK MODELS -->
+  <!-- ================================================================== -->
+  <div class="section" id="sec-nn">
+    <h2 class="section-hdr"><span class="num">XXVII.</span> Neural Network Models</h2>
+    <p class="narrative">The RS strategy employs three neural network models trained on historical data to enhance
+    signal scoring, regime detection, and position management. These models operate in ensemble with the existing
+    sklearn logistic regression, with automatic fallback if the NN is unavailable or underperforming.</p>
+    <div class="card" style="overflow-x:auto;">
+      <div class="card-title">Model Performance Summary</div>
+      <table class="inst-table">
+        <thead><tr><th>Model</th><th class="r">Status</th><th class="r">Metric</th><th class="r">Training Data</th></tr></thead>
+        <tbody><tr><td class="mono-cell">Regime</td><td class="num-cell">TRAINED</td><td class="num-cell">68.2%%</td><td class="num-cell">602</td></tr>
+<tr><td class="mono-cell">Win Prob</td><td class="num-cell">TRAINED</td><td class="num-cell">0.5814</td><td class="num-cell">679 + 1000</td></tr>
+<tr><td class="mono-cell">Hold Time</td><td class="num-cell">TRAINED</td><td class="num-cell">12.6 min</td><td class="num-cell">62</td></tr>
+</tbody>
+      </table>
+    </div>
+    <p class="narrative" style="margin-top:1rem;">Historical database: <strong>30,148 rows / 69 tickers</strong>.
+    Walk-forward validation currently recommends <strong>sklearn</strong> over the NN for win probability
+    (57.5% vs 50% accuracy on 62-trade dataset). The NN is expected to outperform as training data grows
+    beyond 200+ real trades.</p>
+  </div>
+
+  <hr class="thin-rule">
+
+  <!-- ================================================================== -->
+  <!-- XXVIII. TRADE QUALITY GRADES -->
+  <!-- ================================================================== -->
+  <div class="section" id="sec-grades">
+    <h2 class="section-hdr"><span class="num">XXVIII.</span> Trade Quality Grades</h2>
+    <p class="narrative">Each trade is assigned a quality grade based on realized P&amp;L magnitude. Grade A
+    represents exceptional execution with returns exceeding +5%, while Grade F indicates significant losses
+    beyond -2%. The grade distribution reveals the overall quality profile of the strategy's trade selection.</p>
+    <div class="card" style="overflow-x:auto;">
+      <div class="card-title">Trade Quality Distribution</div>
+      <table class="inst-table">
+        <thead><tr><th>Grade</th><th class="r">Count</th><th class="r">%</th><th>Description</th></tr></thead>
+        <tbody><tr><td class="mono-cell bold num-pos">A</td><td class="num-cell">17</td><td class="num-cell">27%%</td><td style="font-size:0.75rem;color:#666">>+5% (exceptional)</td></tr>
+<tr><td class="mono-cell bold num-pos">B</td><td class="num-cell">12</td><td class="num-cell">19%%</td><td style="font-size:0.75rem;color:#666">+2-5% (strong)</td></tr>
+<tr><td class="mono-cell bold num-neu">C</td><td class="num-cell">12</td><td class="num-cell">19%%</td><td style="font-size:0.75rem;color:#666">0-2% (marginal)</td></tr>
+<tr><td class="mono-cell bold num-neg">D</td><td class="num-cell">10</td><td class="num-cell">16%%</td><td style="font-size:0.75rem;color:#666">0 to -2% (minor loss)</td></tr>
+<tr><td class="mono-cell bold num-neg">F</td><td class="num-cell">11</td><td class="num-cell">18%%</td><td style="font-size:0.75rem;color:#666"><-2% (significant loss)</td></tr>
+</tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="thin-rule">
+
+  <!-- ================================================================== -->
+  <!-- XXIX. STRESS SCENARIO ANALYSIS -->
+  <!-- ================================================================== -->
+  <div class="section" id="sec-stress">
+    <h2 class="section-hdr"><span class="num">XXIX.</span> Stress Scenario Analysis</h2>
+    <p class="narrative">Stress testing applies historical crisis scenarios to estimate the strategy's potential
+    drawdown under extreme conditions. The RS strategy's regime-adaptive controls (VIX-based dampener, circuit
+    breaker at VIX&gt;35, macro regime suppression) provide natural hedging that limits exposure during crises.
+    These estimates are conservative approximations, not backtested results.</p>
+    <div class="card" style="overflow-x:auto;">
+      <div class="card-title">Historical Crisis Scenario Impact</div>
+      <table class="inst-table">
+        <thead><tr><th>Scenario</th><th class="r">SPY Impact</th><th class="r">Est. RS Impact</th><th>Strategy Response</th></tr></thead>
+        <tbody><tr><td style="font-weight:600">2008 Financial Crisis</td><td class="num-cell num-neg">-38%%</td><td class="num-cell num-neg">-11%%</td><td style="font-size:0.75rem;color:#666">CIRCUIT BREAK — all signals suppressed</td></tr>
+<tr><td style="font-weight:600">2020 COVID Crash</td><td class="num-cell num-neg">-34%%</td><td class="num-cell num-neg">-10%%</td><td style="font-size:0.75rem;color:#666">CIRCUIT BREAK — all signals suppressed</td></tr>
+<tr><td style="font-weight:600">2022 Rate Hike Bear</td><td class="num-cell num-neg">-25%%</td><td class="num-cell num-neg">-10%%</td><td style="font-size:0.75rem;color:#666">RISK_OFF — 0.70x dampener, reduced sizing</td></tr>
+<tr><td style="font-weight:600">Flash Crash (May 2010)</td><td class="num-cell num-neg">-9%%</td><td class="num-cell num-neg">-4%%</td><td style="font-size:0.75rem;color:#666">VOLATILE — short signals favored</td></tr>
+<tr><td style="font-weight:600">Meme Squeeze (Jan 2021)</td><td class="num-cell num-neg">0%%</td><td class="num-cell num-pos">+0%%</td><td style="font-size:0.75rem;color:#666">OPPORTUNITY — extreme RS signals, high conviction</td></tr>
+</tbody>
+      </table>
+    </div>
+    <p class="narrative" style="margin-top:1rem;"><strong>Key Insight:</strong> The strategy's maximum estimated
+    drawdown under the worst historical scenario (2008 Financial Crisis) is approximately -11%, compared to
+    SPY's -38%. This is because the circuit breaker suppresses all new signals when VIX exceeds 35, and the
+    existing position manager trims exposure at VIX &gt; 28.</p>
+  </div>
+
+  <hr class="thin-rule">
+  <div class="page-break"></div>
+
+  <!-- ================================================================== -->
+  <!-- XXX. CONCLUSIONS & OUTLOOK -->
   <!-- ================================================================== -->
   <div class="section" id="sec-conclusions">
-    <h2 class="section-hdr"><span class="num">XXVI.</span> Conclusions &amp; Outlook</h2>
+    <h2 class="section-hdr"><span class="num">XXX.</span> Conclusions &amp; Outlook</h2>
 
     <h3 class="sub-hdr">Performance Summary</h3>
     <p class="narrative">Over the evaluation period, the DNSD Retail Sentiment Momentum Strategy executed
@@ -1674,7 +1773,7 @@ body {
   <div class="report-footer">
     <div class="firm">DNSD CAPITAL</div>
     <div>Retail Sentiment Momentum Strategy &mdash; Institutional Performance Report &bull; April 04, 2026</div>
-    <div style="margin-top:0.3rem;">PROPRIETARY &amp; CONFIDENTIAL &bull; 29 Sections &bull; Generated 06:59 PM ET</div>
+    <div style="margin-top:0.3rem;">PROPRIETARY &amp; CONFIDENTIAL &bull; 29 Sections &bull; Generated 07:01 PM ET</div>
     <div style="text-align:center;color:#888;font-size:10px;font-family:var(--mono);margin-top:12px">
       Report contains 29 sections across ~35 pages
     </div>
@@ -2259,6 +2358,31 @@ new Chart(document.getElementById('exitChart'), {
       }
     }
   });
+})();
+
+// --- Monthly P&L Bar Chart ---
+(function() {
+  var el = document.getElementById('monthlyChart');
+  if (!el) return;
+  try {
+    var labels = JSON.parse(el.getAttribute('data-labels') || '[]');
+    var pnl = JSON.parse(el.getAttribute('data-pnl') || '[]');
+    var colors = JSON.parse(el.getAttribute('data-colors') || '[]');
+    new Chart(el, {
+      type: 'bar',
+      data: { labels: labels, datasets: [{ data: pnl, backgroundColor: colors, borderRadius: 4 }] },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx) { return ctx.parsed.y.toFixed(2) + '%'; } } }
+        },
+        scales: {
+          y: { title: { display: true, text: 'P&L %', font: { size: 10 } }, grid: { color: 'rgba(148,163,184,0.1)' } },
+          x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } }
+        }
+      }
+    });
+  } catch(e) {}
 })();
 </script>
 </body>
