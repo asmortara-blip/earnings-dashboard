@@ -253,7 +253,7 @@ a.back:hover{text-decoration:underline}
   </div>
   <button class="dnsd-hamburger">&#x2630;</button>
   <div class="dnsd-nav-right">
-    <button class="dnsd-nav-theme" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" title="Toggle theme">&#x1F313;</button>
+    <button class="dnsd-nav-theme" onclick="var t=document.documentElement.getAttribute('data-theme');var next=t==='light'?'':'light';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('rs-theme',next||'dark')" title="Toggle theme">&#x1F313;</button>
   </div>
 </nav>
 <div class="dnsd-mega-panel">
@@ -332,7 +332,7 @@ a.back:hover{text-decoration:underline}
 <div class="container">
 <header>
   <h1>DNSD CAPITAL &mdash; Supply Chain &amp; Shipping Monitor</h1>
-  <div class="ts">Generated 2026-04-05 12:03 ET</div>
+  <div class="ts">Generated 2026-04-05 12:04 ET</div>
 </header>
 
 <h2>Market Overview</h2>

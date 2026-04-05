@@ -211,7 +211,7 @@ nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:11px; font-
   </div>
   <button class="dnsd-hamburger">&#x2630;</button>
   <div class="dnsd-nav-right">
-    <button class="dnsd-nav-theme" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" title="Toggle theme">&#x1F313;</button>
+    <button class="dnsd-nav-theme" onclick="var t=document.documentElement.getAttribute('data-theme');var next=t==='light'?'':'light';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('rs-theme',next||'dark')" title="Toggle theme">&#x1F313;</button>
   </div>
 </nav>
 <div class="dnsd-mega-panel">
@@ -313,7 +313,7 @@ nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:11px; font-
     <div class="val" style="color:var(--accent)">36</div>
     <div class="lbl">RS Candidates</div>
   </div>
-  <div style="margin-left:auto;font-size:10px;color:var(--dim);font-family:var(--mono)">April 05, 2026 12:03 ET</div>
+  <div style="margin-left:auto;font-size:10px;color:var(--dim);font-family:var(--mono)">April 05, 2026 12:04 ET</div>
 </div>
 
 <div class="grid">
@@ -538,6 +538,6 @@ nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:11px; font-
           </div>
         </div></div>
 
-<div class="footer">DNSD Capital — Sector Heat Map — April 05, 2026 12:03 ET — Proprietary & Confidential</div>
+<div class="footer">DNSD Capital — Sector Heat Map — April 05, 2026 12:04 ET — Proprietary & Confidential</div>
 </body>
 </html>
