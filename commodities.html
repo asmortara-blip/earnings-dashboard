@@ -65,8 +65,8 @@ a.back:hover{text-decoration:underline}
 <script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 <style>
 .dnsd-nav {
-  background: var(--bg, #0a0a0f);
-  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.06));
+  background: var(--bg, #fafaf8);
+  border-bottom: 1px solid var(--rule, #e0ddd8);
   padding: 0 24px;
   display: flex; align-items: center; height: 44px;
   position: sticky; top: 0; z-index: 200;
@@ -74,48 +74,48 @@ a.back:hover{text-decoration:underline}
 }
 .dnsd-nav-brand {
   font-size: 13px; font-weight: 800; letter-spacing: 2px;
-  color: var(--ink, #e8e8ed); text-decoration: none; margin-right: 16px; white-space: nowrap;
+  color: var(--ink, #1a1a1a); text-decoration: none; margin-right: 16px; white-space: nowrap;
 }
 .dnsd-nav-links {
   display: flex; align-items: center; gap: 2px; flex: 1;
 }
 .dnsd-nav-link {
-  font-size: 12px; font-weight: 500; color: var(--muted, #8b8b9e);
+  font-size: 12px; font-weight: 500; color: var(--muted, #888888);
   text-decoration: none; padding: 6px 10px; border-radius: 6px;
   transition: background 150ms ease, color 150ms ease; white-space: nowrap;
 }
 .dnsd-nav-link:hover {
-  background: var(--surface-hover, rgba(255,255,255,0.04));
-  color: var(--ink, #e8e8ed);
+  background: var(--surface-hover, rgba(0,0,0,0.03));
+  color: var(--ink, #1a1a1a);
 }
 .dnsd-nav-link.active {
-  background: rgba(99,102,241,0.10); color: var(--accent, #6366f1); font-weight: 600;
+  background: rgba(10,61,124,0.06); color: var(--accent, #0a3d7c); font-weight: 600;
 }
 .dnsd-nav-right {
   display: flex; align-items: center; gap: 8px; margin-left: auto;
 }
 .dnsd-nav-theme {
-  background: none; border: 1px solid var(--rule, rgba(255,255,255,0.06));
-  color: var(--muted, #8b8b9e); padding: 4px 8px; border-radius: 4px;
+  background: none; border: 1px solid var(--rule, #e0ddd8);
+  color: var(--muted, #888888); padding: 4px 8px; border-radius: 4px;
   cursor: pointer; font-size: 11px; transition: background 150ms ease;
 }
-.dnsd-nav-theme:hover { background: var(--surface-hover, rgba(255,255,255,0.04)); }
+.dnsd-nav-theme:hover { background: var(--surface-hover, rgba(0,0,0,0.03)); }
 .dnsd-breadcrumb {
-  padding: 4px 24px; font-size: 11px; color: var(--dim, #5a5a6e);
-  background: var(--surface, #12121a);
-  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.06));
+  padding: 4px 24px; font-size: 11px; color: var(--dim, #aaaaaa);
+  background: var(--surface, #f5f3ef);
+  border-bottom: 1px solid var(--rule, #e0ddd8);
 }
-.dnsd-breadcrumb a { color: var(--dim, #5a5a6e); text-decoration: none; }
-.dnsd-breadcrumb a:hover { color: var(--muted, #8b8b9e); }
+.dnsd-breadcrumb a { color: var(--dim, #aaaaaa); text-decoration: none; }
+.dnsd-breadcrumb a:hover { color: var(--muted, #888888); }
 
 /* Hamburger */
 .dnsd-hamburger {
   display: none; background: none; border: none;
-  color: var(--muted, #8b8b9e); font-size: 18px; cursor: pointer; padding: 4px 8px;
+  color: var(--muted, #888888); font-size: 18px; cursor: pointer; padding: 4px 8px;
 }
 .dnsd-mobile-menu {
   display: none; position: fixed; top: 44px; left: 0; right: 0;
-  background: var(--paper, #16161f);
+  background: var(--paper, #ffffff);
   border-bottom: 1px solid var(--rule); padding: 8px; z-index: 250;
   max-height: calc(100vh - 44px); overflow-y: auto;
 }
@@ -124,8 +124,8 @@ a.back:hover{text-decoration:underline}
   display: block; padding: 10px 16px; color: var(--muted);
   text-decoration: none; font-size: 13px; border-radius: 6px;
 }
-.dnsd-mobile-menu a:hover { background: var(--surface-hover, rgba(255,255,255,0.04)); }
-.dnsd-mobile-menu a.active { color: var(--accent, #6366f1); }
+.dnsd-mobile-menu a:hover { background: var(--surface-hover, rgba(0,0,0,0.03)); }
+.dnsd-mobile-menu a.active { color: var(--accent, #0a3d7c); }
 
 @media (max-width: 768px) {
   .dnsd-nav-links { display: none; }
@@ -136,21 +136,21 @@ a.back:hover{text-decoration:underline}
 .dnsd-nav { position: sticky; top: 0; z-index: 200; }
 
 .dnsd-mega-trigger {
-  font-size: 12px; font-weight: 500; color: var(--muted, #8b8b9e);
+  font-size: 12px; font-weight: 500; color: var(--muted, #888888);
   background: none; border: none; padding: 6px 10px; border-radius: 6px;
   cursor: pointer; transition: background 150ms ease, color 150ms ease;
   display: flex; align-items: center; gap: 4px;
 }
 .dnsd-mega-trigger:hover, .dnsd-mega-trigger.open {
-  background: var(--surface-hover, rgba(255,255,255,0.04));
-  color: var(--ink, #e8e8ed);
+  background: var(--surface-hover, rgba(0,0,0,0.03));
+  color: var(--ink, #1a1a1a);
 }
 
 .dnsd-mega-panel {
   position: fixed; top: 44px; left: 0; right: 0;
-  background: var(--paper, #16161f);
-  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.06));
-  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+  background: var(--paper, #ffffff);
+  border-bottom: 1px solid var(--rule, #e0ddd8);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
   z-index: 250;
   opacity: 0; transform: translateY(-8px);
   pointer-events: none;
@@ -173,7 +173,7 @@ a.back:hover{text-decoration:underline}
 
 .dnsd-mega-col {
   padding: 0 16px;
-  border-right: 1px solid var(--rule, rgba(255,255,255,0.06));
+  border-right: 1px solid var(--rule, #e0ddd8);
 }
 .dnsd-mega-col:last-child { border-right: none; }
 .dnsd-mega-col:first-child { padding-left: 0; }
@@ -181,9 +181,9 @@ a.back:hover{text-decoration:underline}
 
 .dnsd-mega-col-title {
   font-size: 10px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.08em; color: var(--dim, #5a5a6e);
+  letter-spacing: 0.08em; color: var(--dim, #aaaaaa);
   padding-bottom: 8px; margin-bottom: 8px;
-  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.06));
+  border-bottom: 1px solid var(--rule, #e0ddd8);
 }
 
 .dnsd-mega-item {
@@ -192,30 +192,30 @@ a.back:hover{text-decoration:underline}
   transition: background 150ms ease;
 }
 .dnsd-mega-item:hover {
-  background: var(--surface-hover, rgba(255,255,255,0.04));
+  background: var(--surface-hover, rgba(0,0,0,0.03));
 }
 .dnsd-mega-item.active {
-  background: rgba(99,102,241,0.08);
-  border-left: 2px solid var(--accent, #6366f1);
+  background: rgba(10,61,124,0.06);
+  border-left: 2px solid var(--accent, #0a3d7c);
   margin-left: -2px;
 }
 
-.dnsd-mega-icon { color: var(--muted, #8b8b9e); margin-top: 1px; }
-.dnsd-mega-item:hover .dnsd-mega-icon { color: var(--ink, #e8e8ed); }
-.dnsd-mega-item.active .dnsd-mega-icon { color: var(--accent, #6366f1); }
+.dnsd-mega-icon { color: var(--muted, #888888); margin-top: 1px; }
+.dnsd-mega-item:hover .dnsd-mega-icon { color: var(--ink, #1a1a1a); }
+.dnsd-mega-item.active .dnsd-mega-icon { color: var(--accent, #0a3d7c); }
 
 .dnsd-mega-text { flex: 1; min-width: 0; }
 .dnsd-mega-label {
-  font-size: 12px; font-weight: 600; color: var(--ink, #e8e8ed);
+  font-size: 12px; font-weight: 600; color: var(--ink, #1a1a1a);
   line-height: 1.3;
 }
 .dnsd-mega-desc {
-  font-size: 11px; color: var(--dim, #5a5a6e); line-height: 1.3; margin-top: 1px;
+  font-size: 11px; color: var(--dim, #aaaaaa); line-height: 1.3; margin-top: 1px;
 }
-.dnsd-mega-item.active .dnsd-mega-label { color: var(--accent, #6366f1); }
+.dnsd-mega-item.active .dnsd-mega-label { color: var(--accent, #0a3d7c); }
 
 .dnsd-mega-backdrop {
-  position: fixed; inset: 0; z-index: 199; background: rgba(0,0,0,0.15);
+  position: fixed; inset: 0; z-index: 199; background: rgba(0,0,0,0.08);
   opacity: 0; pointer-events: none; transition: opacity 200ms ease;
 }
 .dnsd-mega-backdrop.open { opacity: 1; pointer-events: auto; }
@@ -230,8 +230,8 @@ a.back:hover{text-decoration:underline}
 /* Mobile menu category dividers */
 .dnsd-mobile-divider {
   font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px;
-  color: var(--dim, #5a5a6e); padding: 12px 16px 4px; font-weight: 600;
-  border-top: 1px solid var(--rule, rgba(255,255,255,0.06)); margin-top: 4px;
+  color: var(--dim, #aaaaaa); padding: 12px 16px 4px; font-weight: 600;
+  border-top: 1px solid var(--rule, #e0ddd8); margin-top: 4px;
 }
 .dnsd-mobile-divider:first-child { border-top: none; margin-top: 0; }
 </style>
@@ -323,53 +323,53 @@ a.back:hover{text-decoration:underline}
 <div class="container">
 <header>
   <h1>DNSD CAPITAL &mdash; Commodities &amp; Futures</h1>
-  <div class="ts">Generated 2026-04-05 18:50 ET</div>
+  <div class="ts">Generated 2026-04-05 18:56 ET</div>
 </header>
 
 <h2>Market Overview</h2>
 <div class="tiles"><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Energy</span><span class="tile-tkr">CL=F</span></div>
   <div class="tile-name">Crude Oil</div>
-  <div class="tile-price">$113.87</div>
+  <div class="tile-price">$114.26</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +2.09%</span>
-    <span style="color:#10b981">5D: +14.28%</span>
+    <span style="color:#10b981">1D: +2.44%</span>
+    <span style="color:#10b981">5D: +14.67%</span>
   </div>
-  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,15.1 4.2,24.0 8.4,21.0 12.6,14.3 16.8,12.0 21.1,16.1 25.3,13.9 29.5,13.8 33.7,14.0 37.9,12.3 42.1,20.3 46.3,17.0 50.5,18.6 54.7,15.3 58.9,11.2 63.2,8.7 67.4,9.9 71.6,10.8 75.8,1.8 80.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,15.2 4.2,24.0 8.4,21.0 12.6,14.4 16.8,12.1 21.1,16.2 25.3,14.1 29.5,14.0 33.7,14.1 37.9,12.4 42.1,20.4 46.3,17.1 50.5,18.6 54.7,15.4 58.9,11.4 63.2,8.9 67.4,10.0 71.6,11.0 75.8,2.1 80.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Energy</span><span class="tile-tkr">NG=F</span></div>
   <div class="tile-name">Nat Gas</div>
-  <div class="tile-price">$2.84</div>
+  <div class="tile-price">$2.85</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +1.54%</span>
-    <span style="color:#ef4444">5D: -8.14%</span>
+    <span style="color:#10b981">1D: +1.61%</span>
+    <span style="color:#ef4444">5D: -8.08%</span>
   </div>
-  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,6.1 4.2,11.7 8.4,1.1 12.6,0.0 16.8,5.6 21.1,11.7 25.3,11.2 29.5,8.9 33.7,3.3 37.9,7.3 42.1,19.0 46.3,16.2 50.5,15.6 54.7,12.8 58.9,7.3 63.2,19.0 67.4,19.5 71.6,22.9 75.8,24.0 80.0,21.8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,6.1 4.2,11.7 8.4,1.1 12.6,0.0 16.8,5.6 21.1,11.7 25.3,11.2 29.5,8.9 33.7,3.3 37.9,7.3 42.1,19.0 46.3,16.2 50.5,15.6 54.7,12.8 58.9,7.3 63.2,19.0 67.4,19.5 71.6,22.9 75.8,24.0 80.0,21.2" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Metals</span><span class="tile-tkr">GC=F</span></div>
   <div class="tile-name">Gold</div>
-  <div class="tile-price">$4,641.00</div>
+  <div class="tile-price">$4,637.00</div>
   <div class="tile-chg">
-    <span style="color:#ef4444">1D: -0.23%</span>
-    <span style="color:#10b981">5D: +3.32%</span>
+    <span style="color:#ef4444">1D: -0.31%</span>
+    <span style="color:#10b981">5D: +3.23%</span>
   </div>
-  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,3.9 4.2,0.0 8.4,1.8 12.6,3.2 16.8,5.0 21.1,6.6 25.3,6.4 29.5,9.5 33.7,17.7 37.9,18.5 42.1,23.2 46.3,23.3 50.5,19.1 54.7,24.0 58.9,20.7 63.2,19.8 67.4,16.4 71.6,12.5 75.8,16.2 80.0,16.5" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,3.9 4.2,0.0 8.4,1.8 12.6,3.2 16.8,5.0 21.1,6.6 25.3,6.4 29.5,9.5 33.7,17.7 37.9,18.5 42.1,23.2 46.3,23.3 50.5,19.1 54.7,24.0 58.9,20.7 63.2,19.8 67.4,16.4 71.6,12.5 75.8,16.2 80.0,16.7" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Metals</span><span class="tile-tkr">SI=F</span></div>
   <div class="tile-name">Silver</div>
-  <div class="tile-price">$71.93</div>
+  <div class="tile-price">$71.77</div>
   <div class="tile-chg">
-    <span style="color:#ef4444">1D: -1.10%</span>
-    <span style="color:#10b981">5D: +3.44%</span>
+    <span style="color:#ef4444">1D: -1.33%</span>
+    <span style="color:#10b981">5D: +3.20%</span>
   </div>
-  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,5.7 4.2,0.0 8.4,4.5 12.6,4.9 16.8,9.2 21.1,9.9 25.3,10.7 29.5,13.3 33.7,20.4 37.9,22.1 42.1,22.5 46.3,22.2 50.5,18.7 54.7,24.0 58.9,21.9 63.2,21.0 67.4,16.1 71.6,14.8 75.8,18.3 80.0,19.2" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,5.7 4.2,0.0 8.4,4.5 12.6,4.9 16.8,9.2 21.1,9.9 25.3,10.7 29.5,13.3 33.7,20.4 37.9,22.1 42.1,22.5 46.3,22.2 50.5,18.7 54.7,24.0 58.9,21.9 63.2,21.0 67.4,16.1 71.6,14.8 75.8,18.3 80.0,19.4" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Metals</span><span class="tile-tkr">HG=F</span></div>
   <div class="tile-name">Copper</div>
   <div class="tile-price">$5.64</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +1.41%</span>
-    <span style="color:#10b981">5D: +3.19%</span>
+    <span style="color:#10b981">1D: +1.35%</span>
+    <span style="color:#10b981">5D: +3.13%</span>
   </div>
   <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,4.3 4.2,0.0 8.4,2.1 12.6,3.4 16.8,8.1 21.1,4.7 25.3,7.3 29.5,15.0 33.7,20.1 37.9,24.0 42.1,19.7 46.3,20.6 50.5,15.9 54.7,19.3 58.9,18.4 63.2,18.0 67.4,13.3 71.6,12.0 75.8,14.6 80.0,11.1" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
@@ -384,21 +384,21 @@ a.back:hover{text-decoration:underline}
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Crypto</span><span class="tile-tkr">BTC-USD</span></div>
   <div class="tile-name">Bitcoin</div>
-  <div class="tile-price">$68,991.00</div>
+  <div class="tile-price">$68,979.15</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +2.53%</span>
-    <span style="color:#10b981">5D: +1.11%</span>
+    <span style="color:#10b981">1D: +2.51%</span>
+    <span style="color:#10b981">5D: +1.09%</span>
   </div>
   <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,8.1 8.4,12.1 12.6,10.2 16.8,15.7 21.1,18.3 25.3,9.1 29.5,10.3 33.7,7.9 37.9,15.5 42.1,22.8 46.3,22.9 50.5,24.0 54.7,21.8 58.9,17.1 63.2,17.6 67.4,21.2 71.6,21.1 75.8,20.0 80.0,14.9" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Crypto</span><span class="tile-tkr">ETH-USD</span></div>
   <div class="tile-name">Ethereum</div>
-  <div class="tile-price">$2,113.40</div>
+  <div class="tile-price">$2,111.10</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +2.33%</span>
-    <span style="color:#10b981">5D: +0.41%</span>
+    <span style="color:#10b981">1D: +2.22%</span>
+    <span style="color:#10b981">5D: +0.30%</span>
   </div>
-  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,8.2 8.4,12.9 12.6,12.3 16.8,17.3 21.1,19.0 25.3,11.9 29.5,11.6 33.7,10.7 37.9,18.5 42.1,23.4 46.3,23.3 50.5,24.0 54.7,21.1 58.9,15.3 63.2,12.8 67.4,18.7 71.6,18.9 75.8,18.1 80.0,14.6" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,8.2 8.4,12.9 12.6,12.3 16.8,17.3 21.1,19.0 25.3,11.9 29.5,11.6 33.7,10.7 37.9,18.5 42.1,23.4 46.3,23.3 50.5,24.0 54.7,21.1 58.9,15.3 63.2,12.8 67.4,18.7 71.6,18.9 75.8,18.1 80.0,14.8" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Volatility</span><span class="tile-tkr">^VIX</span></div>
   <div class="tile-name">VIX Index</div>
@@ -415,7 +415,7 @@ a.back:hover{text-decoration:underline}
 <div class="corr-grid"><div class="corr-cell corr-hdr"></div><div class="corr-cell corr-hdr">RIOT</div><div class="corr-cell corr-hdr">MARA</div><div class="corr-cell corr-hdr">MSTR</div><div class="corr-cell corr-hdr">COIN</div><div class="corr-cell corr-hdr">BTC</div><div class="corr-cell" style="background:rgba(239,68,68,0.05)">-0.05</div><div class="corr-cell" style="background:rgba(16,185,129,0.63)">+0.63</div><div class="corr-cell" style="background:rgba(16,185,129,0.87)">+0.87</div><div class="corr-cell" style="background:rgba(16,185,129,0.82)">+0.82</div><div class="corr-cell corr-hdr">VIX</div><div class="corr-cell" style="background:rgba(239,68,68,0.79)">-0.79</div><div class="corr-cell" style="background:rgba(239,68,68,0.21)">-0.21</div><div class="corr-cell" style="background:rgba(239,68,68,0.09)">-0.09</div><div class="corr-cell" style="background:rgba(16,185,129,0.02)">+0.02</div></div>
 
 <h2>Term Structure &amp; Regime Indicators</h2>
-<div class="ts-row"><b>VIX:</b> Spot 23.87 (v from 24.54) &mdash; <span style="color:#ef4444">Elevated: risk-off regime signal</span></div><div class="ts-row"><b>BTC:</b> Spot $68,991 | 5D High $68,991 | Premium +0.0%</div>
+<div class="ts-row"><b>VIX:</b> Spot 23.87 (v from 24.54) &mdash; <span style="color:#ef4444">Elevated: risk-off regime signal</span></div><div class="ts-row"><b>BTC:</b> Spot $68,979 | 5D High $68,979 | Premium +0.0%</div>
 
 <h2>RS Strategy Impact Map</h2>
 <div class="impact-grid">
@@ -437,7 +437,7 @@ a.back:hover{text-decoration:underline}
 <script>
 new Chart(document.getElementById('chart_0'),{type:'line',data:{
 labels:["Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 10", "Jan 11", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 17", "Jan 18", "Jan 19", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Jan 31", "Feb 01", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 07", "Feb 08", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 21", "Feb 22", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Feb 28", "Mar 01", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 07", "Mar 08", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 14", "Mar 15", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 21", "Mar 22", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 28", "Mar 29", "Mar 30", "Mar 31", "Apr 01", "Apr 02", "Apr 03", "Apr 04", "Apr 05"],
-datasets:[{label:'Bitcoin (3M)',data:[93882.55, 93729.03, 91308.05, 91027.12, 90513.1, 90386.65, 90827.46, 91192.99, 95321.78, 96929.33, 95551.19, 95525.12, 95099.92, 93634.43, 92553.59, 88310.91, 89376.96, 89462.45, 89503.88, 89110.73, 86572.22, 88267.14, 89102.57, 89184.57, 84561.59, 84128.66, 78621.12, 76974.45, 78688.77, 75633.55, 73019.7, 62702.1, 70555.39, 69281.97, 70264.73, 70120.78, 68793.96, 66991.97, 66221.84, 68857.84, 69767.62, 68788.19, 68843.16, 67494.22, 66425.32, 66957.52, 68005.42, 68003.77, 67659.39, 64616.74, 64080.04, 67960.12, 67453.77, 65881.8, 66995.86, 65738.1, 68775.85, 68293.65, 72710.58, 70841.12, 68136.49, 67272.59, 65969.78, 68402.38, 69926.92, 70204.88, 70493.46, 70968.27, 71214.62, 72789.91, 74861.09, 73922.48, 71245.58, 69912.79, 70522.59, 68711.52, 67845.21, 70914.86, 70517.86, 71309.88, 68791.62, 66338.38, 66319.7, 65954.92, 66691.45, 68233.31, 68078.55, 66888.57, 66931.1, 67290.52, 68991.0],
+datasets:[{label:'Bitcoin (3M)',data:[93882.55, 93729.03, 91308.05, 91027.12, 90513.1, 90386.65, 90827.46, 91192.99, 95321.78, 96929.33, 95551.19, 95525.12, 95099.92, 93634.43, 92553.59, 88310.91, 89376.96, 89462.45, 89503.88, 89110.73, 86572.22, 88267.14, 89102.57, 89184.57, 84561.59, 84128.66, 78621.12, 76974.45, 78688.77, 75633.55, 73019.7, 62702.1, 70555.39, 69281.97, 70264.73, 70120.78, 68793.96, 66991.97, 66221.84, 68857.84, 69767.62, 68788.19, 68843.16, 67494.22, 66425.32, 66957.52, 68005.42, 68003.77, 67659.39, 64616.74, 64080.04, 67960.12, 67453.77, 65881.8, 66995.86, 65738.1, 68775.85, 68293.65, 72710.58, 70841.12, 68136.49, 67272.59, 65969.78, 68402.38, 69926.92, 70204.88, 70493.46, 70968.27, 71214.62, 72789.91, 74861.09, 73922.48, 71245.58, 69912.79, 70522.59, 68711.52, 67845.21, 70914.86, 70517.86, 71309.88, 68791.62, 66338.38, 66319.7, 65954.92, 66691.45, 68233.31, 68078.55, 66888.57, 66931.1, 67290.52, 68979.15],
 borderColor:'#f59e0b',backgroundColor:'#f59e0b22',fill:true,
 pointRadius:0,borderWidth:2,tension:0.3}]},
 options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
@@ -445,7 +445,7 @@ scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
 y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});
 new Chart(document.getElementById('chart_1'),{type:'line',data:{
 labels:["Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30", "Mar 31", "Apr 01", "Apr 02", "Apr 05"],
-datasets:[{label:'Gold (3M)',data:[4436.9, 4482.2, 4449.3, 4449.7, 4490.3, 4604.3, 4589.2, 4626.3, 4616.3, 4588.4, 4759.6, 4831.8, 4908.8, 4976.2, 5079.7, 5079.9, 5301.6, 5318.4, 4713.9, 4622.5, 4903.7, 4920.4, 4861.4, 4951.2, 5050.9, 5003.8, 5071.6, 4923.7, 5022.0, 4882.9, 4986.5, 4975.9, 5059.3, 5204.7, 5155.8, 5206.4, 5176.5, 5230.5, 5294.4, 5107.4, 5120.2, 5065.3, 5146.1, 5091.5, 5229.7, 5167.4, 5115.8, 5052.5, 4994.0, 5001.0, 4889.9, 4600.7, 4570.4, 4404.1, 4399.3, 4549.8, 4375.5, 4492.0, 4526.0, 4647.6, 4783.2, 4651.5, 4641.0],
+datasets:[{label:'Gold (3M)',data:[4436.9, 4482.2, 4449.3, 4449.7, 4490.3, 4604.3, 4589.2, 4626.3, 4616.3, 4588.4, 4759.6, 4831.8, 4908.8, 4976.2, 5079.7, 5079.9, 5301.6, 5318.4, 4713.9, 4622.5, 4903.7, 4920.4, 4861.4, 4951.2, 5050.9, 5003.8, 5071.6, 4923.7, 5022.0, 4882.9, 4986.5, 4975.9, 5059.3, 5204.7, 5155.8, 5206.4, 5176.5, 5230.5, 5294.4, 5107.4, 5120.2, 5065.3, 5146.1, 5091.5, 5229.7, 5167.4, 5115.8, 5052.5, 4994.0, 5001.0, 4889.9, 4600.7, 4570.4, 4404.1, 4399.3, 4549.8, 4375.5, 4492.0, 4526.0, 4647.6, 4783.2, 4651.5, 4637.0],
 borderColor:'#eab308',backgroundColor:'#eab30822',fill:true,
 pointRadius:0,borderWidth:2,tension:0.3}]},
 options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
@@ -453,7 +453,7 @@ scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
 y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});
 new Chart(document.getElementById('chart_2'),{type:'line',data:{
 labels:["Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30", "Mar 31", "Apr 01", "Apr 02", "Apr 05"],
-datasets:[{label:'Crude Oil (3M)',data:[58.32, 57.13, 55.99, 57.76, 59.12, 59.5, 61.15, 62.02, 59.19, 59.44, 60.34, 60.62, 59.36, 61.07, 60.63, 62.39, 63.21, 65.42, 65.21, 62.14, 63.21, 65.14, 63.29, 63.55, 64.36, 63.96, 64.63, 62.84, 62.89, 62.33, 65.19, 66.43, 66.39, 66.31, 65.63, 65.42, 65.21, 67.02, 71.23, 74.56, 74.66, 81.01, 90.9, 94.77, 83.45, 87.25, 95.73, 98.71, 93.5, 96.21, 96.32, 96.14, 98.32, 88.13, 92.35, 90.32, 94.48, 99.64, 102.88, 101.38, 100.12, 111.54, 113.87],
+datasets:[{label:'Crude Oil (3M)',data:[58.32, 57.13, 55.99, 57.76, 59.12, 59.5, 61.15, 62.02, 59.19, 59.44, 60.34, 60.62, 59.36, 61.07, 60.63, 62.39, 63.21, 65.42, 65.21, 62.14, 63.21, 65.14, 63.29, 63.55, 64.36, 63.96, 64.63, 62.84, 62.89, 62.33, 65.19, 66.43, 66.39, 66.31, 65.63, 65.42, 65.21, 67.02, 71.23, 74.56, 74.66, 81.01, 90.9, 94.77, 83.45, 87.25, 95.73, 98.71, 93.5, 96.21, 96.32, 96.14, 98.32, 88.13, 92.35, 90.32, 94.48, 99.64, 102.88, 101.38, 100.12, 111.54, 114.26],
 borderColor:'#6366f1',backgroundColor:'#6366f122',fill:true,
 pointRadius:0,borderWidth:2,tension:0.3}]},
 options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
