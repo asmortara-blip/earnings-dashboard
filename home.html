@@ -707,7 +707,9 @@
 try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}
 // Route to correct screen before paint to prevent flash
 (function(){try{
-  var s=localStorage.getItem('dnsd_auth')?'home-screen':'login-screen';
+  // Auth gate dormant — skip login, go straight to portal
+  localStorage.setItem('dnsd_auth', 'dnsd_open_' + Date.now());
+  var s='home-screen';
   document.getElementById(s).classList.add('active');
 }catch(e){document.getElementById('login-screen').classList.add('active');}})();
 </script>
@@ -1009,13 +1011,13 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
   </div>
 
   <div class="landing-footer">
-    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-04-05 16:07 ET
+    Proprietary &amp; Confidential &mdash; DNSD Capital &bull; 2026-04-05 16:13 ET
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button>
   </div>
 </div>
 
 <!-- ==================== SCREEN 2: LOGIN ==================== -->
-<div id="login-screen" class="screen active">
+<div id="login-screen" class="screen">
   <div class="login-container">
     <div class="login-ornament"></div>
     <div class="login-masthead">
@@ -1038,7 +1040,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
 </div>
 
 <!-- ==================== SCREEN 3: DASHBOARD PORTAL ==================== -->
-<div id="home-screen" class="screen">
+<div id="home-screen" class="screen active">
   <div class="home-masthead">
     <div class="home-masthead-label">Dashboard Portal</div>
     <h1>DNSD Capital</h1>
@@ -1083,7 +1085,7 @@ try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAtt
   </div>
 
   <div class="home-footer">
-    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-04-05 16:07 ET</span>
+    <span><strong>Proprietary &amp; Confidential</strong> &mdash; DNSD Capital &bull; 2026-04-05 16:13 ET</span>
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">&#127763;</button>
     <button class="signout-link" id="signout-btn" aria-label="Sign out of dashboard">Sign Out</button>
   </div>
