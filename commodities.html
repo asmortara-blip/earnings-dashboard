@@ -63,19 +63,209 @@ a.back:hover{text-decoration:underline}
 </head>
 <body>
 <script>try{if(localStorage.getItem('rs-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
-<nav style="background:#0a3d7c;padding:10px 32px;display:flex;align-items:center;justify-content:space-between">
-  <span style="color:#fff;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;letter-spacing:2px">DNSD CAPITAL</span>
-  <div style="display:flex;gap:20px;align-items:center">
-    <a href="home.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px">&larr; HOME</a>
-    <a href="rs.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:1px">RS DASHBOARD</a>
-    <button onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" style="background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:11px">&#x1F313;</button>
+<style>
+.dnsd-nav {
+  background: var(--bg, #0a0a0f);
+  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.06));
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  font-family: var(--sans, system-ui, -apple-system, sans-serif);
+}
+.dnsd-nav-brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--ink, #e8e8ed);
+  text-decoration: none;
+  margin-right: 24px;
+  white-space: nowrap;
+}
+.dnsd-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+.dnsd-nav-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted, #8b8b9e);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 150ms ease, color 150ms ease;
+  white-space: nowrap;
+}
+.dnsd-nav-link:hover {
+  background: var(--surface-hover, rgba(255,255,255,0.04));
+  color: var(--ink, #e8e8ed);
+}
+.dnsd-nav-link.active {
+  background: rgba(99,102,241,0.10);
+  color: var(--accent, #6366f1);
+  font-weight: 600;
+}
+.dnsd-nav-more {
+  position: relative;
+}
+.dnsd-nav-more-btn {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted, #8b8b9e);
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.dnsd-nav-more-btn:hover {
+  background: var(--surface-hover, rgba(255,255,255,0.04));
+  color: var(--ink, #e8e8ed);
+}
+.dnsd-nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--paper, #16161f);
+  border: 1px solid var(--rule, rgba(255,255,255,0.06));
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 180px;
+  z-index: 300;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.dnsd-nav-more:hover .dnsd-nav-dropdown,
+.dnsd-nav-dropdown:hover {
+  display: block;
+}
+.dnsd-nav-dropdown a {
+  display: block;
+  font-size: 12px;
+  color: var(--muted, #8b8b9e);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 150ms ease;
+}
+.dnsd-nav-dropdown a:hover {
+  background: var(--surface-hover, rgba(255,255,255,0.04));
+  color: var(--ink, #e8e8ed);
+}
+.dnsd-nav-dropdown a.active {
+  color: var(--accent, #6366f1);
+}
+.dnsd-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.dnsd-nav-theme {
+  background: none;
+  border: 1px solid var(--rule, rgba(255,255,255,0.06));
+  color: var(--muted, #8b8b9e);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 150ms ease;
+}
+.dnsd-nav-theme:hover {
+  background: var(--surface-hover, rgba(255,255,255,0.04));
+}
+.dnsd-breadcrumb {
+  padding: 4px 24px;
+  font-size: 11px;
+  color: var(--dim, #5a5a6e);
+  background: var(--surface, #12121a);
+  border-bottom: 1px solid var(--rule, rgba(255,255,255,0.06));
+}
+.dnsd-breadcrumb a {
+  color: var(--dim, #5a5a6e);
+  text-decoration: none;
+}
+.dnsd-breadcrumb a:hover { color: var(--muted, #8b8b9e); }
+
+/* Hamburger for mobile */
+.dnsd-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--muted, #8b8b9e);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.dnsd-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
+  background: var(--paper, #16161f);
+  border-bottom: 1px solid var(--rule);
+  padding: 8px;
+  z-index: 250;
+  max-height: calc(100vh - 44px);
+  overflow-y: auto;
+}
+.dnsd-mobile-menu.open { display: block; }
+.dnsd-mobile-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  border-radius: 6px;
+}
+.dnsd-mobile-menu a:hover { background: var(--surface-hover, rgba(255,255,255,0.04)); }
+.dnsd-mobile-menu a.active { color: var(--accent, #6366f1); }
+
+@media (max-width: 768px) {
+  .dnsd-nav-links { display: none; }
+  .dnsd-nav-more { display: none; }
+  .dnsd-hamburger { display: block; }
+}
+</style>
+<nav class="dnsd-nav">
+  <a href="home.html" class="dnsd-nav-brand">DNSD</a>
+  <div class="dnsd-nav-links">
+    <a href="rs.html" class="dnsd-nav-link">Dashboard</a><a href="report.html" class="dnsd-nav-link">Report</a><a href="picks.html" class="dnsd-nav-link">Picks</a><a href="trade_journal.html" class="dnsd-nav-link">Journal</a><a href="backtest_interactive.html" class="dnsd-nav-link">Backtester</a>
+    <div class="dnsd-nav-more">
+      <button class="dnsd-nav-more-btn active">More &#x25BE;</button>
+      <div class="dnsd-nav-dropdown"><a href="brief.html">Executive Brief</a><a href="monte_carlo.html">Monte Carlo</a><a href="replay.html">Trade Replay</a><a href="narratives.html">Narratives</a><a href="commodities.html" class="active">Commodities</a><a href="supply_chain.html">Supply Chain</a><a href="sector_heatmap.html">Sector Map</a></div>
+    </div>
+  </div>
+  <button class="dnsd-hamburger">&#x2630;</button>
+  <div class="dnsd-nav-right">
+    <button class="dnsd-nav-theme" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'':'dark');localStorage.setItem('rs-theme',document.documentElement.getAttribute('data-theme')||'light')" title="Toggle theme">&#x1F313;</button>
   </div>
 </nav>
-<div style="padding:4px 32px;font-size:11px;color:#888;background:var(--surface,#f5f3ef);border-bottom:1px solid var(--rule,#e0ddd8)"><a href="home.html" style="color:#888;text-decoration:none">Home</a> &rsaquo; <span>Commodities</span></div>
+<div class="dnsd-mobile-menu"><a href="rs.html" class="">Dashboard</a><a href="report.html" class="">Report</a><a href="picks.html" class="">Picks</a><a href="trade_journal.html" class="">Journal</a><a href="backtest_interactive.html" class="">Backtester</a><a href="brief.html" class="">Executive Brief</a><a href="monte_carlo.html" class="">Monte Carlo</a><a href="replay.html" class="">Trade Replay</a><a href="narratives.html" class="">Narratives</a><a href="commodities.html" class=" active">Commodities</a><a href="supply_chain.html" class="">Supply Chain</a><a href="sector_heatmap.html" class="">Sector Map</a><a href="home.html">Home Portal</a></div>
+<div class="dnsd-breadcrumb"><a href="home.html">Home</a> &rsaquo; <span>Commodities</span></div>
+<script>
+(function() {
+  var hamburger = document.querySelector('.dnsd-hamburger');
+  var menu = document.querySelector('.dnsd-mobile-menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', function() {
+      menu.classList.toggle('open');
+      hamburger.textContent = menu.classList.contains('open') ? '\u2715' : '\u2630';
+    });
+  }
+})();
+</script>
 <div class="container">
 <header>
   <h1>DNSD CAPITAL &mdash; Commodities &amp; Futures</h1>
-  <div class="ts">Generated 2026-04-05 01:43 ET</div>
+  <div class="ts">Generated 2026-04-05 01:54 ET</div>
 </header>
 
 <h2>Market Overview</h2>
@@ -136,19 +326,19 @@ a.back:hover{text-decoration:underline}
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Crypto</span><span class="tile-tkr">BTC-USD</span></div>
   <div class="tile-name">Bitcoin</div>
-  <div class="tile-price">$66,807.80</div>
+  <div class="tile-price">$66,814.31</div>
   <div class="tile-chg">
-    <span style="color:#ef4444">1D: -0.72%</span>
-    <span style="color:#ef4444">5D: -2.09%</span>
+    <span style="color:#ef4444">1D: -0.71%</span>
+    <span style="color:#ef4444">5D: -2.08%</span>
   </div>
   <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,8.1 8.4,12.1 12.6,10.2 16.8,15.7 21.1,18.3 25.3,9.1 29.5,10.3 33.7,7.9 37.9,15.5 42.1,22.8 46.3,22.9 50.5,24.0 54.7,21.8 58.9,17.1 63.2,17.6 67.4,21.2 71.6,21.1 75.8,20.0 80.0,21.4" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Crypto</span><span class="tile-tkr">ETH-USD</span></div>
   <div class="tile-name">Ethereum</div>
-  <div class="tile-price">$2,038.66</div>
+  <div class="tile-price">$2,038.43</div>
   <div class="tile-chg">
-    <span style="color:#ef4444">1D: -1.29%</span>
-    <span style="color:#ef4444">5D: -3.14%</span>
+    <span style="color:#ef4444">1D: -1.30%</span>
+    <span style="color:#ef4444">5D: -3.15%</span>
   </div>
   <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,0.0 4.2,8.2 8.4,12.9 12.6,12.3 16.8,17.3 21.1,19.0 25.3,11.9 29.5,11.6 33.7,10.7 37.9,18.5 42.1,23.4 46.3,23.3 50.5,24.0 54.7,21.1 58.9,15.3 63.2,12.8 67.4,18.7 71.6,18.9 75.8,18.1 80.0,20.0" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
@@ -167,7 +357,7 @@ a.back:hover{text-decoration:underline}
 <div class="corr-grid"><div class="corr-cell corr-hdr"></div><div class="corr-cell corr-hdr">RIOT</div><div class="corr-cell corr-hdr">MARA</div><div class="corr-cell corr-hdr">MSTR</div><div class="corr-cell corr-hdr">COIN</div><div class="corr-cell corr-hdr">BTC</div><div class="corr-cell" style="background:rgba(239,68,68,0.05)">-0.05</div><div class="corr-cell" style="background:rgba(16,185,129,0.63)">+0.63</div><div class="corr-cell" style="background:rgba(16,185,129,0.87)">+0.87</div><div class="corr-cell" style="background:rgba(16,185,129,0.82)">+0.82</div><div class="corr-cell corr-hdr">VIX</div><div class="corr-cell" style="background:rgba(239,68,68,0.79)">-0.79</div><div class="corr-cell" style="background:rgba(239,68,68,0.21)">-0.21</div><div class="corr-cell" style="background:rgba(239,68,68,0.09)">-0.09</div><div class="corr-cell" style="background:rgba(16,185,129,0.02)">+0.02</div></div>
 
 <h2>Term Structure &amp; Regime Indicators</h2>
-<div class="ts-row"><b>VIX:</b> Spot 23.87 (v from 24.54) &mdash; <span style="color:#ef4444">Elevated: risk-off regime signal</span></div><div class="ts-row"><b>BTC:</b> Spot $66,808 | 5D High $68,079 | Premium -1.9%</div>
+<div class="ts-row"><b>VIX:</b> Spot 23.87 (v from 24.54) &mdash; <span style="color:#ef4444">Elevated: risk-off regime signal</span></div><div class="ts-row"><b>BTC:</b> Spot $66,814 | 5D High $68,079 | Premium -1.9%</div>
 
 <h2>RS Strategy Impact Map</h2>
 <div class="impact-grid">
@@ -189,7 +379,7 @@ a.back:hover{text-decoration:underline}
 <script>
 new Chart(document.getElementById('chart_0'),{type:'line',data:{
 labels:["Jan 05", "Jan 06", "Jan 07", "Jan 08", "Jan 09", "Jan 10", "Jan 11", "Jan 12", "Jan 13", "Jan 14", "Jan 15", "Jan 16", "Jan 17", "Jan 18", "Jan 19", "Jan 20", "Jan 21", "Jan 22", "Jan 23", "Jan 24", "Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Jan 31", "Feb 01", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 07", "Feb 08", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 21", "Feb 22", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Feb 28", "Mar 01", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 07", "Mar 08", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 14", "Mar 15", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 21", "Mar 22", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 28", "Mar 29", "Mar 30", "Mar 31", "Apr 01", "Apr 02", "Apr 03", "Apr 04", "Apr 05"],
-datasets:[{label:'Bitcoin (3M)',data:[93882.55, 93729.03, 91308.05, 91027.12, 90513.1, 90386.65, 90827.46, 91192.99, 95321.78, 96929.33, 95551.19, 95525.12, 95099.92, 93634.43, 92553.59, 88310.91, 89376.96, 89462.45, 89503.88, 89110.73, 86572.22, 88267.14, 89102.57, 89184.57, 84561.59, 84128.66, 78621.12, 76974.45, 78688.77, 75633.55, 73019.7, 62702.1, 70555.39, 69281.97, 70264.73, 70120.78, 68793.96, 66991.97, 66221.84, 68857.84, 69767.62, 68788.19, 68843.16, 67494.22, 66425.32, 66957.52, 68005.42, 68003.77, 67659.39, 64616.74, 64080.04, 67960.12, 67453.77, 65881.8, 66995.86, 65738.1, 68775.85, 68293.65, 72710.58, 70841.12, 68136.49, 67272.59, 65969.78, 68402.38, 69926.92, 70204.88, 70493.46, 70968.27, 71214.62, 72789.91, 74861.09, 73922.48, 71245.58, 69912.79, 70522.59, 68711.52, 67845.21, 70914.86, 70517.86, 71309.88, 68791.62, 66338.38, 66319.7, 65954.92, 66691.45, 68233.31, 68078.55, 66888.57, 66931.1, 67290.52, 66807.8],
+datasets:[{label:'Bitcoin (3M)',data:[93882.55, 93729.03, 91308.05, 91027.12, 90513.1, 90386.65, 90827.46, 91192.99, 95321.78, 96929.33, 95551.19, 95525.12, 95099.92, 93634.43, 92553.59, 88310.91, 89376.96, 89462.45, 89503.88, 89110.73, 86572.22, 88267.14, 89102.57, 89184.57, 84561.59, 84128.66, 78621.12, 76974.45, 78688.77, 75633.55, 73019.7, 62702.1, 70555.39, 69281.97, 70264.73, 70120.78, 68793.96, 66991.97, 66221.84, 68857.84, 69767.62, 68788.19, 68843.16, 67494.22, 66425.32, 66957.52, 68005.42, 68003.77, 67659.39, 64616.74, 64080.04, 67960.12, 67453.77, 65881.8, 66995.86, 65738.1, 68775.85, 68293.65, 72710.58, 70841.12, 68136.49, 67272.59, 65969.78, 68402.38, 69926.92, 70204.88, 70493.46, 70968.27, 71214.62, 72789.91, 74861.09, 73922.48, 71245.58, 69912.79, 70522.59, 68711.52, 67845.21, 70914.86, 70517.86, 71309.88, 68791.62, 66338.38, 66319.7, 65954.92, 66691.45, 68233.31, 68078.55, 66888.57, 66931.1, 67290.52, 66814.31],
 borderColor:'#f59e0b',backgroundColor:'#f59e0b22',fill:true,
 pointRadius:0,borderWidth:2,tension:0.3}]},
 options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
