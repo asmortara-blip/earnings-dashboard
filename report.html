@@ -845,7 +845,7 @@ body {
     <div class="confidential">Confidential</div>
     <div class="firm-name">DNSD Capital</div>
     <div class="report-title">Retail Sentiment Momentum Strategy &mdash; Institutional Performance Report</div>
-    <div class="report-date">April 08, 2026 &nbsp;&bull;&nbsp; <span>02:58 AM ET</span> &nbsp;&bull;&nbsp; Q2 2026</div>
+    <div class="report-date">April 08, 2026 &nbsp;&bull;&nbsp; <span>03:03 AM ET</span> &nbsp;&bull;&nbsp; Q2 2026</div>
   </div>
   <hr class="masthead-rule">
 
@@ -1179,9 +1179,9 @@ body {
     including ApeWisdom social velocity, pre-market gap scans, technical breakout detection, and options flow
     analysis.</p>
     <div class="metric-row">
-      <div class="metric-box"><div class="m-label">Total Signals Evaluated</div><div class="m-val">176</div></div>
+      <div class="metric-box"><div class="m-label">Total Signals Evaluated</div><div class="m-val">177</div></div>
       <div class="metric-box"><div class="m-label">Signals Executed</div><div class="m-val">57</div></div>
-      <div class="metric-box"><div class="m-label">Selectivity Rate</div><div class="m-val">32.4%</div></div>
+      <div class="metric-box"><div class="m-label">Selectivity Rate</div><div class="m-val">32.2%</div></div>
     </div>
     <p class="exec-text" style="font-size:0.72rem;color:var(--muted);margin-top:8px;">* Two trades originated from shadow-mode signals during Phase 2&rarr;3 transition, resulting in 58 total trades from 57 approved signals.</p>
   </div>
@@ -1220,13 +1220,13 @@ body {
       <table class="inst-table">
         <thead><tr><th>Parameter</th><th class="r">Value</th></tr></thead>
         <tbody>
-          <tr><td>Strategy State</td><td class="num-cell mono-cell">CLOSED</td></tr>
-          <tr class="alt"><td>RS Score Threshold</td><td class="num-cell mono-cell">63.0</td></tr>
+          <tr><td>Strategy State</td><td class="num-cell mono-cell">CLIMAX_WARNING</td></tr>
+          <tr class="alt"><td>RS Score Threshold</td><td class="num-cell mono-cell">71.0</td></tr>
           <tr><td>Sizing Multiplier</td><td class="num-cell mono-cell">0.6</td></tr>
-          <tr class="alt"><td>New Signals Allowed</td><td class="num-cell mono-cell">False</td></tr>
+          <tr class="alt"><td>New Signals Allowed</td><td class="num-cell mono-cell">True</td></tr>
           <tr><td>Phase 4 Gate</td><td class="num-cell mono-cell">FAIL</td></tr>
           <tr class="alt"><td>Hot Tickers</td><td class="num-cell mono-cell">WOLF</td></tr>
-          <tr><td>Avoid Tickers</td><td class="num-cell mono-cell">NIO, NVDA, SNAP</td></tr>
+          <tr><td>Avoid Tickers</td><td class="num-cell mono-cell">APP, NIO, NVDA, SNAP</td></tr>
         </tbody>
       </table>
       <p class="exec-text" style="font-size:0.72rem;color:var(--muted);margin-top:8px;font-style:italic;">Note: The Phase 4 Gate value above reflects the live strategy state machine assessment (rs_strategy_state.py) which may differ from the historical gate computation in Section V due to different evaluation windows.</p>
@@ -1308,13 +1308,13 @@ body {
       <table class="inst-table">
         <thead><tr><th>Metric</th><th class="r">RS Strategy</th><th class="r">SPY (Buy &amp; Hold)</th><th class="r">Alpha</th></tr></thead>
         <tbody>
-          <tr><td>Cumulative Return</td><td class="num-cell mono-cell num-pos">+170.60%</td><td class="num-cell mono-cell">+67.61%</td><td class="num-cell mono-cell num-pos">+102.99%</td></tr>
+          <tr><td>Cumulative Return</td><td class="num-cell mono-cell num-pos">+170.60%</td><td class="num-cell mono-cell">N/A</td><td class="num-cell mono-cell ">N/A</td></tr>
           <tr class="alt"><td>Sharpe Ratio</td><td class="num-cell mono-cell">7.12</td><td class="num-cell mono-cell">~0.80</td><td class="num-cell mono-cell num-pos">+6.32</td></tr>
-          <tr><td>Max Drawdown</td><td class="num-cell mono-cell">-13.67%</td><td class="num-cell mono-cell">-18.76%</td><td class="num-cell mono-cell">+5.09%</td></tr>
+          <tr><td>Max Drawdown</td><td class="num-cell mono-cell">-13.67%</td><td class="num-cell mono-cell">N/A</td><td class="num-cell mono-cell">N/A</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="narrative" style="margin-top:0.75rem;">The RS strategy generated <strong>+102.99% alpha</strong> over SPY buy-and-hold during the evaluation period. While the strategy's shorter holding periods and lower capital utilization make a direct return comparison imperfect, the Sharpe ratio differential of <strong>+6.32</strong> confirms substantial risk-adjusted outperformance. The strategy's maximum drawdown of <strong>-13.67%</strong> compares favorably with SPY's <strong>-18.76%</strong> decline over the same period.</p>
+    <p class="narrative" style="margin-top:0.75rem;">SPY return data was not available for the evaluation period. The strategy's Sharpe ratio of <strong>7.12</strong> substantially exceeds the long-run SPY Sharpe of approximately 0.80, suggesting meaningful risk-adjusted alpha generation. A direct benchmark comparison will be computed when yfinance price data is accessible.</p>
   </div>
 
   <hr class="thin-rule">
@@ -2016,7 +2016,7 @@ body {
   <div class="report-footer">
     <div class="firm">DNSD CAPITAL</div>
     <div>Retail Sentiment Momentum Strategy &mdash; Institutional Performance Report &bull; April 08, 2026</div>
-    <div style="margin-top:0.3rem;">PROPRIETARY &amp; CONFIDENTIAL &bull; 29 Sections &bull; Generated 02:58 AM ET</div>
+    <div style="margin-top:0.3rem;">PROPRIETARY &amp; CONFIDENTIAL &bull; 29 Sections &bull; Generated 03:03 AM ET</div>
     <div style="text-align:center;color:#888;font-size:10px;font-family:var(--mono);margin-top:12px">
       Report contains 29 sections across ~35 pages
     </div>
