@@ -353,16 +353,16 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
 <div class="header">
   <div><h1>DNSD CAPITAL &mdash; Trade Journal</h1>
   <div style="font-size:13px;opacity:0.8;margin-top:4px">Paper Trading Log &middot; Phase 3</div></div>
-  <div class="date">April 10, 2026 12:11</div>
+  <div class="date">April 10, 2026 12:19</div>
 </div>
 
 <div class="metrics-bar">
-  <div class="metric"><div class="val val-navy">65</div><div class="lbl">Trades</div></div>
-  <div class="metric"><div class="val val-green">64.6%</div><div class="lbl">Win Rate</div></div>
+  <div class="metric"><div class="val val-navy">66</div><div class="lbl">Trades</div></div>
+  <div class="metric"><div class="val val-green">63.6%</div><div class="lbl">Win Rate</div></div>
   <div class="metric"><div class="val val-green">+5.53%</div><div class="lbl">Avg Win</div></div>
-  <div class="metric"><div class="val val-red">-2.93%</div><div class="lbl">Avg Loss</div></div>
-  <div class="metric"><div class="val val-navy">1.89x</div><div class="lbl">W/L Ratio</div></div>
-  <div class="metric"><div class="val val-green">+164.8%</div><div class="lbl">Total P&amp;L</div></div>
+  <div class="metric"><div class="val val-red">-2.89%</div><div class="lbl">Avg Loss</div></div>
+  <div class="metric"><div class="val val-navy">1.92x</div><div class="lbl">W/L Ratio</div></div>
+  <div class="metric"><div class="val val-green">+163.0%</div><div class="lbl">Total P&amp;L</div></div>
 </div>
 
 <div class="controls">
@@ -390,6 +390,20 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
             <div class="tl-meta">
               <span>Trigger: Large Print Detected</span>
               <span>RS: 73</span>
+              <span>Exit: Time Exit</span>
+            </div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot loss"></div>
+          <div class="tl-date">Apr 10 09:30 → Apr 10 13:12 (3h 42m)</div>
+          <div class="tl-card">
+            <div class="tl-card-header">
+              <span class="tl-ticker">HOOD</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
+              <span class="tl-pnl" style="color:#ef4444">-1.85%</span>
+            </div>
+            <div class="tl-meta">
+              <span>Trigger: Large Print Detected</span>
+              <span>RS: 72</span>
               <span>Exit: Time Exit</span>
             </div>
           </div>
@@ -645,24 +659,10 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
               <span>Exit: Time</span>
             </div>
           </div>
-        </div><div class="tl-date-group">Oct 30, 2024</div><div class="tl-item">
-          <div class="tl-dot loss"></div>
-          <div class="tl-date">Oct 30 09:45 → Oct 30 10:02 (17m)</div>
-          <div class="tl-card">
-            <div class="tl-card-header">
-              <span class="tl-ticker">SMCI</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#fce7f3;color:#be185d;font-weight:600">SHORT</span>
-              <span class="tl-pnl" style="color:#ef4444">-7.00%</span>
-            </div>
-            <div class="tl-meta">
-              <span>Trigger: Meme Community</span>
-              <span>RS: 95</span>
-              <span>Exit: Stop</span>
-            </div>
-          </div>
         </div></div>
 </details>
 
-<div class="count-label" id="countLabel">Showing 65 trades</div>
+<div class="count-label" id="countLabel">Showing 66 trades</div>
 <div class="grid" id="grid">
 
     <div class="trade-card" data-ticker="PLTR" data-trigger="large_print_detected"
@@ -686,6 +686,33 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
       <div class="factor-bars">
         <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
         <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:64.0%;background:#8b5cf6"></div></div><span class="factor-val">64</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HOOD" data-trigger="large_print_detected"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">HOOD</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">midday</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-1.85%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Apr 10 09:30 @ $70.12</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Apr 10 13:12 @ $68.82</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>3h 42m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Large Print Detected</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">72</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time_exit</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
         <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
         <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
         <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
