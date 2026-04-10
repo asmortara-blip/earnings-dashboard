@@ -845,7 +845,7 @@ body {
     <div class="confidential">Confidential</div>
     <div class="firm-name">DNSD Capital</div>
     <div class="report-title">Retail Sentiment Momentum Strategy &mdash; Institutional Performance Report</div>
-    <div class="report-date">April 09, 2026 &nbsp;&bull;&nbsp; <span>09:02 PM ET</span> &nbsp;&bull;&nbsp; Q2 2026</div>
+    <div class="report-date">April 09, 2026 &nbsp;&bull;&nbsp; <span>09:15 PM ET</span> &nbsp;&bull;&nbsp; Q2 2026</div>
   </div>
   <hr class="masthead-rule">
 
@@ -1198,7 +1198,7 @@ body {
     entirely when conditions are adverse. The intraday regime detection provides granular context for
     individual trading sessions, enabling dynamic adjustment of entry timing and exit parameters.</p>
     <div class="env-grid">
-      <div class="metric-box"><div class="m-label">VIX</div><div class="m-val ">19.49</div></div>
+      <div class="metric-box"><div class="m-label">VIX</div><div class="m-val ">—</div></div>
       <div class="metric-box"><div class="m-label">Macro Regime</div><div class="m-val">NORMAL</div></div>
       <div class="metric-box"><div class="m-label">Macro Dampener</div><div class="m-val">1.00</div></div>
       <div class="metric-box"><div class="m-label">SPY Intraday</div><div class="m-val">RANGE_BOUND</div></div>
@@ -1224,11 +1224,11 @@ body {
         <tbody>
           <tr><td>Strategy State</td><td class="num-cell mono-cell">CLOSED</td></tr>
           <tr class="alt"><td>RS Score Threshold</td><td class="num-cell mono-cell">63.0</td></tr>
-          <tr><td>Sizing Multiplier</td><td class="num-cell mono-cell">0.9</td></tr>
+          <tr><td>Sizing Multiplier</td><td class="num-cell mono-cell">1.0</td></tr>
           <tr class="alt"><td>New Signals Allowed</td><td class="num-cell mono-cell">False</td></tr>
           <tr><td>Phase 4 Gate</td><td class="num-cell mono-cell">FAIL</td></tr>
-          <tr class="alt"><td>Hot Tickers</td><td class="num-cell mono-cell">HIMS</td></tr>
-          <tr><td>Avoid Tickers</td><td class="num-cell mono-cell">NIO, NVDA, RDDT, SNAP</td></tr>
+          <tr class="alt"><td>Hot Tickers</td><td class="num-cell mono-cell">None</td></tr>
+          <tr><td>Avoid Tickers</td><td class="num-cell mono-cell">RDDT</td></tr>
         </tbody>
       </table>
       <p class="exec-text" style="font-size:0.72rem;color:var(--muted);margin-top:8px;font-style:italic;">Note: The Phase 4 Gate value above reflects the live strategy state machine assessment (rs_strategy_state.py) which may differ from the historical gate computation in Section V due to different evaluation windows.</p>
@@ -1310,13 +1310,13 @@ body {
       <table class="inst-table">
         <thead><tr><th>Metric</th><th class="r">RS Strategy</th><th class="r">SPY (Buy &amp; Hold)</th><th class="r">Alpha</th></tr></thead>
         <tbody>
-          <tr><td>Cumulative Return</td><td class="num-cell mono-cell num-pos">+164.87%</td><td class="num-cell mono-cell">N/A</td><td class="num-cell mono-cell ">N/A</td></tr>
+          <tr><td>Cumulative Return</td><td class="num-cell mono-cell num-pos">+164.87%</td><td class="num-cell mono-cell">+75.23%</td><td class="num-cell mono-cell num-pos">+89.64%</td></tr>
           <tr class="alt"><td>Sharpe Ratio</td><td class="num-cell mono-cell">6.63</td><td class="num-cell mono-cell">~0.80</td><td class="num-cell mono-cell num-pos">+5.83</td></tr>
-          <tr><td>Max Drawdown</td><td class="num-cell mono-cell">-13.67%</td><td class="num-cell mono-cell">N/A</td><td class="num-cell mono-cell">N/A</td></tr>
+          <tr><td>Max Drawdown</td><td class="num-cell mono-cell">-13.67%</td><td class="num-cell mono-cell">-18.76%</td><td class="num-cell mono-cell">+5.09%</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="narrative" style="margin-top:0.75rem;">SPY return data was not available for the evaluation period. The strategy's Sharpe ratio of <strong>6.63</strong> substantially exceeds the long-run SPY Sharpe of approximately 0.80, suggesting meaningful risk-adjusted alpha generation. A direct benchmark comparison will be computed when yfinance price data is accessible.</p>
+    <p class="narrative" style="margin-top:0.75rem;">The RS strategy generated <strong>+89.64% alpha</strong> over SPY buy-and-hold during the evaluation period. While the strategy's shorter holding periods and lower capital utilization make a direct return comparison imperfect, the Sharpe ratio differential of <strong>+5.83</strong> confirms substantial risk-adjusted outperformance. The strategy's maximum drawdown of <strong>-13.67%</strong> compares favorably with SPY's <strong>-18.76%</strong> decline over the same period.</p>
   </div>
 
   <hr class="thin-rule">
@@ -2020,7 +2020,7 @@ body {
   <div class="report-footer">
     <div class="firm">DNSD CAPITAL</div>
     <div>Retail Sentiment Momentum Strategy &mdash; Institutional Performance Report &bull; April 09, 2026</div>
-    <div style="margin-top:0.3rem;">PROPRIETARY &amp; CONFIDENTIAL &bull; 29 Sections &bull; Generated 09:02 PM ET</div>
+    <div style="margin-top:0.3rem;">PROPRIETARY &amp; CONFIDENTIAL &bull; 29 Sections &bull; Generated 09:15 PM ET</div>
     <div style="text-align:center;color:#888;font-size:10px;font-family:var(--mono);margin-top:12px">
       Report contains 29 sections across ~35 pages
     </div>
