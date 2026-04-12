@@ -3,50 +3,613 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>DNSD RS Strategy — Weekly Report 2026-03-30</title>
+  <meta name="generated" content="2026-04-12 09:13">
+  <title>DNSD RS Strategy — Weekly Report 2026-04-06</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>if(!localStorage.getItem('dnsd_auth'))location.href='home.html';</script>
+  <script>
+    (function(){
+      var t=localStorage.getItem('dnsd_theme');
+      if(t)document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
   <style>
+
+
+/* Z-INDEX LAYERS: Tooltip 10 | Ticker-tape 100 | Header 150 | Sidebar 200 | Toast 500 | Cmd-palette 600 | Shortcuts 700 */
+
+:root {
+  --bg: #fafaf8;
+  --surface: #f5f3ef;
+  --paper: #ffffff;
+  --paper-hover: #f9f7f4;
+  --elevated: #ffffff;
+  --rule: #e0ddd8;
+  --rule-active: #0a3d7c;
+  --rule-heavy: #c5c0b8;
+  --accent: #0a3d7c;
+  --accent-dim: #063058;
+  --accent-bg: rgba(10, 61, 124, 0.06);
+  --profit: #0a6e38;
+  --profit-bg: rgba(10, 110, 56, 0.06);
+  --loss: #b91c1c;
+  --loss-bg: rgba(185, 28, 28, 0.06);
+  --warn: #92702a;
+  --warn-bg: rgba(146, 112, 42, 0.06);
+  --ink: #1a1a1a;
+  --ink2: #3d3d3d;
+  --muted: #666666;  /* WCAG AA: 5.49:1 on --bg, 5.74:1 on --paper */
+  --dim: #717171;    /* WCAG AA: 4.67:1 on --bg, 4.95:1 on --paper */
+  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --serif: 'Playfair Display', Georgia, serif;
+  --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-glow: none;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Spacing scale */
+  --space-xs: 4px; --space-sm: 8px; --space-md: 16px;
+  --space-lg: 24px; --space-xl: 40px;
+  /* Z-index stack */
+  --z-base: 1; --z-sticky: 10; --z-sidebar: 20; --z-header: 30;
+  --z-dropdown: 40; --z-mega-menu: 50; --z-modal: 60; --z-toast: 70;
+  /* Chart series colors */
+  --chart-1: #0a3d7c; --chart-2: #6366f1; --chart-3: #8b5cf6;
+  --chart-4: #ec4899; --chart-5: #f59e0b;
+  /* Background tints */
+  --tint-position: rgba(10,110,56,0.03); --tint-signal: rgba(10,61,124,0.03);
+  --tint-alert: rgba(185,28,28,0.03);
+  --surface-hover: rgba(0,0,0,0.03);
+  --cream: #f5f3ef; --rule-light: #e8e5df;
+}
+
+/* Dark mode — Bloomberg/Koyfin terminal aesthetic */
+[data-theme="dark"] {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --paper: #16161f;
+  --paper-hover: #1a1a24;
+  --elevated: #1e1e28;
+  --rule: rgba(255,255,255,0.06);
+  --rule-active: #6366f1;
+  --rule-heavy: rgba(255,255,255,0.10);
+  --accent: #6366f1;
+  --accent-dim: #4f46e5;
+  --accent-bg: rgba(99,102,241,0.08);
+  --surface-hover: rgba(255,255,255,0.04);
+  --profit: #22c55e;
+  --profit-bg: rgba(34,197,94,0.08);
+  --loss: #ef4444;
+  --loss-bg: rgba(239,68,68,0.08);
+  --warn: #eab308;
+  --warn-bg: rgba(234,179,8,0.08);
+  --ink: #e8e8ed;
+  --ink2: #a0a0b0;
+  --muted: #8b8b9e;
+  --dim: #5a5a6e;
+  --shadow-card: none;
+  --shadow-glow: none;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+}
+[data-theme="dark"] img { opacity: 0.9; }
+[data-theme="dark"] .cmd-overlay { background: rgba(0, 0, 0, 0.6); }
+[data-theme="dark"] ::selection { background: rgba(99,102,241,0.3); }
+[data-theme="dark"] .shortcuts-overlay { background: rgba(0, 0, 0, 0.5); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+html { background: var(--bg); scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Accessibility utilities */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: -9999px; top: auto;
+  width: 1px; height: 1px; overflow: hidden; z-index: 999;
+}
+.skip-link:focus {
+  position: fixed; top: 0; left: 0; width: auto; height: auto;
+  padding: 12px 24px; background: var(--accent); color: #fff;
+  font-size: 14px; font-weight: 600; z-index: 999; text-decoration: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .card, .metric-card { border: 1px solid CanvasText; }
+  .badge { border: 1px solid CanvasText; }
+  .nav-item.active { border-left: 3px solid Highlight; }
+}
+
+/* Rhythm helpers */
+.rhythm-tight { gap: var(--space-sm); }
+.rhythm-normal { gap: var(--space-md); }
+.rhythm-loose { gap: var(--space-lg); }
+
+/* Typography helpers */
+.pct-sign { font-size: 0.75em; vertical-align: super; line-height: 0; opacity: 0.7; }
+.ticker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; display: inline-block; min-width: 48px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus:not(:focus-visible), a:focus:not(:focus-visible), input:focus:not(:focus-visible) { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Layout */
+.app { display: flex; min-height: 100vh; }
+
+/* === REPORT MASTHEAD === */
+.rpt-masthead {
+  text-align: center; padding: 2.5rem 0 1.5rem; position: relative;
+  border-bottom: 3px double var(--rule-heavy, #c5c0b8);
+}
+.rpt-firm-name {
+  font-family: var(--serif, Georgia, serif); font-size: 2.2rem; font-weight: 800;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink);
+}
+.rpt-title {
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-top: 4px;
+}
+.rpt-classification {
+  position: absolute; top: 12px; right: 0; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--loss);
+  border: 1px solid var(--loss); padding: 2px 8px; border-radius: 3px;
+}
+.rpt-date {
+  font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin-top: 8px;
+}
+.rpt-rule {
+  border: none; border-top: 3px double var(--rule-heavy, #c5c0b8);
+  margin: 0.5rem 0 1.5rem;
+}
+
+/* === REPORT TABLE OF CONTENTS === */
+.rpt-toc {
+  background: var(--cream, #f5f3ef); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 1.5rem 2rem; margin-bottom: 2rem;
+  column-count: 2; column-gap: 2rem;
+}
+[data-theme="dark"] .rpt-toc { background: var(--surface); }
+.rpt-toc-title {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 700;
+  column-span: all; padding-bottom: 8px; margin-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.rpt-toc-item {
+  font-size: 0.78rem; padding: 3px 0; break-inside: avoid;
+}
+.rpt-toc-item a {
+  color: var(--ink2, #3d3d3d); text-decoration: none;
+  border-bottom: 1px dotted var(--rule);
+}
+.rpt-toc-item a:hover { color: var(--accent); }
+.rpt-toc-num {
+  font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
+  display: inline-block; width: 2.5rem;
+}
+
+/* === REPORT SECTIONS === */
+.rpt-section { margin-bottom: 2rem; page-break-inside: avoid; }
+.rpt-section-hdr {
+  font-family: var(--serif); font-size: 1.35rem; font-weight: 700;
+  border-bottom: 2px solid var(--rule); padding-bottom: 6px;
+  margin-bottom: 1rem; position: relative;
+}
+.rpt-section-hdr .rpt-num {
+  font-family: var(--mono); font-size: 0.85rem; color: var(--muted);
+  margin-right: 0.5rem;
+}
+.rpt-share-link {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  opacity: 0; font-size: 12px; color: var(--dim); cursor: pointer;
+  transition: opacity 150ms ease;
+}
+.rpt-section:hover .rpt-share-link { opacity: 1; }
+
+/* === REPORT NARRATIVE === */
+.rpt-narrative {
+  font-family: var(--sans); font-size: 0.84rem; line-height: 1.8;
+  color: var(--ink2, #3d3d3d); margin-bottom: 1rem;
+}
+.rpt-narrative strong { color: var(--ink); }
+.rpt-narrative code {
+  font-family: var(--mono); font-size: 0.78rem;
+  background: var(--cream, #f5f3ef); padding: 1px 5px; border-radius: 3px;
+}
+[data-theme="dark"] .rpt-narrative { color: var(--ink2, #a0a0b0); }
+[data-theme="dark"] .rpt-narrative code { background: var(--surface); }
+
+/* === REPORT TABLES === */
+.rpt-table-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+.rpt-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.rpt-table th {
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--muted);
+  background: var(--cream, #f5f3ef); padding: 8px 10px;
+  border-bottom: 2px solid var(--rule); position: sticky; top: 0; z-index: 1;
+  text-align: left;
+}
+[data-theme="dark"] .rpt-table th { background: var(--elevated, #1e1e28); }
+.rpt-table td { padding: 6px 10px; border-bottom: 1px solid var(--rule); }
+.rpt-table tr.rpt-alt td { background: rgba(0,0,0,0.015); }
+[data-theme="dark"] .rpt-table tr.rpt-alt td { background: rgba(255,255,255,0.015); }
+.rpt-table tr:hover td { background: var(--surface-hover, rgba(0,0,0,0.03)); }
+.rpt-table .rpt-r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.rpt-table .rpt-pos { color: var(--profit); }
+.rpt-table .rpt-neg { color: var(--loss); }
+
+/* === REPORT FOOTER === */
+.rpt-footer {
+  text-align: center; border-top: 3px double var(--rule-heavy, #c5c0b8);
+  padding-top: 1.5rem; margin-top: 2rem;
+}
+.rpt-footer-firm {
+  font-family: var(--serif); font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink);
+}
+.rpt-disclaimer {
+  font-size: 0.68rem; font-style: italic; color: var(--dim);
+  max-width: 800px; margin: 0.8rem auto 0; line-height: 1.6;
+}
+
+/* === REPORT INTERACTIVE === */
+.rpt-progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--accent, #6366f1); z-index: 999;
+  width: 0; transition: width 50ms linear;
+}
+.rpt-back-to-top {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent, #6366f1); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; transition: opacity 200ms ease;
+  border: none; font-size: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+.rpt-back-to-top.visible { opacity: 1; }
+.rpt-back-to-top:hover { filter: brightness(1.1); }
+
+/* === REPORT PRINT === */
+@media print {
+  .dnsd-nav, .dnsd-breadcrumb, .dnsd-mobile-menu, .dnsd-mega-panel,
+  .dnsd-mega-backdrop, .rpt-progress-bar, .rpt-back-to-top,
+  .rpt-share-link, button { display: none !important; }
+  body { background: white !important; color: #000 !important; }
+  .rpt-section { page-break-inside: avoid; }
+  .rpt-table tr.rpt-alt td { background: #f5f5f5 !important; -webkit-print-color-adjust: exact; }
+}
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #0f172a;
-      color: #e2e8f0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg, #0f172a);
+      color: var(--ink, #e2e8f0);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       padding: 24px;
       max-width: 1100px;
       margin: 0 auto;
     }
-    h2 { font-size: 15px; font-weight: 700; color: #94a3b8; }
-    h3 { font-size: 13px; font-weight: 700; color: #64748b; }
+    h2 { font-size: 15px; font-weight: 700; color: var(--muted, #94a3b8); }
+    h3 { font-size: 13px; font-weight: 700; color: var(--muted, #64748b); }
     tr:hover { background: rgba(255,255,255,0.03); }
     a { color: #60a5fa; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    code, .mono { font-family: 'JetBrains Mono', monospace; }
     @media (max-width: 700px) {
       body { padding: 12px; }
     }
+
   </style>
 </head>
 <body>
 
-  <!-- Nav bar -->
-  <div style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:10px 16px;
-              margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
-              flex-wrap:wrap;gap:8px">
-    <div style="display:flex;gap:16px;align-items:center">
-      <a href="index.html" style="color:#94a3b8;font-size:13px">Dashboard</a>
-      <span style="color:#334155">|</span>
-      <span style="color:#60a5fa;font-size:13px;font-weight:600">Weekly Report</span>
-    </div>
-    <div style="font-size:11px;color:#475569">Generated: 2026-04-05 08:03</div>
-  </div>
+  <style>
+.dnsd-nav {
+  background: var(--bg, #fafaf8);
+  border-bottom: 1px solid var(--rule, #e0ddd8);
+  padding: 0 24px;
+  display: flex; align-items: center; height: 44px;
+  position: sticky; top: 0; z-index: 200;
+  font-family: var(--sans, system-ui, -apple-system, sans-serif);
+}
+.dnsd-nav-brand {
+  font-size: 13px; font-weight: 800; letter-spacing: 2px;
+  color: var(--ink, #1a1a1a); text-decoration: none; margin-right: 16px; white-space: nowrap;
+}
+.dnsd-nav-links {
+  display: flex; align-items: center; gap: 2px; flex: 1;
+}
+.dnsd-nav-link {
+  font-size: 12px; font-weight: 500; color: var(--muted, #888888);
+  text-decoration: none; padding: 6px 10px; border-radius: 6px;
+  transition: background 150ms ease, color 150ms ease; white-space: nowrap;
+}
+.dnsd-nav-link:hover {
+  background: var(--surface-hover, rgba(0,0,0,0.03));
+  color: var(--ink, #1a1a1a);
+}
+.dnsd-nav-link.active {
+  background: rgba(10,61,124,0.06); color: var(--accent, #0a3d7c); font-weight: 600;
+}
+.dnsd-nav-right {
+  display: flex; align-items: center; gap: 8px; margin-left: auto;
+}
+.dnsd-nav-theme {
+  background: none; border: 1px solid var(--rule, #e0ddd8);
+  color: var(--muted, #888888); padding: 4px 8px; border-radius: 4px;
+  cursor: pointer; font-size: 11px; transition: background 150ms ease;
+}
+.dnsd-nav-theme:hover { background: var(--surface-hover, rgba(0,0,0,0.03)); }
+.dnsd-breadcrumb {
+  padding: 4px 24px; font-size: 11px; color: var(--dim, #aaaaaa);
+  background: var(--surface, #f5f3ef);
+  border-bottom: 1px solid var(--rule, #e0ddd8);
+}
+.dnsd-breadcrumb a { color: var(--dim, #aaaaaa); text-decoration: none; }
+.dnsd-breadcrumb a:hover { color: var(--muted, #888888); }
 
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px"><div><h1 style="font-size:22px;font-weight:700;color:#f1f5f9;margin-bottom:4px">RS Strategy — Weekly Report</h1><div style="font-size:14px;color:#64748b">Week of: <span style="color:#94a3b8;font-weight:600">Mar 30 – Apr 5, 2026</span></div></div><div style="font-size:11px;color:#475569">Generated 2026-04-05 08:03</div></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px"><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#ef4444;line-height:1.1">-0.45%</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Week P&L</div></div><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#f1f5f9;line-height:1.1">1</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Trades</div></div><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#ef4444;line-height:1.1">0.0%</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Win Rate</div></div><div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:#22c55e;line-height:1.1">-0.45%</div><div style="font-size:11px;color:#94a3b8;margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Best Trade</div><div style="font-size:11px;color:#64748b;margin-top:3px">CELH</div></div></div></div>
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Daily P&L</h2>
+/* Hamburger */
+.dnsd-hamburger {
+  display: none; background: none; border: none;
+  color: var(--muted, #888888); font-size: 18px; cursor: pointer; padding: 4px 8px;
+}
+.dnsd-mobile-menu {
+  display: none; position: fixed; top: 44px; left: 0; right: 0;
+  background: var(--paper, #ffffff);
+  border-bottom: 1px solid var(--rule); padding: 8px; z-index: 250;
+  max-height: calc(100vh - 44px); overflow-y: auto;
+}
+.dnsd-mobile-menu.open { display: block; }
+.dnsd-mobile-menu a {
+  display: block; padding: 10px 16px; color: var(--muted);
+  text-decoration: none; font-size: 13px; border-radius: 6px;
+}
+.dnsd-mobile-menu a:hover { background: var(--surface-hover, rgba(0,0,0,0.03)); }
+.dnsd-mobile-menu a.active { color: var(--accent, #0a3d7c); }
+
+@media (max-width: 768px) {
+  .dnsd-nav-links { display: none; }
+  .dnsd-hamburger { display: block; }
+}
+
+/* === MEGA-MENU === */
+.dnsd-nav { position: sticky; top: 0; z-index: 200; }
+
+.dnsd-mega-trigger {
+  font-size: 12px; font-weight: 500; color: var(--muted, #888888);
+  background: none; border: none; padding: 6px 10px; border-radius: 6px;
+  cursor: pointer; transition: background 150ms ease, color 150ms ease;
+  display: flex; align-items: center; gap: 4px;
+}
+.dnsd-mega-trigger:hover, .dnsd-mega-trigger.open {
+  background: var(--surface-hover, rgba(0,0,0,0.03));
+  color: var(--ink, #1a1a1a);
+}
+
+.dnsd-mega-panel {
+  position: fixed; top: 44px; left: 0; right: 0;
+  background: var(--paper, #ffffff);
+  border-bottom: 1px solid var(--rule, #e0ddd8);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+  z-index: 250;
+  opacity: 0; transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+  padding-top: 8px; /* overlap zone for diagonal mouse movement */
+  margin-top: -8px;
+}
+.dnsd-mega-panel.open {
+  opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dnsd-mega-inner {
+  max-width: 900px; margin: 0 auto; padding: 16px 24px 20px;
+}
+
+.dnsd-mega-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+}
+
+.dnsd-mega-col {
+  padding: 0 16px;
+  border-right: 1px solid var(--rule, #e0ddd8);
+}
+.dnsd-mega-col:last-child { border-right: none; }
+.dnsd-mega-col:first-child { padding-left: 0; }
+.dnsd-mega-col:last-child { padding-right: 0; }
+
+.dnsd-mega-col-title {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--dim, #aaaaaa);
+  padding-bottom: 8px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--rule, #e0ddd8);
+}
+
+.dnsd-mega-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 10px; border-radius: 6px; text-decoration: none;
+  transition: background 150ms ease;
+}
+.dnsd-mega-item:hover {
+  background: var(--surface-hover, rgba(0,0,0,0.03));
+}
+.dnsd-mega-item.active {
+  background: rgba(10,61,124,0.06);
+  border-left: 2px solid var(--accent, #0a3d7c);
+  margin-left: -2px;
+}
+
+.dnsd-mega-icon { color: var(--muted, #888888); margin-top: 1px; }
+.dnsd-mega-item:hover .dnsd-mega-icon { color: var(--ink, #1a1a1a); }
+.dnsd-mega-item.active .dnsd-mega-icon { color: var(--accent, #0a3d7c); }
+
+.dnsd-mega-text { flex: 1; min-width: 0; }
+.dnsd-mega-label {
+  font-size: 12px; font-weight: 600; color: var(--ink, #1a1a1a);
+  line-height: 1.3;
+}
+.dnsd-mega-desc {
+  font-size: 11px; color: var(--dim, #aaaaaa); line-height: 1.3; margin-top: 1px;
+}
+.dnsd-mega-item.active .dnsd-mega-label { color: var(--accent, #0a3d7c); }
+
+.dnsd-mega-backdrop {
+  position: fixed; inset: 0; z-index: 199; background: rgba(0,0,0,0.08);
+  opacity: 0; pointer-events: none; transition: opacity 200ms ease;
+}
+.dnsd-mega-backdrop.open { opacity: 1; pointer-events: auto; }
+
+/* Mobile: hide mega, show in hamburger */
+@media (max-width: 768px) {
+  .dnsd-mega-trigger { display: none; }
+  .dnsd-mega-panel { display: none !important; }
+  .dnsd-mega-backdrop { display: none !important; }
+}
+
+/* Mobile menu category dividers */
+.dnsd-mobile-divider {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--dim, #aaaaaa); padding: 12px 16px 4px; font-weight: 600;
+  border-top: 1px solid var(--rule, #e0ddd8); margin-top: 4px;
+}
+.dnsd-mobile-divider:first-child { border-top: none; margin-top: 0; }
+</style>
+<div class="dnsd-mega-backdrop"></div>
+<nav class="dnsd-nav" aria-label="Main navigation">
+  <a href="home.html" class="dnsd-nav-brand">DNSD</a>
+  <div class="dnsd-nav-links">
+    <a href="rs.html" class="dnsd-nav-link">Dashboard</a>
+    <button class="dnsd-mega-trigger" aria-expanded="false" aria-controls="mega-panel" aria-label="Open page navigation">Pages &#x25BE;</button>
+  </div>
+  <button class="dnsd-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">&#x2630;</button>
+  <div class="dnsd-nav-right">
+    <button class="dnsd-nav-theme" onclick="var t=document.documentElement.getAttribute('data-theme');var next=t==='dark'?'':'dark';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('rs-theme',next||'light')" title="Toggle theme" aria-label="Toggle dark mode">&#x1F313;</button>
+  </div>
+</nav>
+<div class="dnsd-mega-panel" id="mega-panel" role="menu">
+  <div class="dnsd-mega-inner">
+    <div class="dnsd-mega-grid"><div class="dnsd-mega-col"><div class="dnsd-mega-col-title">Reports</div><a href="report.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Market Report</span><span class="dnsd-mega-desc">29-section institutional report</span></span></a><a href="brief.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Executive Brief</span><span class="dnsd-mega-desc">1-page print-optimized summary</span></span></a><a href="picks.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Stock Picks</span><span class="dnsd-mega-desc">Top 10 ranked candidate profiles</span></span></a><a href="trade_journal.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Trade Journal</span><span class="dnsd-mega-desc">Complete trade log with filters</span></span></a><a href="narratives.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Narratives</span><span class="dnsd-mega-desc">AI-generated trade stories</span></span></a></div><div class="dnsd-mega-col"><div class="dnsd-mega-col-title">Analysis</div><a href="backtest_interactive.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Backtester</span><span class="dnsd-mega-desc">Interactive parameter analysis</span></span></a><a href="sector_heatmap.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Sector Map</span><span class="dnsd-mega-desc">11-sector rotation heatmap</span></span></a><a href="monte_carlo.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="2" width="20" height="20" rx="2"/><circle cx="12" cy="12" r="1"/><circle cx="7.5" cy="7.5" r="1"/><circle cx="16.5" cy="16.5" r="1"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Monte Carlo</span><span class="dnsd-mega-desc">10,000-path simulation engine</span></span></a><a href="replay.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Trade Replay</span><span class="dnsd-mega-desc">Tick-by-tick trade replay</span></span></a></div><div class="dnsd-mega-col"><div class="dnsd-mega-col-title">Data</div><a href="commodities.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Commodities</span><span class="dnsd-mega-desc">Oil, gold, bitcoin trackers</span></span></a><a href="supply_chain.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7.76"/><path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6"/><path d="M12 1v4"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Supply Chain</span><span class="dnsd-mega-desc">Shipping & logistics indices</span></span></a><a href="mobile.html" class="dnsd-mega-item"><span class="dnsd-mega-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span><span class="dnsd-mega-text"><span class="dnsd-mega-label">Mobile</span><span class="dnsd-mega-desc">PWA mobile companion app</span></span></a></div></div>
+  </div>
+</div>
+<div class="dnsd-mobile-menu"><a href="rs.html" class="">Dashboard</a><div class="dnsd-mobile-divider">Reports</div><a href="report.html" class="">Market Report</a><a href="brief.html" class="">Executive Brief</a><a href="picks.html" class="">Stock Picks</a><a href="trade_journal.html" class="">Trade Journal</a><a href="narratives.html" class="">Narratives</a><div class="dnsd-mobile-divider">Analysis</div><a href="backtest_interactive.html" class="">Backtester</a><a href="sector_heatmap.html" class="">Sector Map</a><a href="monte_carlo.html" class="">Monte Carlo</a><a href="replay.html" class="">Trade Replay</a><div class="dnsd-mobile-divider">Data</div><a href="commodities.html" class="">Commodities</a><a href="supply_chain.html" class="">Supply Chain</a><a href="mobile.html" class="">Mobile</a><div class="dnsd-mobile-divider"></div><a href="home.html">Home Portal</a></div>
+<div class="dnsd-breadcrumb"><a href="home.html">Home</a> &rsaquo; <span>Weekly Report</span></div>
+<script>
+(function() {
+  var trigger = document.querySelector('.dnsd-mega-trigger');
+  var panel = document.querySelector('.dnsd-mega-panel');
+  var backdrop = document.querySelector('.dnsd-mega-backdrop');
+  if (!trigger || !panel) return;
+
+  var isTouch = 'ontouchstart' in window;
+  var closeTimer = null;
+
+  function openMenu() {
+    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+    trigger.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMenu() {
+    panel.classList.remove('open');
+    backdrop.classList.remove('open');
+    trigger.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  function scheduleClose() {
+    closeTimer = setTimeout(closeMenu, 150);
+  }
+
+  function cancelClose() {
+    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+  }
+
+  if (isTouch) {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (panel.classList.contains('open')) closeMenu();
+      else openMenu();
+    });
+  } else {
+    trigger.addEventListener('mouseenter', openMenu);
+    trigger.addEventListener('mouseleave', scheduleClose);
+    panel.addEventListener('mouseenter', cancelClose);
+    panel.addEventListener('mouseleave', scheduleClose);
+  }
+
+  backdrop.addEventListener('click', closeMenu);
+
+  panel.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && panel.classList.contains('open')) closeMenu();
+  });
+})();
+
+(function() {
+  var hamburger = document.querySelector('.dnsd-hamburger');
+  var menu = document.querySelector('.dnsd-mobile-menu');
+  if (hamburger && menu) {
+    hamburger.addEventListener('click', function() {
+      menu.classList.toggle('open');
+      hamburger.textContent = menu.classList.contains('open') ? '\u2715' : '\u2630';
+    });
+  }
+})();
+</script>
+
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px"><div><h1 style="font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px">RS Strategy — Weekly Report</h1><div style="font-size:14px;color:var(--muted)">Week of: <span style="color:var(--muted);font-weight:600">Apr 6 – 12, 2026</span></div></div><div style="font-size:11px;color:var(--muted)">Generated 2026-04-12 09:13</div></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px"><div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:var(--loss);line-height:1.1">-7.63%</div><div style="font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Week P&L</div></div><div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:var(--ink);line-height:1.1">4</div><div style="font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Trades</div></div><div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:var(--loss);line-height:1.1">25.0%</div><div style="font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Win Rate</div></div><div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:8px;padding:14px 16px;text-align:center"><div style="font-size:26px;font-weight:700;color:var(--profit);line-height:1.1">+1.67%</div><div style="font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:0.05em">Best Trade</div><div style="font-size:11px;color:var(--muted);margin-top:3px">RIOT</div></div></div></div>
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Daily P&L</h2>
     <div style="position:relative;height:200px;max-width:600px">
       <canvas id="daily-pnl-chart"></canvas>
     </div>
     <script>
     (function() {
-      var cd = {"labels": ["Mon 30", "Tue 31", "Wed 1", "Thu 2", "Fri 3"], "data": [-0.445, 0.0, 0.0, 0.0, 0.0], "colors": ["rgba(239,68,68,0.7)", "rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)"]};
+      var cd = {"labels": ["Mon 6", "Tue 7", "Wed 8", "Thu 9", "Fri 10"], "data": [0.0, 0.0, -5.726, 0.0, -1.908], "colors": ["rgba(34,197,94,0.7)", "rgba(34,197,94,0.7)", "rgba(239,68,68,0.7)", "rgba(34,197,94,0.7)", "rgba(239,68,68,0.7)"]};
       var ctx = document.getElementById('daily-pnl-chart').getContext('2d');
       new Chart(ctx, {
         type: 'bar',
@@ -75,11 +638,11 @@
             }
           },
           scales: {
-            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 12 } } },
+            x: { grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--rule').trim() || '#1e293b' }, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() || '#94a3b8', font: { size: 12 } } },
             y: {
-              grid: { color: '#334155' },
+              grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--rule-heavy').trim() || '#334155' },
               ticks: {
-                color: '#94a3b8', font: { size: 11 },
+                color: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() || '#94a3b8', font: { size: 11 },
                 callback: function(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
               }
             }
@@ -88,11 +651,11 @@
       });
     })();
     </script></div>
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Trade Log <span style="background:#1e3a5f;color:#60a5fa;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-left:8px">1 trades</span></h2>
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Trade Log <span style="background:#1e3a5f;color:#60a5fa;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-left:8px">4 trades</span></h2>
     <div style="overflow-x:auto">
     <table style="width:100%;border-collapse:collapse;font-size:13px">
       <thead>
-        <tr style="border-bottom:1px solid #334155;color:#64748b;font-size:11px;text-transform:uppercase">
+        <tr style="border-bottom:1px solid var(--rule-heavy);color:var(--muted);font-size:11px;text-transform:uppercase">
           <th style="padding:6px 8px;text-align:left">Date</th>
           <th style="padding:6px 8px;text-align:left">Ticker</th>
           <th style="padding:6px 8px;text-align:left">Dir</th>
@@ -104,54 +667,54 @@
           <th style="padding:6px 8px;text-align:left">Exit Reason</th>
         </tr>
       </thead>
-      <tbody style="color:#e2e8f0"><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 8px;color:#94a3b8;font-size:12px;white-space:nowrap">2026-03-30 09:30</td><td style="padding:7px 8px;font-weight:700;color:#f1f5f9">CELH</td><td style="padding:7px 8px;color:#22c55e;font-weight:600;font-size:12px">LONG</td><td style="padding:7px 8px;color:#94a3b8;font-weight:700">64</td><td style="padding:7px 8px;color:#94a3b8">$34.60</td><td style="padding:7px 8px;color:#94a3b8">$34.45</td><td style="padding:7px 8px;color:#64748b;font-size:12px">116m</td><td style="padding:7px 8px;color:#ef4444;font-weight:700">-0.45%</td><td style="padding:7px 8px;color:#64748b;font-size:12px">time_exit</td></tr></tbody>
+      <tbody style="color:var(--ink)"><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 8px;color:var(--muted);font-size:12px;white-space:nowrap">2026-04-08 09:30</td><td style="padding:7px 8px;font-weight:700;color:var(--ink)">RIOT</td><td style="padding:7px 8px;color:var(--profit);font-weight:600;font-size:12px">LONG</td><td style="padding:7px 8px;color:var(--muted);font-weight:700">76</td><td style="padding:7px 8px;color:var(--muted)">$15.80</td><td style="padding:7px 8px;color:var(--muted)">$16.06</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">5h05m</td><td style="padding:7px 8px;color:var(--profit);font-weight:700">+1.67%</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">time_exit</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 8px;color:var(--muted);font-size:12px;white-space:nowrap">2026-04-08 09:30</td><td style="padding:7px 8px;font-weight:700;color:var(--ink)">PLTR</td><td style="padding:7px 8px;color:var(--profit);font-weight:600;font-size:12px">LONG</td><td style="padding:7px 8px;color:var(--muted);font-weight:700">65</td><td style="padding:7px 8px;color:var(--muted)">$153.97</td><td style="padding:7px 8px;color:var(--muted)">$142.59</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">5h06m</td><td style="padding:7px 8px;color:var(--loss);font-weight:700">-7.39%</td><td style="padding:7px 8px;color:var(--loss);font-size:12px">stop_loss</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 8px;color:var(--muted);font-size:12px;white-space:nowrap">2026-04-10 09:30</td><td style="padding:7px 8px;font-weight:700;color:var(--ink)">PLTR</td><td style="padding:7px 8px;color:var(--profit);font-weight:600;font-size:12px">LONG</td><td style="padding:7px 8px;color:var(--muted);font-weight:700">73</td><td style="padding:7px 8px;color:var(--muted)">$127.06</td><td style="padding:7px 8px;color:var(--muted)">$126.99</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">3h40m</td><td style="padding:7px 8px;color:var(--loss);font-weight:700">-0.06%</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">time_exit</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 8px;color:var(--muted);font-size:12px;white-space:nowrap">2026-04-10 09:30</td><td style="padding:7px 8px;font-weight:700;color:var(--ink)">HOOD</td><td style="padding:7px 8px;color:var(--profit);font-weight:600;font-size:12px">LONG</td><td style="padding:7px 8px;color:var(--muted);font-weight:700">72</td><td style="padding:7px 8px;color:var(--muted)">$70.12</td><td style="padding:7px 8px;color:var(--muted)">$68.82</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">3h42m</td><td style="padding:7px 8px;color:var(--loss);font-weight:700">-1.85%</td><td style="padding:7px 8px;color:var(--muted);font-size:12px">time_exit</td></tr></tbody>
     </table>
     </div></div>
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Signal Quality Analysis</h2>
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Signal Quality Analysis</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
       <div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
           Fired vs Traded
         </h3>
         <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Total signals</span>
-            <span style="font-weight:700;color:#f1f5f9">47</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Total signals</span>
+            <span style="font-weight:700;color:var(--ink)">60</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Trades executed</span>
-            <span style="font-weight:700;color:#f1f5f9">1</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Trades executed</span>
+            <span style="font-weight:700;color:var(--ink)">4</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Fired rate</span>
-            <span style="font-weight:700;color:#60a5fa">2%</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Fired rate</span>
+            <span style="font-weight:700;color:var(--accent)">7%</span>
           </div>
         </div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-top:14px;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:14px;margin-bottom:10px">
           By Confidence
         </h3>
         <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#22c55e;font-weight:600">HIGH signals</span>
-            <span style="color:#94a3b8">0 signals | 0 trades | WR —</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--profit);font-weight:600">HIGH signals</span>
+            <span style="color:var(--muted)">1 signals | 1 trades | WR 100%</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#f59e0b;font-weight:600">MEDIUM signals</span>
-            <span style="color:#94a3b8">45 signals | 1 trades | WR 0%</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--warn);font-weight:600">MEDIUM signals</span>
+            <span style="color:var(--muted)">14 signals | 3 trades | WR 0%</span>
           </div>
         </div>
       </div>
       <div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
           Trigger Types This Week
         </h3>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">press_release_positive</span><span style="font-weight:700;color:#f1f5f9">33</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">meme_community</span><span style="font-weight:700;color:#f1f5f9">6</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">fda_approval</span><span style="font-weight:700;color:#f1f5f9">6</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">breakout_20d</span><span style="font-weight:700;color:#f1f5f9">1</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e293b"><span style="font-family:monospace;font-size:12px;color:#94a3b8">sympathy_move</span><span style="font-weight:700;color:#f1f5f9">1</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">large_print_detected</span><span style="font-weight:700;color:var(--ink)">16</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">press_release_positive</span><span style="font-weight:700;color:var(--ink)">15</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">analyst_upgrade_bold</span><span style="font-weight:700;color:var(--ink)">12</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">breakout_20d</span><span style="font-weight:700;color:var(--ink)">6</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">earnings_beat_strong</span><span style="font-weight:700;color:var(--ink)">6</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">analyst_downgrade</span><span style="font-weight:700;color:var(--ink)">4</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)"><span style="font-family:monospace;font-size:12px;color:var(--muted)">meme_community</span><span style="font-weight:700;color:var(--ink)">1</span></div>
       </div>
     </div></div>
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Position Management</h2>
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Position Management</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
       <div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
           Exit Reason Breakdown
         </h3>
         <div style="position:relative;height:180px;max-width:260px;margin:0 auto">
@@ -159,21 +722,21 @@
         </div>
         <script>
         (function() {
-          var pd = {"labels": ["Time Exit"], "data": [1], "colors": ["#60a5fa"]};
+          var pd = {"labels": ["Time Exit", "Stop Loss"], "data": [3, 1], "colors": ["#60a5fa", "#ef4444"]};
           if (!pd.data.length) return;
           var ctx = document.getElementById('exit-pie-chart').getContext('2d');
           new Chart(ctx, {
             type: 'doughnut',
             data: {
               labels: pd.labels,
-              datasets: [{ data: pd.data, backgroundColor: pd.colors, borderWidth: 1, borderColor: '#0f172a' }]
+              datasets: [{ data: pd.data, backgroundColor: pd.colors, borderWidth: 1, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#0f172a' }]
             },
             options: {
               responsive: true, maintainAspectRatio: false,
               plugins: {
                 legend: {
                   position: 'bottom',
-                  labels: { color: '#94a3b8', font: { size: 11 }, padding: 10 }
+                  labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() || '#94a3b8', font: { size: 11 }, padding: 10 }
                 }
               }
             }
@@ -182,101 +745,228 @@
         </script>
       </div>
       <div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
           Hold Time &amp; Stop Stats
         </h3>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Avg hold (this week)</span>
-            <span style="font-weight:700;color:#f1f5f9">116m</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Avg hold (this week)</span>
+            <span style="font-weight:700;color:var(--ink)">4h23m</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#22c55e">Winners avg hold</span>
-            <span style="font-weight:700;color:#22c55e">0m</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--profit)">Winners avg hold</span>
+            <span style="font-weight:700;color:var(--profit)">5h05m</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#ef4444">Losers avg hold</span>
-            <span style="font-weight:700;color:#ef4444">116m</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--loss)">Losers avg hold</span>
+            <span style="font-weight:700;color:var(--loss)">4h09m</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Stop-out rate</span>
-            <span style="font-weight:700;color:#94a3b8">0%</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Stop-out rate</span>
+            <span style="font-weight:700;color:var(--muted)">25%</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:6px 0">
-            <span style="font-size:13px;color:#94a3b8">Stops this week</span>
-            <span style="font-weight:700;color:#f1f5f9">0</span>
+            <span style="font-size:13px;color:var(--muted)">Stops this week</span>
+            <span style="font-weight:700;color:var(--ink)">1</span>
           </div>
         </div>
       </div>
     </div></div>
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Upcoming Week Watchlist</h2><p style="color:#475569;font-size:12px;margin-bottom:16px">No CANDIDATE earnings in the next 7 days.</p>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Upcoming Week Watchlist</h2><p style="color:var(--muted);font-size:12px;margin-bottom:16px">No CANDIDATE earnings in the next 7 days.</p>
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">
           ApeWisdom Top Candidates
         </h3>
         <div style="overflow-x:auto;margin-bottom:20px">
         <table style="width:100%;border-collapse:collapse;font-size:13px">
-          <thead><tr style="color:#64748b;font-size:11px;text-transform:uppercase;border-bottom:1px solid #334155">
+          <thead><tr style="color:var(--muted);font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--rule-heavy)">
             <th style="padding:5px 10px;text-align:left">Rank</th>
             <th style="padding:5px 10px;text-align:left">Ticker</th>
             <th style="padding:5px 10px;text-align:left">Mentions</th>
             <th style="padding:5px 10px;text-align:left">vs 24h ago</th>
           </tr></thead>
-          <tbody style="color:#e2e8f0"><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#2</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">NVDA</td><td style="padding:6px 10px;color:#94a3b8">36</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.3x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#12</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">DJT</td><td style="padding:6px 10px;color:#94a3b8">16</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.0x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#14</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">OPEN</td><td style="padding:6px 10px;color:#94a3b8">15</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.2x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#17</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">RKLB</td><td style="padding:6px 10px;color:#94a3b8">14</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.4x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#19</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">TSLA</td><td style="padding:6px 10px;color:#94a3b8">12</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.5x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#20</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">ASTS</td><td style="padding:6px 10px;color:#94a3b8">12</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.3x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#28</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">PLTR</td><td style="padding:6px 10px;color:#94a3b8">9</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">1.1x</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 10px;color:#64748b;font-size:12px">#31</td><td style="padding:6px 10px;font-weight:700;color:#f1f5f9">RDDT</td><td style="padding:6px 10px;color:#94a3b8">9</td><td style="padding:6px 10px;color:#94a3b8;font-weight:600">0.6x</td></tr></tbody>
+          <tbody style="color:var(--ink)"><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#4</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">PLTR</td><td style="padding:6px 10px;color:var(--muted)">64</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.1x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#19</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">DJT</td><td style="padding:6px 10px;color:var(--muted)">13</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.3x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#20</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">NVDA</td><td style="padding:6px 10px;color:var(--muted)">12</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.1x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#25</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">RDDT</td><td style="padding:6px 10px;color:var(--muted)">11</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.4x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#41</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">MSTR</td><td style="padding:6px 10px;color:var(--muted)">7</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">1.4x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#42</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">ASTS</td><td style="padding:6px 10px;color:var(--muted)">7</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.4x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#43</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">RKLB</td><td style="padding:6px 10px;color:var(--muted)">7</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.4x</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:6px 10px;color:var(--muted);font-size:12px">#46</td><td style="padding:6px 10px;font-weight:700;color:var(--ink)">TSLA</td><td style="padding:6px 10px;color:var(--muted)">6</td><td style="padding:6px 10px;color:var(--muted);font-weight:600">0.1x</td></tr></tbody>
         </table>
-        </div><p style="color:#475569;font-size:12px">No open positions carrying into next week.</p></div>
-  <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Model Health</h2>
+        </div><p style="color:var(--muted);font-size:12px">No open positions carrying into next week.</p></div>
+  <div style="background:var(--rule);border:1px solid var(--rule-heavy);border-radius:10px;padding:20px;margin-bottom:20px"><h2 style="font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px">Model Health</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
       <div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
           Model Status
         </h3>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Current min_rs_score</span>
-            <span style="font-weight:700;color:#60a5fa">65 (default)</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Current min_rs_score</span>
+            <span style="font-weight:700;color:var(--accent)">65 (default)</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Win rate (all-time)</span>
-            <span style="font-weight:700;color:#22c55e">66.1%</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Win rate (all-time)</span>
+            <span style="font-weight:700;color:var(--profit)">63.6%</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Win rate (rolling 30d)</span>
-            <span style="font-weight:700;color:#22c55e">66.1%</span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Win rate (rolling 30d)</span>
+            <span style="font-weight:700;color:var(--profit)">63.6%</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e293b">
-            <span style="font-size:13px;color:#94a3b8">Performance trend</span>
-            <span style="font-weight:700"><span style="color:#64748b">→ stable</span></span>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule)">
+            <span style="font-size:13px;color:var(--muted)">Performance trend</span>
+            <span style="font-weight:700"><span style="color:var(--muted)">→ stable</span></span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:6px 0">
-            <span style="font-size:13px;color:#94a3b8">Cumulative P&amp;L</span>
-            <span style="font-weight:700;color:#22c55e">+170.60%</span>
+            <span style="font-size:13px;color:var(--muted)">Cumulative P&amp;L</span>
+            <span style="font-weight:700;color:var(--profit)">+162.96%</span>
           </div>
         </div>
       </div>
       <div>
-        <h3 style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        <h3 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
           Phase 3 Gate
-          <span style="background:#22c55e22;color:#22c55e;padding:2px 8px;border-radius:4px;
+          <span style="background:rgba(34,197,94,0.13);color:var(--profit);padding:2px 8px;border-radius:4px;
             font-size:10px;font-weight:700;margin-left:6px">PASS — Auto-execution ready</span>
         </h3>
         <div style="overflow-x:auto">
         <table style="width:100%;border-collapse:collapse;font-size:13px">
-          <thead><tr style="color:#64748b;font-size:11px;text-transform:uppercase;border-bottom:1px solid #334155">
+          <thead><tr style="color:var(--muted);font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--rule-heavy)">
             <th style="padding:5px 10px;text-align:left">Metric</th>
             <th style="padding:5px 10px;text-align:left">Current</th>
             <th style="padding:5px 10px;text-align:left">Target</th>
             <th style="padding:5px 10px;text-align:left">Status</th>
           </tr></thead>
-          <tbody style="color:#e2e8f0"><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">Trades</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">62</td><td style="padding:7px 10px;color:#475569">>= 30</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">Win Rate</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">66.1%</td><td style="padding:7px 10px;color:#475569">>= 55%</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">W/L Ratio</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">1.97x</td><td style="padding:7px 10px;color:#475569">>= 1.5x</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr><tr style="border-bottom:1px solid #1e293b"><td style="padding:7px 10px;color:#94a3b8">Max Drawdown</td><td style="padding:7px 10px;font-weight:700;color:#f1f5f9">-11.61%</td><td style="padding:7px 10px;color:#475569">>= -15%</td><td style="padding:7px 10px;color:#22c55e;font-weight:700">✓</td></tr></tbody>
+          <tbody style="color:var(--ink)"><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 10px;color:var(--muted)">Trades</td><td style="padding:7px 10px;font-weight:700;color:var(--ink)">66</td><td style="padding:7px 10px;color:var(--muted)">>= 30</td><td style="padding:7px 10px;color:var(--profit);font-weight:700">✓</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 10px;color:var(--muted)">Win Rate</td><td style="padding:7px 10px;font-weight:700;color:var(--ink)">63.6%</td><td style="padding:7px 10px;color:var(--muted)">>= 55%</td><td style="padding:7px 10px;color:var(--profit);font-weight:700">✓</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 10px;color:var(--muted)">W/L Ratio</td><td style="padding:7px 10px;font-weight:700;color:var(--ink)">1.92x</td><td style="padding:7px 10px;color:var(--muted)">>= 1.5x</td><td style="padding:7px 10px;color:var(--profit);font-weight:700">✓</td></tr><tr style="border-bottom:1px solid var(--rule)"><td style="padding:7px 10px;color:var(--muted)">Max Drawdown</td><td style="padding:7px 10px;font-weight:700;color:var(--ink)">-11.61%</td><td style="padding:7px 10px;color:var(--muted)">>= -15%</td><td style="padding:7px 10px;color:var(--profit);font-weight:700">✓</td></tr></tbody>
         </table>
         </div>
       </div>
     </div></div>
 
   <!-- Footer -->
-  <div style="text-align:center;padding:20px;color:#334155;font-size:11px;margin-top:10px">
-    DNSD RS Strategy — Phase 2 Shadow Mode — Generated 2026-04-05 08:03
+  <div style="text-align:center;padding:20px;color:var(--rule-heavy);font-size:11px;margin-top:10px">
+    DNSD RS Strategy — Phase 3 Paper Trading — Generated 2026-04-12 09:13
   </div>
 
+  <script>
+(function() {
+  var key = 'rs-theme';
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme || '');
+    localStorage.setItem(key, theme || 'light');
+  }
+  // Restore on load
+  try { if (localStorage.getItem(key) === 'dark') applyTheme('dark'); } catch(e) {}
+  // Expose toggle for buttons
+  window.toggleTheme = function() {
+    var current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? '' : 'dark');
+  };
+})();
+</script>
+<script>
+(function() {
+  // --- Table headers: add scope="col" ---
+  document.querySelectorAll('th').forEach(function(th) {
+    if (!th.hasAttribute('scope')) th.setAttribute('scope', 'col');
+  });
+
+  // --- Metric cards: add role="status" and aria-label ---
+  document.querySelectorAll('.metric-card').forEach(function(card) {
+    if (!card.hasAttribute('role')) card.setAttribute('role', 'status');
+    var label = card.querySelector('.metric-label');
+    var value = card.querySelector('.metric-value');
+    if (label && value && !card.hasAttribute('aria-label')) {
+      card.setAttribute('aria-label', label.textContent.trim() + ': ' + value.textContent.trim());
+    }
+  });
+
+  // --- Cards: add role="region" and aria-label from card-header ---
+  document.querySelectorAll('.card').forEach(function(card) {
+    var header = card.querySelector('.card-header');
+    if (header && !card.hasAttribute('role')) {
+      card.setAttribute('role', 'region');
+      card.setAttribute('aria-label', header.textContent.trim().substring(0, 60));
+    }
+  });
+
+  // --- Badges: add role="status" ---
+  document.querySelectorAll('.badge').forEach(function(badge) {
+    if (!badge.hasAttribute('role')) badge.setAttribute('role', 'status');
+  });
+
+  // --- SVGs: add role="img" or aria-hidden ---
+  document.querySelectorAll('svg').forEach(function(svg) {
+    if (svg.hasAttribute('role')) return;
+    // Decorative SVGs (icons inside buttons/links) get aria-hidden
+    if (svg.closest('button') || svg.closest('a') || svg.closest('.nav-icon')) {
+      svg.setAttribute('aria-hidden', 'true');
+    } else {
+      // Content SVGs (sparklines, gauges) get role="img"
+      svg.setAttribute('role', 'img');
+      if (!svg.hasAttribute('aria-label')) {
+        svg.setAttribute('aria-label', 'Chart');
+      }
+    }
+  });
+
+  // --- Canvas: add role="img" ---
+  document.querySelectorAll('canvas').forEach(function(canvas) {
+    if (!canvas.hasAttribute('role')) {
+      canvas.setAttribute('role', 'img');
+      canvas.setAttribute('aria-label', 'Data visualization');
+    }
+  });
+
+  // --- Status dots: add visually-hidden text ---
+  document.querySelectorAll('.status-dot').forEach(function(dot) {
+    if (dot.querySelector('.visually-hidden')) return;
+    var span = document.createElement('span');
+    span.className = 'visually-hidden';
+    if (dot.classList.contains('offline')) span.textContent = 'Offline';
+    else if (dot.classList.contains('reconnecting')) span.textContent = 'Reconnecting';
+    else span.textContent = 'Online';
+    dot.appendChild(span);
+  });
+
+  // --- Navigation: ensure aria-label on nav ---
+  document.querySelectorAll('nav:not([aria-label])').forEach(function(nav) {
+    nav.setAttribute('aria-label', 'Navigation');
+  });
+
+  // --- Sections: add role="region" with aria-label ---
+  document.querySelectorAll('.section').forEach(function(sec) {
+    if (sec.hasAttribute('role')) return;
+    var title = sec.querySelector('.section-title');
+    if (title) {
+      sec.setAttribute('role', 'region');
+      sec.setAttribute('aria-label', title.textContent.trim());
+    }
+  });
+
+  // --- Heatmap cells: add aria-label from title attribute ---
+  document.querySelectorAll('.heatmap-cell, .cal-cell').forEach(function(cell) {
+    var tip = cell.getAttribute('title') || cell.getAttribute('data-tip');
+    if (tip && !cell.hasAttribute('aria-label')) {
+      cell.setAttribute('aria-label', tip);
+    }
+  });
+
+  // --- Interactive elements: ensure buttons have labels ---
+  document.querySelectorAll('button:not([aria-label])').forEach(function(btn) {
+    if (btn.textContent.trim().length < 2) {
+      // Icon-only button — needs a label
+      var title = btn.getAttribute('title');
+      if (title) btn.setAttribute('aria-label', title);
+    }
+  });
+
+  // --- Skip nav: inject if missing ---
+  if (!document.querySelector('.skip-link')) {
+    var main = document.querySelector('main, .main, [role="main"]');
+    if (main && !main.id) main.id = 'main-content';
+    if (main) {
+      var skip = document.createElement('a');
+      skip.href = '#' + (main.id || 'main-content');
+      skip.className = 'skip-link';
+      skip.textContent = 'Skip to main content';
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
+  }
+})();
+</script>
 </body>
 </html>
