@@ -334,7 +334,7 @@ a.back:hover{text-decoration:underline}
 <div class="container">
 <header>
   <h1>DNSD CAPITAL &mdash; Supply Chain &amp; Shipping Monitor</h1>
-  <div class="ts">Generated 2026-04-21 07:57 ET</div>
+  <div class="ts">Generated 2026-04-21 08:22 ET</div>
 </header>
 
 <h2>Market Overview</h2>
@@ -395,12 +395,12 @@ a.back:hover{text-decoration:underline}
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">ETF</span><span class="tile-tkr">BDRY</span></div>
   <div class="tile-name">Breakwave Dry Bulk</div>
-  <div class="tile-price">N/A</div>
+  <div class="tile-price">$11.30</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +0.00%</span>
-    <span style="color:#10b981">5D: +0.00%</span>
+    <span style="color:#ef4444">1D: -1.19%</span>
+    <span style="color:#10b981">5D: +2.21%</span>
   </div>
-  <div class="tile-spark"></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,21.2 4.2,24.0 8.4,21.1 12.6,21.1 16.8,22.1 21.1,22.0 25.3,21.5 29.5,16.4 33.7,14.5 37.9,22.0 42.1,14.6 46.3,12.3 50.5,16.7 54.7,10.8 58.9,5.6 63.2,0.3 67.4,0.6 71.6,4.5 75.8,0.0 80.0,2.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">ETF</span><span class="tile-tkr">IYT</span></div>
   <div class="tile-name">iShares Transport</div>
@@ -424,7 +424,7 @@ a.back:hover{text-decoration:underline}
 <h2>Shipping Health Index</h2>
 <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Composite of shipping stock 5D change, BDRY trend, and IYT vs SPY relative strength</p>
 <div class="health-box">
-  <div class="health-score" style="border-color:#f59e0b">59.0</div>
+  <div class="health-score" style="border-color:#f59e0b">59.7</div>
   <div class="health-badge" style="background:#f59e0b">NEUTRAL</div>
   <div class="health-detail">
     <div>Shipping Avg 5D: <b style="color:#10b981">+0.58%</b></div>
@@ -436,7 +436,7 @@ a.back:hover{text-decoration:underline}
 
 <h2>Cross-Asset Impact (30-Day Correlation)</h2>
 <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">How shipping/transport indicators correlate with macro benchmarks</p>
-<div class="corr-row"><span class="corr-pair">IYT vs SPY</span><span class="corr-val" style="background:rgba(16,185,129,0.93)">+0.93</span></div><div class="corr-row"><span class="corr-pair">BDRY vs ^VIX</span><span class="corr-val" style="background:rgba(16,185,129,0.00)">+0.00</span></div>
+<div class="corr-row"><span class="corr-pair">IYT vs SPY</span><span class="corr-val" style="background:rgba(16,185,129,0.93)">+0.93</span></div><div class="corr-row"><span class="corr-pair">BDRY vs ^VIX</span><span class="corr-val" style="background:rgba(239,68,68,0.82)">-0.82</span></div>
 
 <h2>RS Strategy Impact</h2>
 <div class="impact-grid">
@@ -451,7 +451,7 @@ a.back:hover{text-decoration:underline}
 </div>
 
 <h2>3-Month Price Charts</h2>
-<div class="charts-grid"><div class="chart-box"><canvas id="chart_0"></canvas></div><div class="chart-box"><canvas id="chart_2"></canvas></div><div class="chart-box"><canvas id="chart_3"></canvas></div></div>
+<div class="charts-grid"><div class="chart-box"><canvas id="chart_0"></canvas></div><div class="chart-box"><canvas id="chart_1"></canvas></div><div class="chart-box"><canvas id="chart_2"></canvas></div><div class="chart-box"><canvas id="chart_3"></canvas></div></div>
 
 <a class="back" href="home.html">&larr; Back to Strategy Platform</a>
 </div>
@@ -460,6 +460,14 @@ new Chart(document.getElementById('chart_0'),{type:'line',data:{
 labels:["Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30", "Mar 31", "Apr 01", "Apr 02", "Apr 06", "Apr 07", "Apr 08", "Apr 09", "Apr 10", "Apr 13", "Apr 14", "Apr 15", "Apr 16", "Apr 17", "Apr 20"],
 datasets:[{label:'ZIM Integrated (3M)',data:[21.74, 21.34, 21.38, 22.21, 21.98, 22.48, 22.42, 21.31, 21.7, 21.05, 20.83, 19.67, 20.0, 20.53, 20.05, 20.45, 20.49, 21.48, 26.94, 28.08, 28.23, 28.31, 27.72, 28.13, 28.25, 27.92, 27.89, 27.89, 27.0, 27.91, 27.51, 26.9, 28.16, 27.98, 27.15, 26.31, 26.11, 25.85, 26.52, 26.25, 26.08, 25.88, 25.92, 26.46, 26.44, 26.25, 26.19, 25.88, 26.35, 25.95, 26.3, 26.3, 26.3, 26.45, 26.4, 26.39, 26.53, 26.39, 26.7, 26.95, 27.01, 26.56],
 borderColor:'#0a3d7c',backgroundColor:'#0a3d7c22',fill:true,
+pointRadius:0,borderWidth:2,tension:0.3}]},
+options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
+scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
+y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});
+new Chart(document.getElementById('chart_1'),{type:'line',data:{
+labels:["Jan 21", "Jan 22", "Jan 23", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30", "Feb 02", "Feb 03", "Feb 04", "Feb 05", "Feb 06", "Feb 09", "Feb 10", "Feb 11", "Feb 12", "Feb 13", "Feb 17", "Feb 18", "Feb 19", "Feb 20", "Feb 23", "Feb 24", "Feb 25", "Feb 26", "Feb 27", "Mar 02", "Mar 03", "Mar 04", "Mar 05", "Mar 06", "Mar 09", "Mar 10", "Mar 11", "Mar 12", "Mar 13", "Mar 16", "Mar 17", "Mar 18", "Mar 19", "Mar 20", "Mar 23", "Mar 24", "Mar 25", "Mar 26", "Mar 27", "Mar 30", "Mar 31", "Apr 01", "Apr 02", "Apr 06", "Apr 07", "Apr 08", "Apr 09", "Apr 10", "Apr 13", "Apr 14", "Apr 15", "Apr 16", "Apr 17", "Apr 20"],
+datasets:[{label:'Dry Bulk ETF (3M)',data:[10.07, 10.0, 10.36, 10.98, 11.26, 11.01, 11.48, 11.53, 11.2, 10.55, 10.85, 10.71, 10.65, 10.95, 11.18, 11.44, 11.3, 11.49, 11.68, 11.76, 11.66, 11.73, 11.77, 11.87, 11.68, 11.91, 12.07, 12.22, 12.5, 11.91, 11.52, 10.46, 10.26, 10.23, 10.7, 10.4, 10.49, 10.67, 10.43, 10.7, 10.02, 10.01, 9.99, 9.8, 10.0, 10.0, 9.93, 9.94, 9.97, 10.32, 10.45, 9.94, 10.44, 10.6, 10.3, 10.7, 11.06, 11.42, 11.4, 11.13, 11.44, 11.3],
+borderColor:'#6366f1',backgroundColor:'#6366f122',fill:true,
 pointRadius:0,borderWidth:2,tension:0.3}]},
 options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
 scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
