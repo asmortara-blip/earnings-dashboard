@@ -353,23 +353,23 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
 <div class="header">
   <div><h1>DNSD CAPITAL &mdash; Trade Journal</h1>
   <div style="font-size:13px;opacity:0.8;margin-top:4px">Paper Trading Log &middot; Phase 3</div></div>
-  <div class="date">May 11, 2026 13:27</div>
+  <div class="date">May 11, 2026 13:41</div>
 </div>
 
 <div class="metrics-bar">
-  <div class="metric"><div class="val val-navy">86</div><div class="lbl">Trades</div></div>
-  <div class="metric"><div class="val val-green">62.8%</div><div class="lbl">Win Rate</div></div>
-  <div class="metric"><div class="val val-green">+6.40%</div><div class="lbl">Avg Win</div></div>
+  <div class="metric"><div class="val val-navy">89</div><div class="lbl">Trades</div></div>
+  <div class="metric"><div class="val val-green">64.0%</div><div class="lbl">Win Rate</div></div>
+  <div class="metric"><div class="val val-green">+6.22%</div><div class="lbl">Avg Win</div></div>
   <div class="metric"><div class="val val-red">-3.41%</div><div class="lbl">Avg Loss</div></div>
-  <div class="metric"><div class="val val-navy">1.88x</div><div class="lbl">W/L Ratio</div></div>
-  <div class="metric"><div class="val val-green">+236.7%</div><div class="lbl">Total P&amp;L</div></div>
+  <div class="metric"><div class="val val-navy">1.82x</div><div class="lbl">W/L Ratio</div></div>
+  <div class="metric"><div class="val val-green">+245.3%</div><div class="lbl">Total P&amp;L</div></div>
 </div>
 
 <div class="controls">
   <div><label>Ticker</label><br>
     <select id="fTicker" onchange="applyFilters()"><option value="">All</option><option value="AFRM">AFRM</option><option value="APP">APP</option><option value="CELH">CELH</option><option value="COIN">COIN</option><option value="CVNA">CVNA</option><option value="GME">GME</option><option value="HIMS">HIMS</option><option value="HOOD">HOOD</option><option value="LCID">LCID</option><option value="NIO">NIO</option><option value="NVDA">NVDA</option><option value="PLTR">PLTR</option><option value="RDDT">RDDT</option><option value="RIOT">RIOT</option><option value="RIVN">RIVN</option><option value="SMCI">SMCI</option><option value="SNAP">SNAP</option><option value="TSLA">TSLA</option><option value="UPST">UPST</option><option value="WOLF">WOLF</option></select></div>
   <div><label>Trigger</label><br>
-    <select id="fTrigger" onchange="applyFilters()"><option value="">All</option><option value="analyst_downgrade">Analyst Downgrade</option><option value="analyst_upgrade_bold">Analyst Upgrade Bold</option><option value="breakout_20d">Breakout 20D</option><option value="earnings_beat_strong">Earnings Beat Strong</option><option value="influencer_post_high">Influencer Post High</option><option value="large_print_detected">Large Print Detected</option><option value="meme_community">Meme Community</option><option value="partnership_announcement">Partnership Announcement</option><option value="press_release_positive">Press Release Positive</option><option value="short_squeeze_alert">Short Squeeze Alert</option><option value="short_squeeze_setup">Short Squeeze Setup</option></select></div>
+    <select id="fTrigger" onchange="applyFilters()"><option value="">All</option><option value="analyst_downgrade">Analyst Downgrade</option><option value="analyst_upgrade_bold">Analyst Upgrade Bold</option><option value="breakout_20d">Breakout 20D</option><option value="earnings_beat_strong">Earnings Beat Strong</option><option value="influencer_post_high">Influencer Post High</option><option value="iv_spike">Iv Spike</option><option value="large_print_detected">Large Print Detected</option><option value="meme_community">Meme Community</option><option value="partnership_announcement">Partnership Announcement</option><option value="press_release_positive">Press Release Positive</option><option value="short_squeeze_alert">Short Squeeze Alert</option><option value="short_squeeze_setup">Short Squeeze Setup</option></select></div>
   <div><label>Result</label><br>
     <select id="fResult" onchange="applyFilters()"><option value="">All</option>
       <option value="win">Wins</option><option value="loss">Losses</option></select></div>
@@ -391,6 +391,48 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
               <span>Trigger: Large Print Detected</span>
               <span>RS: 65</span>
               <span>Exit: Time Exit</span>
+            </div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot win"></div>
+          <div class="tl-date">May 11 09:30 → May 11 14:28 (4h 58m)</div>
+          <div class="tl-card">
+            <div class="tl-card-header">
+              <span class="tl-ticker">HIMS</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
+              <span class="tl-pnl" style="color:#10b981">+2.30%</span>
+            </div>
+            <div class="tl-meta">
+              <span>Trigger: Iv Spike</span>
+              <span>RS: 60</span>
+              <span>Exit: Time Exit</span>
+            </div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot win"></div>
+          <div class="tl-date">May 11 09:30 → May 11 14:40 (5h 10m)</div>
+          <div class="tl-card">
+            <div class="tl-card-header">
+              <span class="tl-ticker">RDDT</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
+              <span class="tl-pnl" style="color:#10b981">+3.26%</span>
+            </div>
+            <div class="tl-meta">
+              <span>Trigger: Breakout 20D</span>
+              <span>RS: 61</span>
+              <span>Exit: Partial Profit</span>
+            </div>
+          </div>
+        </div><div class="tl-item">
+          <div class="tl-dot win"></div>
+          <div class="tl-date">May 11 09:30 → May 11 14:40 (5h 10m)</div>
+          <div class="tl-card">
+            <div class="tl-card-header">
+              <span class="tl-ticker">RDDT</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
+              <span class="tl-pnl" style="color:#10b981">+3.05%</span>
+            </div>
+            <div class="tl-meta">
+              <span>Trigger: Breakout 20D</span>
+              <span>RS: 61</span>
+              <span>Exit: Trail Stop</span>
             </div>
           </div>
         </div><div class="tl-date-group">May 08, 2026</div><div class="tl-item">
@@ -617,52 +659,10 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
               <span>Exit: Time Exit</span>
             </div>
           </div>
-        </div><div class="tl-date-group">Apr 15, 2026</div><div class="tl-item">
-          <div class="tl-dot win"></div>
-          <div class="tl-date">Apr 15 09:30 → Apr 15 11:36 (2h 6m)</div>
-          <div class="tl-card">
-            <div class="tl-card-header">
-              <span class="tl-ticker">UPST</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
-              <span class="tl-pnl" style="color:#10b981">+4.98%</span>
-            </div>
-            <div class="tl-meta">
-              <span>Trigger: Short Squeeze Alert</span>
-              <span>RS: 79</span>
-              <span>Exit: Partial Profit</span>
-            </div>
-          </div>
-        </div><div class="tl-item">
-          <div class="tl-dot win"></div>
-          <div class="tl-date">Apr 15 09:30 → Apr 15 11:36 (2h 6m)</div>
-          <div class="tl-card">
-            <div class="tl-card-header">
-              <span class="tl-ticker">UPST</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
-              <span class="tl-pnl" style="color:#10b981">+19.46%</span>
-            </div>
-            <div class="tl-meta">
-              <span>Trigger: Short Squeeze Alert</span>
-              <span>RS: 79</span>
-              <span>Exit: Time Exit</span>
-            </div>
-          </div>
-        </div><div class="tl-date-group">Apr 10, 2026</div><div class="tl-item">
-          <div class="tl-dot loss"></div>
-          <div class="tl-date">Apr 10 13:26 → Apr 12 22:44 (57h 18m)</div>
-          <div class="tl-card">
-            <div class="tl-card-header">
-              <span class="tl-ticker">NVDA</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
-              <span class="tl-pnl" style="color:#ef4444">-0.05%</span>
-            </div>
-            <div class="tl-meta">
-              <span>Trigger: Large Print Detected</span>
-              <span>RS: 64</span>
-              <span>Exit: Power Hour</span>
-            </div>
-          </div>
         </div></div>
 </details>
 
-<div class="count-label" id="countLabel">Showing 86 trades</div>
+<div class="count-label" id="countLabel">Showing 89 trades</div>
 <div class="grid" id="grid">
 
     <div class="trade-card" data-ticker="CVNA" data-trigger="large_print_detected"
@@ -688,6 +688,87 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
         <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:90.0%;background:#8b5cf6"></div></div><span class="factor-val">90</span></div>
         <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
         <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#10b981"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="HIMS" data-trigger="iv_spike"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">HIMS</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">afternoon</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+2.30%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 11 09:30 @ $29.39</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 11 14:28 @ $30.07</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>4h 58m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Iv Spike</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">60</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time_exit</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:45.0%;background:#8b5cf6"></div></div><span class="factor-val">45</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RDDT" data-trigger="breakout_20d"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RDDT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">afternoon</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+3.26%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 11 09:30 @ $154.56</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 11 14:40 @ $159.59</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>5h 10m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Breakout 20D</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">61</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>partial_profit</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
+
+    <div class="trade-card" data-ticker="RDDT" data-trigger="breakout_20d"
+         data-result="win">
+      <div class="card-header">
+        <div class="card-ticker">RDDT</div>
+        <span class="badge badge-win">WIN</span>
+        <span class="badge badge-dir">LONG</span>
+        <span class="badge badge-window">afternoon</span>
+      </div>
+      <div class="card-pnl" style="color:#10b981">+3.05%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>May 11 09:30 @ $154.56</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>May 11 14:40 @ $159.27</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>5h 10m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Breakout 20D</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">61</span> <span class="conf-tag">(MEDIUM)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>trail_stop</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:85.0%;background:#3b82f6"></div></div><span class="factor-val">85</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
         <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
       </div>
     </div>
