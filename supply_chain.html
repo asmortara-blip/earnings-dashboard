@@ -334,7 +334,7 @@ a.back:hover{text-decoration:underline}
 <div class="container">
 <header>
   <h1>DNSD CAPITAL &mdash; Supply Chain &amp; Shipping Monitor</h1>
-  <div class="ts">Generated 2026-09-01 07:37 ET</div>
+  <div class="ts">Generated 2026-09-01 07:44 ET</div>
 </header>
 
 <h2>Market Overview</h2>
@@ -377,12 +377,12 @@ a.back:hover{text-decoration:underline}
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Logistics</span><span class="tile-tkr">FDX</span></div>
   <div class="tile-name">FedEx</div>
-  <div class="tile-price">N/A</div>
+  <div class="tile-price">$327.40</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +0.00%</span>
-    <span style="color:#10b981">5D: +0.00%</span>
+    <span style="color:#ef4444">1D: -1.21%</span>
+    <span style="color:#10b981">5D: +0.71%</span>
   </div>
-  <div class="tile-spark"></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,24.0 4.2,20.7 8.4,22.8 12.6,18.7 16.8,16.6 21.1,11.4 25.3,13.5 29.5,10.0 33.7,0.0 37.9,3.8 42.1,6.3 46.3,8.7 50.5,8.7 54.7,10.6 58.9,11.4 63.2,4.2 67.4,4.5 71.6,2.7 75.8,6.3 80.0,9.5" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">Logistics</span><span class="tile-tkr">UPS</span></div>
   <div class="tile-name">UPS</div>
@@ -397,10 +397,10 @@ a.back:hover{text-decoration:underline}
   <div class="tile-name">Breakwave Dry Bulk</div>
   <div class="tile-price">$15.47</div>
   <div class="tile-chg">
-    <span style="color:#10b981">1D: +4.39%</span>
-    <span style="color:#10b981">5D: +4.88%</span>
+    <span style="color:#ef4444">1D: -0.32%</span>
+    <span style="color:#10b981">5D: +5.31%</span>
   </div>
-  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,20.3 4.2,20.8 8.4,20.0 12.6,20.4 16.8,22.8 21.1,22.3 25.3,22.4 29.5,24.0 33.7,21.1 37.9,15.7 42.1,19.6 46.3,22.0 50.5,19.5 54.7,17.1 58.9,9.6 63.2,10.4 67.4,5.5 71.6,5.5 75.8,8.7 80.0,0.0" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  <div class="tile-spark"><svg width="80" height="24" viewBox="0 0 80 24"><polyline points="0.0,20.9 4.2,20.1 8.4,20.5 12.6,22.8 16.8,22.3 21.1,22.4 25.3,24.0 29.5,21.1 33.7,16.0 37.9,19.7 42.1,22.1 46.3,19.6 50.5,17.3 54.7,10.0 58.9,10.8 63.2,6.0 67.4,6.0 71.6,9.1 75.8,0.0 80.0,0.6" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/></svg></div>
 </div><div class="tile">
   <div class="tile-hdr"><span class="tile-group">ETF</span><span class="tile-tkr">IYT</span></div>
   <div class="tile-name">iShares Transport</div>
@@ -424,7 +424,7 @@ a.back:hover{text-decoration:underline}
 <h2>Shipping Health Index</h2>
 <p style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Composite of shipping stock 5D change, BDRY trend, and IYT vs SPY relative strength</p>
 <div class="health-box">
-  <div class="health-score" style="border-color:#f59e0b">57.1</div>
+  <div class="health-score" style="border-color:#f59e0b">57.8</div>
   <div class="health-badge" style="background:#f59e0b">NEUTRAL</div>
   <div class="health-detail">
     <div>Shipping Avg 5D: <b style="color:#ef4444">-0.33%</b></div>
@@ -451,15 +451,23 @@ a.back:hover{text-decoration:underline}
 </div>
 
 <h2>3-Month Price Charts</h2>
-<div class="charts-grid"><div class="chart-box"><canvas id="chart_1"></canvas></div><div class="chart-box"><canvas id="chart_3"></canvas></div></div>
+<div class="charts-grid"><div class="chart-box"><canvas id="chart_1"></canvas></div><div class="chart-box"><canvas id="chart_2"></canvas></div><div class="chart-box"><canvas id="chart_3"></canvas></div></div>
 
 <a class="back" href="home.html">&larr; Back to Strategy Platform</a>
 </div>
 <script>
 new Chart(document.getElementById('chart_1'),{type:'line',data:{
-labels:["Jun 01", "Jun 02", "Jun 03", "Jun 04", "Jun 05", "Jun 08", "Jun 09", "Jun 10", "Jun 11", "Jun 12", "Jun 15", "Jun 16", "Jun 17", "Jun 18", "Jun 22", "Jun 23", "Jun 24", "Jun 25", "Jun 26", "Jun 29", "Jun 30", "Jul 01", "Jul 02", "Jul 06", "Jul 07", "Jul 08", "Jul 09", "Jul 10", "Jul 13", "Jul 14", "Jul 15", "Jul 16", "Jul 17", "Jul 20", "Jul 21", "Jul 22", "Jul 23", "Jul 24", "Jul 27", "Jul 28", "Jul 29", "Jul 30", "Jul 31", "Aug 03", "Aug 04", "Aug 05", "Aug 06", "Aug 07", "Aug 10", "Aug 11", "Aug 12", "Aug 13", "Aug 14", "Aug 17", "Aug 18", "Aug 19", "Aug 20", "Aug 21", "Aug 24", "Aug 25", "Aug 26", "Aug 27", "Aug 31"],
-datasets:[{label:'Dry Bulk ETF (3M)',data:[13.03, 12.94, 12.62, 12.66, 12.7, 12.37, 12.37, 12.5, 12.52, 12.32, 11.99, 12.13, 11.88, 11.57, 11.58, 11.77, 11.7, 11.4, 11.27, 11.63, 11.87, 12.05, 12.27, 12.96, 12.76, 12.84, 12.95, 12.89, 13.33, 13.1, 12.84, 12.65, 12.66, 12.19, 12.62, 12.51, 12.68, 12.57, 12.38, 12.61, 12.78, 13.36, 13.42, 13.95, 13.91, 13.97, 13.94, 13.76, 13.8, 13.79, 13.67, 13.89, 14.29, 14.0, 13.82, 14.01, 14.19, 14.75, 14.69, 15.06, 15.06, 14.82, 15.47],
+labels:["Jun 01", "Jun 02", "Jun 03", "Jun 04", "Jun 05", "Jun 08", "Jun 09", "Jun 10", "Jun 11", "Jun 12", "Jun 15", "Jun 16", "Jun 17", "Jun 18", "Jun 22", "Jun 23", "Jun 24", "Jun 25", "Jun 26", "Jun 29", "Jun 30", "Jul 01", "Jul 02", "Jul 06", "Jul 07", "Jul 08", "Jul 09", "Jul 10", "Jul 13", "Jul 14", "Jul 15", "Jul 16", "Jul 17", "Jul 20", "Jul 21", "Jul 22", "Jul 23", "Jul 24", "Jul 27", "Jul 28", "Jul 29", "Jul 30", "Jul 31", "Aug 03", "Aug 04", "Aug 05", "Aug 06", "Aug 07", "Aug 10", "Aug 11", "Aug 12", "Aug 13", "Aug 14", "Aug 17", "Aug 18", "Aug 19", "Aug 20", "Aug 21", "Aug 24", "Aug 25", "Aug 26", "Aug 27", "Aug 28", "Aug 31"],
+datasets:[{label:'Dry Bulk ETF (3M)',data:[13.03, 12.94, 12.62, 12.66, 12.7, 12.37, 12.37, 12.5, 12.52, 12.32, 11.99, 12.13, 11.88, 11.57, 11.58, 11.77, 11.7, 11.4, 11.27, 11.63, 11.87, 12.05, 12.27, 12.96, 12.76, 12.84, 12.95, 12.89, 13.33, 13.1, 12.84, 12.65, 12.66, 12.19, 12.62, 12.51, 12.68, 12.57, 12.38, 12.61, 12.78, 13.36, 13.42, 13.95, 13.91, 13.97, 13.94, 13.76, 13.8, 13.79, 13.67, 13.89, 14.29, 14.0, 13.82, 14.01, 14.19, 14.75, 14.69, 15.06, 15.06, 14.82, 15.52, 15.47],
 borderColor:'#6366f1',backgroundColor:'#6366f122',fill:true,
+pointRadius:0,borderWidth:2,tension:0.3}]},
+options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
+scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
+y:{ticks:{font:{family:'JetBrains Mono',size:10}}}}}});
+new Chart(document.getElementById('chart_2'),{type:'line',data:{
+labels:["Jun 01", "Jun 02", "Jun 03", "Jun 04", "Jun 05", "Jun 08", "Jun 09", "Jun 10", "Jun 11", "Jun 12", "Jun 15", "Jun 16", "Jun 17", "Jun 18", "Jun 22", "Jun 23", "Jun 24", "Jun 25", "Jun 26", "Jun 29", "Jun 30", "Jul 01", "Jul 02", "Jul 06", "Jul 07", "Jul 08", "Jul 09", "Jul 10", "Jul 13", "Jul 14", "Jul 15", "Jul 16", "Jul 17", "Jul 20", "Jul 21", "Jul 22", "Jul 23", "Jul 24", "Jul 27", "Jul 28", "Jul 29", "Jul 30", "Jul 31", "Aug 03", "Aug 04", "Aug 05", "Aug 06", "Aug 07", "Aug 10", "Aug 11", "Aug 12", "Aug 13", "Aug 14", "Aug 17", "Aug 18", "Aug 19", "Aug 20", "Aug 21", "Aug 24", "Aug 25", "Aug 26", "Aug 27", "Aug 31"],
+datasets:[{label:'FedEx (3M)',data:[337.22, 327.77, 323.25, 326.77, 329.76, 328.98, 330.52, 318.06, 336.74, 337.04, 337.48, 334.48, 324.71, 324.98, 328.78, 317.24, 316.83, 329.44, 318.53, 325.4, 313.13, 313.89, 313.0, 309.93, 312.88, 309.76, 310.84, 314.69, 313.74, 313.66, 313.42, 318.2, 312.98, 306.22, 315.19, 321.02, 315.62, 314.96, 310.79, 312.64, 308.61, 308.55, 307.4, 309.24, 313.34, 310.72, 315.87, 318.57, 325.08, 322.43, 326.77, 339.35, 334.64, 331.49, 328.38, 328.38, 326.04, 325.08, 334.05, 333.71, 335.99, 331.41, 327.4],
+borderColor:'#f59e0b',backgroundColor:'#f59e0b22',fill:true,
 pointRadius:0,borderWidth:2,tension:0.3}]},
 options:{responsive:true,plugins:{legend:{display:true,labels:{font:{family:'Inter'}}}},
 scales:{x:{ticks:{maxTicksLimit:8,font:{family:'Inter',size:10}}},
