@@ -353,16 +353,16 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
 <div class="header">
   <div><h1>DNSD CAPITAL &mdash; Trade Journal</h1>
   <div style="font-size:13px;opacity:0.8;margin-top:4px">Paper Trading Log &middot; Phase 3</div></div>
-  <div class="date">October 28, 2026 10:40</div>
+  <div class="date">October 28, 2026 10:46</div>
 </div>
 
 <div class="metrics-bar">
-  <div class="metric"><div class="val val-navy">109</div><div class="lbl">Trades</div></div>
-  <div class="metric"><div class="val val-green">63.3%</div><div class="lbl">Win Rate</div></div>
+  <div class="metric"><div class="val val-navy">110</div><div class="lbl">Trades</div></div>
+  <div class="metric"><div class="val val-green">62.7%</div><div class="lbl">Win Rate</div></div>
   <div class="metric"><div class="val val-green">+5.73%</div><div class="lbl">Avg Win</div></div>
-  <div class="metric"><div class="val val-red">-3.23%</div><div class="lbl">Avg Loss</div></div>
-  <div class="metric"><div class="val val-navy">1.78x</div><div class="lbl">W/L Ratio</div></div>
-  <div class="metric"><div class="val val-green">+266.6%</div><div class="lbl">Total P&amp;L</div></div>
+  <div class="metric"><div class="val val-red">-3.54%</div><div class="lbl">Avg Loss</div></div>
+  <div class="metric"><div class="val val-navy">1.62x</div><div class="lbl">W/L Ratio</div></div>
+  <div class="metric"><div class="val val-green">+250.7%</div><div class="lbl">Total P&amp;L</div></div>
 </div>
 
 <div class="controls">
@@ -379,7 +379,21 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
 
 <details open>
   <summary style="cursor:pointer;font-weight:600;margin-bottom:12px;font-size:14px;padding:0 40px;color:var(--ink,#1a1a2e)">Trade Timeline (last 20)</summary>
-  <div class="timeline" style="margin:0 40px"><div class="tl-date-group">Oct 22, 2026</div><div class="tl-item">
+  <div class="timeline" style="margin:0 40px"><div class="tl-date-group">Oct 28, 2026</div><div class="tl-item">
+          <div class="tl-dot loss"></div>
+          <div class="tl-date">Oct 28 09:30 → Oct 28 11:43 (2h 13m)</div>
+          <div class="tl-card">
+            <div class="tl-card-header">
+              <span class="tl-ticker">HOOD</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#fce7f3;color:#be185d;font-weight:600">SHORT</span>
+              <span class="tl-pnl" style="color:#ef4444">-15.89%</span>
+            </div>
+            <div class="tl-meta">
+              <span>Trigger: Earnings Miss</span>
+              <span>RS: 77</span>
+              <span>Exit: Time Exit</span>
+            </div>
+          </div>
+        </div><div class="tl-date-group">Oct 22, 2026</div><div class="tl-item">
           <div class="tl-dot loss"></div>
           <div class="tl-date">Oct 22 13:19 → Oct 22 14:45 (1h 26m)</div>
           <div class="tl-card">
@@ -645,25 +659,38 @@ body{font-family:'Inter',sans-serif;background:#fafaf8;color:#1a1a2e;min-height:
               <span>Exit: Time Exit</span>
             </div>
           </div>
-        </div><div class="tl-date-group">May 12, 2026</div><div class="tl-item">
-          <div class="tl-dot win"></div>
-          <div class="tl-date">May 12 12:35 → May 12 16:55 (4h 20m)</div>
-          <div class="tl-card">
-            <div class="tl-card-header">
-              <span class="tl-ticker">CELH</span><span style="font-size:9px;padding:1px 5px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600">LONG</span>
-              <span class="tl-pnl" style="color:#10b981">+0.05%</span>
-            </div>
-            <div class="tl-meta">
-              <span>Trigger: Breakout 20D</span>
-              <span>RS: 82</span>
-              <span>Exit: Power Hour</span>
-            </div>
-          </div>
         </div></div>
 </details>
 
-<div class="count-label" id="countLabel">Showing 109 trades</div>
+<div class="count-label" id="countLabel">Showing 110 trades</div>
 <div class="grid" id="grid">
+
+    <div class="trade-card" data-ticker="HOOD" data-trigger="earnings_miss"
+         data-result="loss">
+      <div class="card-header">
+        <div class="card-ticker">HOOD</div>
+        <span class="badge badge-loss">LOSS</span>
+        <span class="badge badge-dir">SHORT</span>
+        <span class="badge badge-window">midday</span>
+      </div>
+      <div class="card-pnl" style="color:#ef4444">-15.89%</div>
+      <div class="card-meta">
+        <div class="meta-row"><span class="meta-label">Entry</span><span>Oct 28 09:30 @ $79.02</span></div>
+        <div class="meta-row"><span class="meta-label">Exit</span><span>Oct 28 11:43 @ $91.57</span></div>
+        <div class="meta-row"><span class="meta-label">Duration</span><span>2h 13m</span></div>
+        <div class="meta-row"><span class="meta-label">Trigger</span><span class="trigger-tag">Earnings Miss</span></div>
+        <div class="meta-row"><span class="meta-label">RS Score</span><span class="rs-val">77</span> <span class="conf-tag">(HIGH)</span></div>
+        <div class="meta-row"><span class="meta-label">Regime</span><span>normal</span></div>
+        <div class="meta-row"><span class="meta-label">Exit Reason</span><span>time_exit</span></div>
+      </div>
+      <div class="factor-bars">
+        <div class="factor"><span class="factor-lbl">SV</span><div class="bar-bg"><div class="bar-fill" style="width:95.0%;background:#3b82f6"></div></div><span class="factor-val">95</span></div>
+        <div class="factor"><span class="factor-lbl">TQ</span><div class="bar-bg"><div class="bar-fill" style="width:80.0%;background:#8b5cf6"></div></div><span class="factor-val">80</span></div>
+        <div class="factor"><span class="factor-lbl">SL</span><div class="bar-bg"><div class="bar-fill" style="width:50.0%;background:#f59e0b"></div></div><span class="factor-val">50</span></div>
+        <div class="factor"><span class="factor-lbl">VC</span><div class="bar-bg"><div class="bar-fill" style="width:25.0%;background:#10b981"></div></div><span class="factor-val">25</span></div>
+        <div class="factor"><span class="factor-lbl">SA</span><div class="bar-bg"><div class="bar-fill" style="width:100.0%;background:#ef4444"></div></div><span class="factor-val">100</span></div>
+      </div>
+    </div>
 
     <div class="trade-card" data-ticker="PLTR" data-trigger="press_release_positive"
          data-result="loss">
